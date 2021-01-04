@@ -75,7 +75,7 @@ class User implements UserInterface
         $content = "<br><form method=POST>
         Имя и фамилия: <input type=\"text\" name=\"name\" value=\"{$user['name']}\"><br><br>
         Логин: <input type=\"text\" name=\"login\" value=\"{$user['login']}\"><br><br>
-        Пароль: <input type=\"text\" name=\"password\" value=\"{$user['password']}\"><br><br>
+        Пароль: <input type=\"password\" name=\"password\" value=\"\"><br><br>
         Подтвердите пароль: <input type=\"text\" name=\"confirmpassword\" value=\"\"><br><br>
         <input type=\"submit\" name=\"submit\">
         </form>";
