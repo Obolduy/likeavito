@@ -2,103 +2,130 @@
 
 class Base
 {
-    public $dbHost;
-    public $dbUser;
-    public $dbPassword;
-    public $dbName;
-    public $link;
-    public $query;
+    public $db;
     public $result;
 
-    public function __construct($dbHost, $dbUser, $dbPassword, $dbName)
+    public function __construct()
     {
-        $this->dbHost = $dbHost;
-        $this->dbUser = $dbUser;
-        $this->dbPassword = $dbPassword;
-        $this->dbName = $dbName;
-
-        $this->link = mysqli_connect($this->dbHost, $this->dbUser, $this->dbPassword, $this->dbName);
+        try {
+            $this->db = new PDO('mysql:host=localhost;dbname=larashop', 'root', 'root');
+        } catch (PDOException $e) {
+            echo 'Ошибка: ' . $e->getMessage();
+            die();
+        }  
     }
 
-    public function getAll($table)
+    /**
+	 * Returning the PDO fetch
+	 * @param pdo resource
+	 * @return array
+	 */
+
+    public function show(PDOStatement $fetch): array
     {
-        if ($table == 'lots') {
-            $this->query = "SELECT * FROM $table ORDER BY update_time DESC";
-        } else {
-            $this->query = "SELECT * FROM $table ORDER BY id DESC";
-        }
-        $this->result = mysqli_query($this->link, $this->query) or die(mysqli_error($this->link));
-
-        return $this;
-    }
-
-    public function getTag($tag)
-    {
-        $this->query = "SELECT lots.id, title, price, description, photo, add_time FROM lots JOIN lots_category 
-            ON lots.category_id=lots_category.id WHERE lots_category.name='$tag' ORDER BY update_time DESC";
-        $this->result = mysqli_query($this->link, $this->query) or die(mysqli_error($this->link));
-
-        return $this;
-    }
-
-    public function getWithout($category)
-    {
-        if ($category == 'jobs') {
-            $this->query = "SELECT * FROM lots WHERE category_id!=8 ORDER BY update_time DESC";
-        } else {
-            $this->query = "SELECT * FROM lots WHERE category_id=8 ORDER BY update_time DESC";
-        }
-        $this->result = mysqli_query($this->link, $this->query) or die(mysqli_error($this->link));
-
-        return $this;
-    }
-
-    public function showAll()
-    {
-        for ($data = []; $row = mysqli_fetch_assoc($this->result); $data[] = $row);
+        for ($data = []; $row = $fetch->fetch(); $data[] = $row);
 
         return $data;
     }
 
-    public function getOne($table, $what, $column = 'id')
+    public function getAll(string $table): array
     {
         if ($table == 'lots') {
-            $this->query = "SELECT title, price, photo, description, name, add_time FROM $table JOIN lots_category 
-                ON lots.category_id=lots_category.id WHERE $table.$column = '$what'"; 
+            $this->result = $this->db->query("SELECT * FROM $table ORDER BY update_time DESC");
         } else {
-            $this->query = "SELECT * FROM $table WHERE $column = '$what'";
+            $this->result = $this->db->query("SELECT * FROM $table ORDER BY id DESC");
         }
-        $this->result = mysqli_query($this->link, $this->query) or die(mysqli_error($this->link));
+
+        return $this->show($this->result);
+    }
+
+    public function getTag(string $tag): array
+    {
+        $this->result = $this->db->query("SELECT lots.id, title, price, description, photo, add_time FROM lots JOIN lots_category 
+            ON lots.category_id=lots_category.id WHERE lots_category.name = '$tag' ORDER BY update_time DESC");
+
+        return $this->show($this->result);
+    }
+
+    public function getWithout(string $category): array
+    {
+        if ($category == 'jobs') {
+            $this->result = $this->db->query("SELECT * FROM lots WHERE category_id!=8 ORDER BY update_time DESC");
+        } else {
+            $this->result = $this->db->query("SELECT * FROM lots WHERE category_id=8 ORDER BY update_time DESC");
+        }
+
+        return $this->show($this->result);
+    }
+
+    /**
+	 * Returning the PDO fetch
+	 * @param string table name
+     * @param string 'where' expression
+     * @param string column name
+	 * @return array
+	 */
+
+    public function getOne(string $table, mixed $what, string $column = 'id'): array
+    {
+        if ($table == 'lots') {
+            $this->result = $this->db->query("SELECT title, price, photo, description, name, add_time FROM $table JOIN lots_category 
+                ON lots.category_id=lots_category.id WHERE $table.$column = '$what'"); 
+        } else {
+            $this->result = $this->db->query("SELECT * FROM $table WHERE $column = '$what'");
+        }
         
-        return mysqli_fetch_assoc($this->result);
+        return $this->show($this->result);
     }
 
-    public function delete($table, $chosen)
+    public function delete(string $table, int $chosen): void
     {
-        $this->query = "DELETE * FROM '$table' WHERE id = '{$chosen['id']}'";
-        $this->result = mysqli_query($this->link, $this->query) or die(mysqli_error($this->link));
+        $this->result = $this->db->prepare("DELETE * FROM ? WHERE id = ?");
+        $this->result->execute($table, $chosen['id']);
     }
 
-    public function addUser($login, $password, $name, $city_id)
+    /**
+	 * Adding new user into db
+	 * @param string login
+     * @param string hashed password
+     * @param string name
+     * @param int user`s city id
+	 * @return void
+	 */
+
+    public function addUser(string $login, string $password, string $name, int $city_id): void
     {
-        $this->query = "INSERT INTO users SET name='$name', password='$password', city_id='$city_id', status_id=2,
-            ban_status=0, reg_time=NOW(), login='$login'";
-        $this->result = mysqli_query($this->link, $this->query) or die(mysqli_error($this->link));
+        $this->result = $this->db->prepare("INSERT INTO users SET name = ?, password = ?, city_id = ?, status_id = 2,
+            ban_status = 0, reg_time = NOW(), login = ?");
+        $this->result->execute($name, $password, $city_id, $login);
     }
 
-    public function addLot($title, $price, $description, $photo, $category_id, $owner_id)
+    /**
+	 * Adding new lot into db
+	 * @param string title
+     * @param int price
+     * @param string description
+     * @param string filename of lot picture
+     * @param int lot`s category id
+     * @param int user`s id
+	 * @return void
+	 */
+
+    public function addLot(string $title, int $price, string $description, string $photo, int $category_id, int $owner_id): void
     {
-        $this->query = "INSERT INTO lots SET owner_id='$owner_id', category_id='$category_id', title='$title', price='$price', 
-            description='$description', photo='$photo',
-                add_time=NOW(), update_time=NOW()";
-        $this->result = mysqli_query($this->link, $this->query) or die(mysqli_error($this->link));
+        $this->result = $this->db->prepare("INSERT INTO lots SET owner_id = ?', category_id = ?, title = ?, price = ?, 
+            description = ?, photo = ?, add_time = NOW(), update_time = NOW()");
+        $this->result->execute($owner_id, $category_id, $title, $price, $description, $photo);
     }
 
-    public function updateLot()
+    public function updateLot(string $title, int $price, string $description, string $photo): void
     {
-        //fdfsfdsfseffefefefew
+        $this->result = $this->db->prepare("UPDATE lots SET title = ?, price = ?, description = ?, photo = ?, update_time = NOW()");
+        $this->result->execute($title, $price, $description, $photo);
     }
 
+    /* Change next two when you will remake views */
+    
     public static function getCities()
     {
         $query = "SELECT * FROM cities_avito";

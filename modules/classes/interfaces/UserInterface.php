@@ -10,5 +10,11 @@ interface UserInterface
 
     public function registration();
 
+    /**
+	 * Log in user
+	 * @param void
+	 * @return login.php if method GET and void if POST
+	 */
+
     public function login();
 }
