@@ -6,6 +6,10 @@ class Authorization implements IAuth
 {   
     public static function registration(): void
     {
+        if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+            include_once 'registration.php';
+        }
+
         $login = strip_tags($_POST['login']);
         $password = strip_tags($_POST['password']);
         $confirmPassword = strip_tags($_POST['confirmPassword']);
@@ -24,10 +28,15 @@ class Authorization implements IAuth
             
             $base->addUser($login, $cryptpassword, $name, $city_id);
 
-            $user_id = $base->getOne('users', $name, 'name');
+            $user_info = $base->getOne('users', $name, 'name');
 
-            $_SESSION['user_id'] = $user_id['id'];
-            $_SESSION['user_login'] = $login;
+            foreach($user_info as $elem) {
+                $_SESSION['user_id'] = $elem['id'];
+                $_SESSION['user_login'] = $login;
+
+                $user = new User($elem['id'], $elem['login'], $elem['password'], $elem['name'],
+                    $elem['city_id'], $elem['status_id'], $elem['ban_status'], $elem['registration_time']);
+            }
 
             header('Location: index.php'); die();       
         }
@@ -35,6 +44,10 @@ class Authorization implements IAuth
 
     public static function logIn(): void
     {
+        if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+            include_once 'login.php';
+        }
+
         $login = strip_tags($_POST['login']);
         $password = strip_tags($_POST['password']);
 
@@ -46,9 +59,15 @@ class Authorization implements IAuth
 
             $base = new Base();
 
-            $user = $base->getOne('users', $login, 'login');
-            $_SESSION['user_id'] = $user['id'];
-            $_SESSION['user_login'] = $login;
+            $user_info = $base->getOne('users', $login, 'login');
+
+            foreach($user_info as $elem) {
+                $_SESSION['user_id'] = $elem['id'];
+                $_SESSION['user_login'] = $login;
+
+                $user = new User($elem['id'], $elem['login'], $elem['password'], $elem['name'],
+                    $elem['city_id'], $elem['status_id'], $elem['ban_status'], $elem['registration_time']);
+            }
             
             header('Location: index.php'); die();
         }
@@ -66,15 +85,15 @@ class Authorization implements IAuth
         $base = new Base();
 
         $check = $base->getOne('users', $login, 'login');
+
         if (!empty($check)) {
-            $checkpassword = password_verify($this->base->password, $siteUser['password']);
-            $this->base->query = "SELECT * FROM users WHERE login='$login'";
-            $this->base->result = mysqli_query($this->base->link, $this->base->query) or die(mysqli_error($this->base->link));
-            $result = mysqli_fetch_assoc($this->base->result);
+            $user = $base->selectQuery("SELECT * FROM users WHERE login='$login'");
 
-            $checkpassword = password_verify($password, $result['password']);
+            foreach($user as $elem) {
+                $checkpassword = password_verify($password, $elem['password']);
+            }
 
-            if (!empty($this->base->result) and $checkpassword == true) {
+            if (!empty($user) and $checkpassword == true) {
                 return true;
             } else {
                 echo 'Неправильный логин или пароль';

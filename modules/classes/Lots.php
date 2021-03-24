@@ -2,17 +2,9 @@
 
 require_once 'classes.php';
 
-
 class Lots implements LotsInterface
-{
-    protected $base;
-
-    public function __construct()
-    {
-        $this->base = new Base('localhost', 'root', 'root', 'test');
-    }
-    
-    public function newLot()
+{    
+    public function newLot(): void
     {
         $title = strip_tags($_POST['title']);
         $price = strip_tags($_POST['price']);
@@ -21,8 +13,13 @@ class Lots implements LotsInterface
         $category_id = strip_tags($_POST['category_id']);
         $owner_id = $_SESSION['user_id'];
 
+        if (!is_numeric($price)) {
+            throw new Exception('Цена должна быть записана числом');
+        }
+
         $path = 'img/';
 
+        $base = new Base();
         
         foreach ($photo as $elem) {
             $photos[] = $elem;
@@ -45,28 +42,42 @@ class Lots implements LotsInterface
 
         // НАДО ПОЛУЧИТЬ ПУТЬ ЗАХЕШИРОВАТЬ ЕГО И ПЕРЕДАТЬ В БД А ПОТОМ ЕЩЕ И ВЫВЕСТИ ЭТО КАК ТО
         
-        $this->base->addLot($title, $price, $description, $photo, $category_id, $owner_id);
+        $base->addLot($title, $price, $description, $photo, $category_id, $owner_id);
 
         header('Location: index.php'); die();
     }
 
     public function getForm($lot_id)
     {
-        $lot = $this->base->getOne('lots', $lot_id);
+        $base = new Base();
 
-        $content = "<br><form method=POST>
-        <input type=\"text\" name=\"title\" value=\"{$lot['title']}\"><br><br>
-        <input type=\"text\" name=\"price\" value=\"{$lot['price']}\"><br><br>
-        <textarea name=\"description\" placeholder=\"type text\">{$lot['description']}</textarea><br><br>
-        <input name=\"delete\" type=\"checkbox\" value=\"1\"> Удалить <br><br>
-        <input type=\"submit\" name=\"submit\">
-        </form>";
+        if($_SERVER['REQUEST_METHOD'] == 'GET') {
+            $lot = $base->getOne('lots', $lot_id);
 
-        return $content;
+            foreach($lot as $elem) {
+                $title = $elem['title'];
+                $price = $elem['price'];
+                $description = $elem['description'];
+            }
+
+            include_once 'file with thiw form';
+
+            $content = "<br><form method=POST>
+            <input type=\"text\" name=\"title\" value=\"{$lot['title']}\"><br><br>
+            <input type=\"text\" name=\"price\" value=\"{$lot['price']}\"><br><br>
+            <textarea name=\"description\" placeholder=\"type text\">{$lot['description']}</textarea><br><br>
+            <input name=\"delete\" type=\"checkbox\" value=\"1\"> Удалить <br><br>
+            <input type=\"submit\" name=\"submit\">
+            </form>";
+
+            return $content;
+        }
     }
 
     public function changeLot($title, $price, $description, $lot_id)
     {
+        $base = new Base();
+        
         $this->base->query = "UPDATE lots SET title='$title', price='$price', description='$description', update_time=NOW() WHERE id=$lot_id";
         $this->base->result = mysqli_query($this->base->link, $this->base->query);
 

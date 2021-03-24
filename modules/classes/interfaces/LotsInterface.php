@@ -2,13 +2,13 @@
 
 interface LotsInterface
 {
-    public function newLot();
+    public function newLot(): void;
 
-    public function changeLot($title, $price, $description, $lot_id);
+    public function changeLot(string $title, int $price, string $description, int $lot_id): void;
 
-    public function deleteLot($lot_id);
+    public function deleteLot(int $lot_id): void;
 
-    public function showLot($id);
+    public function showLot(int $id): array;
 
-    public function showAllLots();
+    public function showAllLots(): array;
 }

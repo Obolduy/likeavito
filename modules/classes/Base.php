@@ -16,8 +16,21 @@ class Base
     }
 
     /**
+	 * Taking non fiction query and returning the PDO fetch
+	 * @param string SQL query
+	 * @return array
+	 */
+
+    public function selectQuery(string $query): array
+    {
+        $this->result = $this->db->query("$query");
+
+        return $this->show($this->result);
+    }
+
+    /**
 	 * Returning the PDO fetch
-	 * @param pdo resource
+	 * @param array PDOObject with data
 	 * @return array
 	 */
 

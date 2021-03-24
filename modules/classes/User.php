@@ -4,15 +4,14 @@ require_once 'classes.php';
 
 class User implements UserInterface
 {
-    protected $base;
-    public $login;
-    public $password;
-    public $name;
-    public $id;
+    protected $data = [];
 
-    public function __construct()
+    public function __construct($id, $login, $password, $name, $city_id, $status_id, $ban_status, $registration_time)
     {
-        $this->base = new Base('localhost', 'root', 'root', 'test');
+        $this->data = ['id' => $id, 'login' => $login,
+                       'password' => $password, 'name' => $name,
+                       'city_id' => $city_id, 'status_id' => $status_id,
+                       'ban_status' => $ban_status, 'registration_time' => $registration_time];
     }
 
     public function getUserTable($user_id)
@@ -36,11 +35,6 @@ class User implements UserInterface
         $this->base->result = mysqli_query($this->base->link, $this->base->query);
 
         return 'Информация успешно изменена';
-    }
-
-    public function changeLogin()
-    {
-
     }
 
     public function changeCheck($login, $password, $confirmPassword, $current_login)
