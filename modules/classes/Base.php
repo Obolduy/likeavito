@@ -105,7 +105,7 @@ class Base
 	 * @return array
 	 */
 
-    public function getOne(string $table, mixed $what, string $column = 'id'): array
+    public function getOne(string $table, $what, string $column = 'id'): array
     {
         if ($table == 'lots') {
             $this->result = $this->db->query("SELECT title, price, photo, description, name, add_time FROM $table JOIN lots_category 
@@ -119,8 +119,8 @@ class Base
 
     public function delete(string $table, int $chosen): void
     {
-        $this->result = $this->db->prepare("DELETE * FROM ? WHERE id = ?");
-        $this->result->execute($table, $chosen['id']);
+        $this->result = $this->db->prepare("DELETE FROM $table WHERE id = ?");
+        $this->result->execute([$chosen]);
     }
 
     /**
