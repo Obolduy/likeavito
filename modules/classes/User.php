@@ -29,15 +29,43 @@ class User implements UserInterface
         return $content;
     }
 
-    public function changeInformation($name, $login, $password, $user_id)
-    {
-        $this->base->query = "UPDATE users SET name='$name', password='$password', login='$login' WHERE id=$user_id";
-        $this->base->result = mysqli_query($this->base->link, $this->base->query);
+    /**
+	 * Change user`s data by himself
+	 * @param string new login
+     * @param string new non-hashed password
+     * @param string non-hashed password confirm
+     * @param string new name
+     * @param int user id
+	 * @return boolean
+	 */
 
-        return 'Информация успешно изменена';
+    public function changeInformation(string $login, string $password, string $confirmPassword, string $name, int $user_id)
+    {
+        $check = $this->changeCheck(strip_tags($login), strip_tags($password), strip_tags($confirmPassword), $this->data['login']);
+
+        $cryptpassword = password_hash(strip_tags($password), PASSWORD_DEFAULT);
+
+        if ($check == true) {
+            $data = [strip_tags($login), $cryptpassword, strip_tags($name), $user_id];
+
+            $base = new Base();
+    
+            $base->updateQuery("UPDATE users SET login = ?, password = ?, name = ?, update_time = now() WHERE id = ?", $data);
+    
+            return 'Информация успешно изменена';
+        }
     }
 
-    public function changeCheck($login, $password, $confirmPassword, $current_login)
+    /**
+	 * Validate login and password
+	 * @param string new login
+     * @param string new non-hashed password
+     * @param string non-hashed password confirm
+     * @param string current user login (before changing)
+	 * @return boolean
+	 */
+
+    public function changeCheck(string $login, string $password, string $confirmPassword, string $current_login): bool
     {
         $emptyCheck = 0;
         $correctCheck = 0;
@@ -45,10 +73,12 @@ class User implements UserInterface
         if (!empty($login) and !empty($password)) {
             $emptyCheck = $this->base->getOne('users', $login, 'login');
 
-            if (!empty($emptyCheck) AND $emptyCheck['login'] != $current_login) {
-                echo 'Данный логин занят';
-            } else {
-                $emptyCheck = 1;
+            foreach($emptyCheck as $elem) {
+                if (!empty($emptyCheck) AND $elem['login'] != $current_login) {
+                    echo 'Данный логин занят';
+                } else {
+                    $emptyCheck = 1;
+                }
             }
             
             if (!preg_match('#^[A-Za-z0-9]+$#', $login) or !preg_match('#^[A-Za-z0-9]+$#', $password)) {

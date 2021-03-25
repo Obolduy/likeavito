@@ -16,7 +16,7 @@ class Base
     }
 
     /**
-	 * Taking non fiction query and returning the PDO fetch
+	 * Taking non fiction select query and returning the PDO fetch.
 	 * @param string SQL query
 	 * @return array
 	 */
@@ -29,7 +29,21 @@ class Base
     }
 
     /**
-	 * Returning the PDO fetch
+	 * Taking non fiction update query and array with query values. Then it makes a query and returns void.
+	 * @param string SQL query
+	 * @return array
+	 */
+
+    public function updateQuery(string $query, array $data): void
+    {
+        $result = implode(', ', $data);
+
+        $this->result = $this->db->prepare("$query");
+        $this->result->execute($result);
+    }
+
+    /**
+	 * Returning the PDO fetch.
 	 * @param array PDOObject with data
 	 * @return array
 	 */
@@ -41,6 +55,12 @@ class Base
         return $data;
     }
 
+    /**
+	 * Getting all DB matches (query SELECT). Returning the PDO fetch.
+	 * @param string required DB table
+	 * @return array
+	 */
+
     public function getAll(string $table): array
     {
         if ($table == 'lots') {
@@ -51,6 +71,12 @@ class Base
 
         return $this->show($this->result);
     }
+
+    /**
+	 * Getting required lot`s tag (query SELECT, JOIN). Returning the PDO fetch.
+	 * @param string <- WHERE lots_category.name =
+	 * @return array
+	 */
 
     public function getTag(string $tag): array
     {
@@ -131,10 +157,11 @@ class Base
         $this->result->execute($owner_id, $category_id, $title, $price, $description, $photo);
     }
 
-    public function updateLot(string $title, int $price, string $description, string $photo): void
+    public function updateLot(string $title, int $price, string $description, string $photo, int $lot_id): void
     {
-        $this->result = $this->db->prepare("UPDATE lots SET title = ?, price = ?, description = ?, photo = ?, update_time = NOW()");
-        $this->result->execute($title, $price, $description, $photo);
+        $this->result = $this->db->prepare("UPDATE lots SET title = ?, price = ?, description = ?, photo = ?, update_time = NOW()
+            WHERE id = ?");
+        $this->result->execute($title, $price, $description, $photo, $lot_id);
     }
 
     /* Change next two when you will remake views */

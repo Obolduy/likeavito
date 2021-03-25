@@ -60,7 +60,7 @@ class Lots implements LotsInterface
                 $description = $elem['description'];
             }
 
-            include_once 'file with thiw form';
+            include_once 'file with this form';
 
             $content = "<br><form method=POST>
             <input type=\"text\" name=\"title\" value=\"{$lot['title']}\"><br><br>
@@ -74,25 +74,29 @@ class Lots implements LotsInterface
         }
     }
 
-    public function changeLot($title, $price, $description, $lot_id)
-    {
+    public function changeLot(string $title, int $price, string $description, string $photo, int $lot_id)
+    {        
+        if (!is_numeric(strip_tags($price))) {
+            throw new Exception('Цена должна быть записана числом');
+        }
+
         $base = new Base();
-        
-        $this->base->query = "UPDATE lots SET title='$title', price='$price', description='$description', update_time=NOW() WHERE id=$lot_id";
-        $this->base->result = mysqli_query($this->base->link, $this->base->query);
+
+        $base->updateLot(strip_tags($title), strip_tags($price), strip_tags($description), strip_tags($photo), $lot_id);
 
         return 'Лот изменен успешно';
     }
 
-    public function deleteLot($lot_id)
+    public function deleteLot(int $lot_id): void
     {
-        $this->base->query = "DELETE FROM lots WHERE id=$lot_id";
-        $this->base->result = mysqli_query($this->base->link, $this->base->query);
+        $base = new Base();
 
-        echo 'Лот успешно удален';
+        $base->delete('lots', $lot_id);
+
+        //echo 'Лот успешно удален';
     }
 
-    public function showLot($id)
+    public function showLot(int $id)
     {
         $one = $this->base->getOne('lots', $id, 'id');
         $lots .= "

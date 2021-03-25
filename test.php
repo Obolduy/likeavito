@@ -6,5 +6,6 @@ require_once 'classes.php';
 $test = new Base();
 $info = $test->getAll('categories');
 foreach($info as $elem) {
-    echo $elem['id'] . '<br>';
+    $res = $elem['category'];
 }
+echo $res;
