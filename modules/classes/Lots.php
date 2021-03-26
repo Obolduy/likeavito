@@ -51,7 +51,7 @@ class Lots implements LotsInterface
     {
         $base = new Base();
 
-        if($_SERVER['REQUEST_METHOD'] == 'GET') {
+        if ($_SERVER['REQUEST_METHOD'] == 'GET') {
             $lot = $base->getOne('lots', $lot_id);
 
             foreach($lot as $elem) {
@@ -82,7 +82,11 @@ class Lots implements LotsInterface
 
         $base = new Base();
 
-        $base->updateLot(strip_tags($title), strip_tags($price), strip_tags($description), strip_tags($photo), $lot_id);
+        if ($photo) {
+            $base->updateLot(strip_tags($title), strip_tags($price), strip_tags($description), $lot_id, strip_tags($photo));
+        } else {
+            $base->updateLot(strip_tags($title), strip_tags($price), strip_tags($description), $lot_id);
+        }
 
         return 'Лот изменен успешно';
     }

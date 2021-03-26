@@ -3,4 +3,8 @@ require_once 'classes.php';
 
 //session_start();
 
-$test = new Base();
+$user = new User(1);
+
+$_SESSION['user'] = $user->data;
+
+var_dump($_SESSION['user']);

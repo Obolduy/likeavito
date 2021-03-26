@@ -4,14 +4,24 @@ require_once 'classes.php';
 
 class User implements UserInterface
 {
-    protected $data = [];
+    public $data = [];
 
-    public function __construct($id, $login, $password, $name, $city_id, $status_id, $ban_status, $registration_time)
+    public function __construct(int $id)
     {
-        $this->data = ['id' => $id, 'login' => $login,
-                       'password' => $password, 'name' => $name,
-                       'city_id' => $city_id, 'status_id' => $status_id,
-                       'ban_status' => $ban_status, 'registration_time' => $registration_time];
+        $base = new Base();
+
+        $info = $base->getOne('users', $id);
+
+        foreach ($info as $elem) {
+            $this->data = ['id' => $elem['id'], 'login' => $elem['login'],
+                       'password' => $elem['password'], 'name_id' => $elem['name_id'],
+                       'email' => $elem['email'], 'surname_id' => $elem['surname_id'],
+                       'city_id' => $elem['city_id'], 'status_id' => $elem['status_id'],
+                       'ban_status' => $elem['ban_status'], 'registration_time' => $elem['registration_time'],
+                       'updated_at' => $elem['updated_at'], 'active' => $elem['active']];
+        }
+
+        // Заменить на join
     }
 
     public function getUserTable($user_id)

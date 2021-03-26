@@ -28,14 +28,12 @@ class Authorization implements IAuth
             
             $base->addUser($login, $cryptpassword, $name, $city_id);
 
-            $user_info = $base->getOne('users', $name, 'name');
+            $user_info = $base->getOne('users', $login, 'login');
 
             foreach($user_info as $elem) {
-                $_SESSION['user_id'] = $elem['id'];
-                $_SESSION['user_login'] = $login;
-
-                $user = new User($elem['id'], $elem['login'], $elem['password'], $elem['name'],
-                    $elem['city_id'], $elem['status_id'], $elem['ban_status'], $elem['registration_time']);
+                $user = new User($elem['id']);
+                
+                $_SESSION['user'] = $user->data;
             }
 
             header('Location: index.php'); die();       
@@ -62,11 +60,9 @@ class Authorization implements IAuth
             $user_info = $base->getOne('users', $login, 'login');
 
             foreach($user_info as $elem) {
-                $_SESSION['user_id'] = $elem['id'];
-                $_SESSION['user_login'] = $login;
+                $user = new User($elem['id']);
 
-                $user = new User($elem['id'], $elem['login'], $elem['password'], $elem['name'],
-                    $elem['city_id'], $elem['status_id'], $elem['ban_status'], $elem['registration_time']);
+                $_SESSION['user'] = $user->data;
             }
             
             header('Location: index.php'); die();

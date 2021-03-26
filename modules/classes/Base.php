@@ -8,7 +8,7 @@ class Base
     public function __construct()
     {
         try {
-            $this->db = new PDO('mysql:host=localhost;dbname=larashop', 'root', 'root');
+            $this->db = new PDO('mysql:host=localhost;dbname=marketplace', 'root', 'root');
         } catch (PDOException $e) {
             echo 'Ошибка: ' . $e->getMessage();
             die();
@@ -139,25 +139,42 @@ class Base
         $this->result->execute($name, $password, $city_id, $login);
     }
 
+    public function addUserInfo(string $name, string $surname, int $city, int $user_id): array
+    {
+        $this->result = $this->db->prepare("INSERT INTO names SET name = ?, user_id = ?");
+        $this->result->execute($name, $user_id);
+
+        $this->result = $this->db->prepare("INSERT INTO surnames SET surname = ?, user_id = ?");
+        $this->result->execute($surname, $user_id);
+
+        $this->result = $this->db->prepare("INSERT INTO cities SET city = ?");
+        $this->result->execute($city);
+
+        $this->result = $this->db->query("SELECT n.id, s.id, c.id FROM names as n JOIN  
+                ON lots.category_id=lots_category.id WHERE $table.$column = '$what'");  // Доделать
+    }
+
     /**
 	 * Adding new lot into db
 	 * @param string title
      * @param int price
      * @param string description
-     * @param string filename of lot picture
+     * @param string filename of lot picture or NULL
      * @param int lot`s category id
      * @param int user`s id
 	 * @return void
 	 */
 
-    public function addLot(string $title, int $price, string $description, string $photo, int $category_id, int $owner_id): void
+    public function addLot(string $title, int $price, string $description, int $category_id, int $owner_id, string $photo = null): void
     {
+        $user = new User();
+
         $this->result = $this->db->prepare("INSERT INTO lots SET owner_id = ?', category_id = ?, title = ?, price = ?, 
             description = ?, photo = ?, add_time = NOW(), update_time = NOW()");
-        $this->result->execute($owner_id, $category_id, $title, $price, $description, $photo);
+        $this->result->execute(User::data['login'], $category_id, $title, $price, $description, $photo);
     }
 
-    public function updateLot(string $title, int $price, string $description, string $photo, int $lot_id): void
+    public function updateLot(string $title, int $price, string $description, int $lot_id, string $photo = null): void
     {
         $this->result = $this->db->prepare("UPDATE lots SET title = ?, price = ?, description = ?, photo = ?, update_time = NOW()
             WHERE id = ?");
