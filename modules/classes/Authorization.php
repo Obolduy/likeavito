@@ -2,7 +2,7 @@
 
 require_once 'classes.php';
 
-class Authorization implements IAuth
+class Authorization
 {   
     public static function registration(): void
     {
@@ -11,14 +11,16 @@ class Authorization implements IAuth
         }
 
         $login = strip_tags($_POST['login']);
+        $email = strip_tags($_POST['email']);
         $password = strip_tags($_POST['password']);
         $confirmPassword = strip_tags($_POST['confirmPassword']);
         $name = strip_tags($_POST['name']);
+        $surname = strip_tags($_POST['surname']);
         $city_id = $_POST['city_id'];
 
-        $check = self::registrationCheck($login, $password, $confirmPassword);
+       $check = self::registrationCheck($login, $password, $confirmPassword);
 
-        if ($check == true) {
+       if ($check == true) {
             session_start();
             $_SESSION['userauth'] = true;
 
@@ -26,18 +28,20 @@ class Authorization implements IAuth
 
             $cryptpassword = password_hash($password, PASSWORD_DEFAULT);
             
-            $base->addUser($login, $cryptpassword, $name, $city_id);
+            $base->addUser($login, $cryptpassword, $email, $city_id);
 
-            $user_info = $base->getOne('users', $login, 'login');
+            $user_info = $base->getOne('users', $email, 'email');
 
             foreach($user_info as $elem) {
+                $base->addUserInfo($name, $surname, $elem['id']);
+
                 $user = new User($elem['id']);
                 
                 $_SESSION['user'] = $user->data;
             }
 
             header('Location: index.php'); die();       
-        }
+       }
     }
 
     public static function logIn(): void
@@ -105,7 +109,7 @@ class Authorization implements IAuth
 	 * @return bool
 	 */
 
-    protected static function registrationCheck(string $login, string $password, string $confirmPassword): bool
+    public static function registrationCheck(string $login, string $password, string $confirmPassword)
     {
         $emptyCheck = 0;
         $correctCheck = 0;
@@ -133,6 +137,8 @@ class Authorization implements IAuth
         }
         if ($emptyCheck == 1 and $correctCheck == 1) {
             return true;
+        } else {
+            return false;
         }
     }
 }

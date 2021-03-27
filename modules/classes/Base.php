@@ -36,10 +36,8 @@ class Base
 
     public function updateQuery(string $query, array $data): void
     {
-        $result = implode(', ', $data);
-
         $this->result = $this->db->prepare("$query");
-        $this->result->execute($result);
+        $this->result->execute($data);
     }
 
     /**
@@ -132,26 +130,40 @@ class Base
 	 * @return void
 	 */
 
-    public function addUser(string $login, string $password, string $name, int $city_id): void
+    public function addUser(string $login, string $password, string $email, int $city_id): void
     {
-        $this->result = $this->db->prepare("INSERT INTO users SET name = ?, password = ?, city_id = ?, status_id = 2,
-            ban_status = 0, reg_time = NOW(), login = ?");
-        $this->result->execute($name, $password, $city_id, $login);
+        $this->result = $this->db->prepare("INSERT INTO users SET email = ?, password = ?, city_id = ?, status_id = 1,
+            ban_status = 0, active = 0, registration_time = NOW(), login = ?");
+        $this->result->execute([$email, $password, $city_id, $login]);
     }
 
-    public function addUserInfo(string $name, string $surname, int $city, int $user_id): array
+    /**
+	 * Adding data into names\surnames tables and updating users table
+	 * @param string name
+     * @param string surnames
+     * @param int user`s id
+	 * @return void
+	 */
+
+    public function addUserInfo(string $name, string $surname, int $user_id): void
     {
         $this->result = $this->db->prepare("INSERT INTO names SET name = ?, user_id = ?");
-        $this->result->execute($name, $user_id);
+        $this->result->execute([$name, $user_id]);
 
         $this->result = $this->db->prepare("INSERT INTO surnames SET surname = ?, user_id = ?");
-        $this->result->execute($surname, $user_id);
+        $this->result->execute([$surname, $user_id]);
 
-        $this->result = $this->db->prepare("INSERT INTO cities SET city = ?");
-        $this->result->execute($city);
+        $this->result = $this->db->query("SELECT id FROM names WHERE name = $name");
+        
+        foreach ($this->result as $elem) {
+            $this->updateQuery("UPDATE users SET name_id = ? WHERE id = ?", [$elem['id'], $user_id]);
+        }
 
-        $this->result = $this->db->query("SELECT n.id, s.id, c.id FROM names as n JOIN  
-                ON lots.category_id=lots_category.id WHERE $table.$column = '$what'");  // Доделать
+        $this->result = $this->db->query("SELECT id FROM surnames WHERE surname = $surname");
+        
+        foreach ($this->result as $elem) {
+            $this->updateQuery("UPDATE users SET surname_id = ? WHERE id = ?", [$elem['id'], $user_id]);
+        }
     }
 
     /**

@@ -3,8 +3,10 @@ require_once 'classes.php';
 
 //session_start();
 
-$user = new User(1);
-
-$_SESSION['user'] = $user->data;
-
-var_dump($_SESSION['user']);
+$base = new Base();
+$test = $base->getOne('users', $login, 'login');
+if (!empty($test)) {
+    echo 'Не пустой';
+} else {
+    echo 'пустой';
+}

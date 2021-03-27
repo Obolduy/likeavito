@@ -6,11 +6,13 @@ class BaseTest extends TestCase
 {
     private $base;
 
-    protected function setUp(): void {
+    protected function setUp(): void 
+    {
         $this->base = new Base();
     }
 
-    public function testSelectQuery() {
+    public function testSelectQuery() 
+    {
         $info = $this->base->selectQuery('SELECT * FROM categories WHERE id = 10');
 
         foreach($info as $elem) {
@@ -30,7 +32,8 @@ class BaseTest extends TestCase
         $this->assertEquals(8, $result3);
     }
 
-    public function testGetAll() {
+    public function testGetAll() 
+    {
         $info = $this->base->getAll('categories');
 
         foreach($info as $elem) {
@@ -42,7 +45,8 @@ class BaseTest extends TestCase
         $this->assertEquals(1, $result2);
     }
 
-    public function testGetOne() {
+    public function testGetOne() 
+    {
         $info = $this->base->getOne('categories', 5);
 
         foreach($info as $elem) {
@@ -64,7 +68,8 @@ class BaseTest extends TestCase
         $this->assertEquals(4, $result4);
     }
 
-    public function testDelete() {
+    public function testDelete() 
+    {
         $delete = $this->base->delete('categories', 12);
 
         $info = $this->base->getOne('categories', 12);
@@ -74,6 +79,21 @@ class BaseTest extends TestCase
         }
 
         $this->assertNotEquals(12, $result);
+    }
+
+    public function testUpdateQuery() 
+    {
+        $update = $this->base->updateQuery("UPDATE users SET name_id = ?, surname_id = ? WHERE id = ?", [1, 1, 1]);
+
+        $info = $this->base->getOne('users', 1);
+
+        foreach($info as $elem) {
+            $result1 = $elem['name_id'];
+            $result2 = $elem['surname_id'];
+        }
+
+        $this->assertEquals(1, $result1);
+        $this->assertEquals(1, $result2);
     }
 
     protected function tearDown(): void
