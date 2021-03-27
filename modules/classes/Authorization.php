@@ -87,7 +87,7 @@ class Authorization
         $check = $base->getOne('users', $login, 'login');
 
         if (!empty($check)) {
-            $user = $base->selectQuery("SELECT * FROM users WHERE login='$login'");
+            $user = $base->selectQuery("SELECT * FROM users WHERE login = '$login'");
 
             foreach($user as $elem) {
                 $checkpassword = password_verify($password, $elem['password']);

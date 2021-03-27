@@ -16,7 +16,7 @@ class AuthorizationTest extends TestCase
     /**
      * Headers already sent by PHPUnit but everythings is ok.
      */
-    
+
     public function testRegistration() 
     {
         $_POST['login'] = 'logsewesin';
@@ -38,6 +38,22 @@ class AuthorizationTest extends TestCase
         $this->assertEquals(2, $result);
     }
 
+    public function testLogIn() 
+    {
+        $_POST['login'] = 'logsin';
+        $_POST['password'] = '123456789';
+
+        $reg = Authorization::logIn();
+
+        $data = $this->base->getOne('users', 'logsin', 'login');
+
+        foreach ($data as $elem) {
+            $user = new User($elem['id']);
+        }
+
+        $this->assertEquals(4, $user->data['id']);
+    }
+
     public function testRegistrationCheck() 
     {
         $login = 'logi58n';
@@ -45,6 +61,16 @@ class AuthorizationTest extends TestCase
         $confirmPassword = '123456';
 
         $result = Authorization::registrationCheck($login, $password, $confirmPassword);
+
+        $this->assertEquals(true, $result);
+    }
+    
+    public function testAuthCheck() 
+    {
+        $login = 'logsin';
+        $password = '123456';
+
+        $result = Authorization::authCheck($login, $password);
 
         $this->assertEquals(true, $result);
     }
