@@ -1,12 +1,9 @@
 <?php
-require_once 'classes.php';
 
+//require_once 'classes.php';
 //session_start();
 
-$base = new Base();
-$test = $base->getOne('users', $login, 'login');
-if (!empty($test)) {
-    echo 'Не пустой';
-} else {
-    echo 'пустой';
-}
+// $base = new Base();
+// $test = $base->getOne('users', $login, 'login');
+
+echo modules\classes\AuthMiddleware::authenticateMiddleware($_SERVER['REQUEST_URI']);

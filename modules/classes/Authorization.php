@@ -1,4 +1,5 @@
 <?php
+namespace Authorization;
 
 require_once 'classes.php';
 

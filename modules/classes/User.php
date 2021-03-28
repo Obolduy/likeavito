@@ -24,6 +24,7 @@ class User implements UserInterface
         // Заменить на join
     }
 
+    /*
     public function getUserTable($user_id)
     {
         $user = $this->base->getOne('users', $user_id);
@@ -38,6 +39,7 @@ class User implements UserInterface
 
         return $content;
     }
+    */
 
     /**
 	 * Change user`s data by himself
@@ -53,9 +55,9 @@ class User implements UserInterface
     {
         $check = $this->changeCheck(strip_tags($login), strip_tags($password), strip_tags($confirmPassword), $this->data['login']);
 
-        $cryptpassword = password_hash(strip_tags($password), PASSWORD_DEFAULT);
-
         if ($check == true) {
+            $cryptpassword = password_hash(strip_tags($password), PASSWORD_DEFAULT);
+            
             $data = [strip_tags($login), $cryptpassword, strip_tags($name), $user_id];
 
             $base = new Base();
