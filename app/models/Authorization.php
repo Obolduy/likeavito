@@ -5,7 +5,7 @@ require_once 'User.php';
 
 class Authorization
 {   
-    public static function registration(): void
+    public static function regUser(): void
     {
         $login = strip_tags($_POST['login']);
         $email = strip_tags($_POST['email']);
@@ -43,10 +43,6 @@ class Authorization
 
     public static function logIn(): void
     {
-        if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-            include_once 'login.php';
-        }
-
         $login = strip_tags($_POST['login']);
         $password = strip_tags($_POST['password']);
 

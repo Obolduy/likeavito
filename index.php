@@ -1,21 +1,23 @@
 <?php
 //error_reporting(E_ALL);
 //ini_set('display_errors', 1);
-require_once 'classes.php';
+// require_once 'classes.php';
 
 session_start();
 
-$pageTitle = 'Главная страница';
+var_dump($_SESSION['user']);
 
-$lots = new Lots();
+// $pageTitle = 'Главная страница';
 
-$content = $lots->showAllLots();
+// $lots = new Lots();
 
-if (!empty($_GET['tag'])) {
-    $tag = $_GET['tag'];
+// $content = $lots->showAllLots();
 
-    $content = $lots->showTag($tag);
-}
+// if (!empty($_GET['tag'])) {
+//     $tag = $_GET['tag'];
 
-include 'layout.php';
+//     $content = $lots->showTag($tag);
+// }
+
+// include 'layout.php';
 ?>

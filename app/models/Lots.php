@@ -2,7 +2,7 @@
 
 require_once 'classes.php';
 
-class Lots implements LotsInterface
+class Lots
 {    
     public function newLot(): void
     {
@@ -12,10 +12,6 @@ class Lots implements LotsInterface
         $photo = $_FILES['photos']['name'];
         $category_id = strip_tags($_POST['category_id']);
         $owner_id = $_SESSION['user_id'];
-
-        if (!is_numeric($price)) {
-            throw new Exception('Цена должна быть записана числом');
-        }
 
         $path = 'img/';
 

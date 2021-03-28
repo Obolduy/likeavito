@@ -153,16 +153,14 @@ class Base
         $this->result = $this->db->prepare("INSERT INTO surnames SET surname = ?, user_id = ?");
         $this->result->execute([$surname, $user_id]);
 
-        $this->result = $this->db->query("SELECT id FROM names WHERE name = $name");
-        $data = $this->show($this->result);
+        $data = $this->getOne('names', $user_id, 'user_id');
         
         foreach ($data as $elem) {
             $this->updateQuery("UPDATE users SET name_id = ? WHERE id = ?", [$elem['id'], $user_id]);
         }
 
-        $this->result = $this->db->query("SELECT id FROM surnames WHERE surname = $surname");
-        $data = $this->show($this->result);
-        
+        $data = $this->getOne('surnames', $user_id, 'user_id');
+
         foreach ($data as $elem) {
             $this->updateQuery("UPDATE users SET surname_id = ? WHERE id = ?", [$elem['id'], $user_id]);
         }
@@ -181,18 +179,16 @@ class Base
 
     public function addLot(string $title, int $price, string $description, int $category_id, int $owner_id, string $photo = null): void
     {
-        $user = new User();
-
         $this->result = $this->db->prepare("INSERT INTO lots SET owner_id = ?', category_id = ?, title = ?, price = ?, 
             description = ?, photo = ?, add_time = NOW(), update_time = NOW()");
-        $this->result->execute(User::data['login'], $category_id, $title, $price, $description, $photo);
+        $this->result->execute([$_SESSION['user']['id'], $category_id, $title, $price, $description, $photo]);
     }
 
     public function updateLot(string $title, int $price, string $description, int $lot_id, string $photo = null): void
     {
         $this->result = $this->db->prepare("UPDATE lots SET title = ?, price = ?, description = ?, photo = ?, update_time = NOW()
             WHERE id = ?");
-        $this->result->execute($title, $price, $description, $photo, $lot_id);
+        $this->result->execute([$title, $price, $description, $photo, $lot_id]);
     }
 
     /* Change next two when you will remake views */
