@@ -1,16 +1,12 @@
 <?php
-namespace Authorization;
 
-require_once 'classes.php';
+require_once 'Base.php';
+require_once 'User.php';
 
 class Authorization
 {   
     public static function registration(): void
     {
-        if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-            include_once 'registration.php';
-        }
-
         $login = strip_tags($_POST['login']);
         $email = strip_tags($_POST['email']);
         $password = strip_tags($_POST['password']);

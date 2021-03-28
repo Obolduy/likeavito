@@ -1,4 +1,5 @@
 RewriteEngine On
 RewriteBase /
 
+#RewriteRule test test.php
 #RewriteRule test.php index.php

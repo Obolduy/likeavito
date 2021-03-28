@@ -1,9 +1,9 @@
 <?php
 
-//require_once 'classes.php';
+require_once 'app/controllers/RegistrationController.php';
 //session_start();
 
 // $base = new Base();
 // $test = $base->getOne('users', $login, 'login');
 
-echo modules\classes\AuthMiddleware::authenticateMiddleware($_SERVER['REQUEST_URI']);
+RegistrationController::reg();
