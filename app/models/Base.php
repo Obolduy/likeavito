@@ -177,18 +177,31 @@ class Base
 	 * @return void
 	 */
 
-    public function addLot(string $title, int $price, string $description, int $category_id, int $owner_id, string $photo = null): void
+    public function addLot(string $title, int $price, string $description, int $category_id, int $owner_id): void
     {
         $this->result = $this->db->prepare("INSERT INTO lots SET owner_id = ?', category_id = ?, title = ?, price = ?, 
-            description = ?, photo = ?, add_time = NOW(), update_time = NOW()");
-        $this->result->execute([$_SESSION['user']['id'], $category_id, $title, $price, $description, $photo]);
+            description = ?, add_time = NOW(), update_time = NOW()");
+        $this->result->execute([$_SESSION['user']['id'], $category_id, $title, $price, $description]);
     }
 
-    public function updateLot(string $title, int $price, string $description, int $lot_id, string $photo = null): void
+    public function updateLot(string $title, int $price, string $description, int $lot_id): void
     {
-        $this->result = $this->db->prepare("UPDATE lots SET title = ?, price = ?, description = ?, photo = ?, update_time = NOW()
+        $this->result = $this->db->prepare("UPDATE lots SET title = ?, price = ?, description = ?, update_time = NOW()
             WHERE id = ?");
         $this->result->execute([$title, $price, $description, $photo, $lot_id]);
+    }
+
+    /**
+	 * Adding lot`s pictures (if they are exists).
+	 * @param string hashed name of picture
+     * @param int lot id
+	 * @return void
+	 */
+
+    public function addLotPictures(string $picture, int $id): void
+    {
+        $this->result = $this->db->prepare("INSERT INTO lots_pictures SET lot_id = ?, picture = ?");
+        $this->result->execute([$id, $picture]);
     }
 
     /* Change next two when you will remake views */

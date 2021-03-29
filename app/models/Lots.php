@@ -3,46 +3,7 @@
 require_once 'classes.php';
 
 class Lots
-{    
-    public function newLot(): void
-    {
-        $title = strip_tags($_POST['title']);
-        $price = strip_tags($_POST['price']);
-        $description = strip_tags($_POST['description']);
-        $photo = $_FILES['photos']['name'];
-        $category_id = strip_tags($_POST['category_id']);
-        $owner_id = $_SESSION['user_id'];
-
-        $path = 'img/';
-
-        $base = new Base();
-        
-        foreach ($photo as $elem) {
-            $photos[] = $elem;
-            foreach ($_FILES['photos']['tmp_name'] as $dif) {
-                copy($dif, $path . $elem);
-            }
-        }
-        $photo = implode(',', $photos);
-        
-        //var_dump($photos);
-
-       // for ($i = 0; $i < count($_FILES['photos']['tmp_name']); $i++) {
-            //$photo .= preg_replace('#Array#', '', $_FILES['photos']['tmp_name'][$i]);
-            //copy($_FILES['photos']['tmp_name'], $path . $_FILES['photos']['name']);
-            //echo $_FILES['photos']['tmp_name'][$i];
-       // }
-        //$photo = preg_replace('#Array#', '', $photo);
-        //echo $photo;
-        //copy($_FILES['photos']['tmp_name'][0], $path . $_FILES['photos']['name']);
-
-        // НАДО ПОЛУЧИТЬ ПУТЬ ЗАХЕШИРОВАТЬ ЕГО И ПЕРЕДАТЬ В БД А ПОТОМ ЕЩЕ И ВЫВЕСТИ ЭТО КАК ТО
-        
-        $base->addLot($title, $price, $description, $photo, $category_id, $owner_id);
-
-        header('Location: index.php'); die();
-    }
-
+{
     public function getForm($lot_id)
     {
         $base = new Base();
