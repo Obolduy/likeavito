@@ -4,58 +4,6 @@ require_once 'classes.php';
 
 class Lots
 {
-    public function getForm($lot_id)
-    {
-        $base = new Base();
-
-        if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-            $lot = $base->getOne('lots', $lot_id);
-
-            foreach($lot as $elem) {
-                $title = $elem['title'];
-                $price = $elem['price'];
-                $description = $elem['description'];
-            }
-
-            include_once 'file with this form';
-
-            $content = "<br><form method=POST>
-            <input type=\"text\" name=\"title\" value=\"{$lot['title']}\"><br><br>
-            <input type=\"text\" name=\"price\" value=\"{$lot['price']}\"><br><br>
-            <textarea name=\"description\" placeholder=\"type text\">{$lot['description']}</textarea><br><br>
-            <input name=\"delete\" type=\"checkbox\" value=\"1\"> Удалить <br><br>
-            <input type=\"submit\" name=\"submit\">
-            </form>";
-
-            return $content;
-        }
-    }
-
-    public function changeLot(string $title, int $price, string $description, string $photo, int $lot_id)
-    {        
-        if (!is_numeric(strip_tags($price))) {
-            throw new Exception('Цена должна быть записана числом');
-        }
-
-        $base = new Base();
-
-        if ($photo) {
-            $base->updateLot(strip_tags($title), strip_tags($price), strip_tags($description), $lot_id, strip_tags($photo));
-        } else {
-            $base->updateLot(strip_tags($title), strip_tags($price), strip_tags($description), $lot_id);
-        }
-
-        return 'Лот изменен успешно';
-    }
-
-    public function deleteLot(int $lot_id): void
-    {
-        $base = new Base();
-
-        $base->delete('lots', $lot_id);
-
-        //echo 'Лот успешно удален';
-    }
 
     public function showLot(int $id)
     {
