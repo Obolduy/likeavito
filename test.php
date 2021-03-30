@@ -3,7 +3,7 @@
 require_once 'app/models/Base.php';
 //session_start();
 
-// $base = new Base();
+$base = new Base();
 
 // $rand = rand();
 // mkdir("img/lots/$rand");
@@ -20,9 +20,12 @@ require_once 'app/models/Base.php';
 // preg_match_all('#\.[A-Za-z0-9]{3,4}$#', $test, $match);
 
 // var_dump($match);
-?>
 
-<form method="post" enctype="multipart/form-data">
-    <p>Фото: <input type="file" accept="image/*" name="photos[]" multiple></p>
-    <p><input type="submit" name="submit" value="Добавить объявление"></p>
-</form>
+// echo $_SERVER['REQUEST_URI'] . '<br>';
+// preg_match_all('#[A-Za-z0-9_-]+#', $_SERVER['REQUEST_URI'], $matches);
+
+// чтоб в ключи массива записывал те перед которыми есть :
+
+// for ($i = 0; $i <= (count($matches) + 1); $i++) {
+//     echo $matches[0][$i]. '<br>';
+// }

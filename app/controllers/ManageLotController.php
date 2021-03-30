@@ -25,6 +25,7 @@ class ManageLotController
                 $price = $elem['price'];
                 $description = $elem['description'];
             }
+            
             include_once 'C:\OpenServer\domains\likeavito\changelot.php';
         } else {
             if (!is_numeric(strip_tags($_POST['price']))) {

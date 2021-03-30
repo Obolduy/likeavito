@@ -1,11 +1,11 @@
 <?php
+spl_autoload_register();
 //error_reporting(E_ALL);
 //ini_set('display_errors', 1);
-// require_once 'classes.php';
 
-session_start();
+// session_start();
 
-var_dump($_SESSION['user']);
+// var_dump($_SESSION['user']);
 
 // $pageTitle = 'Главная страница';
 
@@ -20,4 +20,10 @@ var_dump($_SESSION['user']);
 // }
 
 // include 'layout.php';
+
+//$uri = $_SERVER['REQUEST_URI'];
+require 'app/models/router.php';
+
+$routes = require 'app/models/routes.php';
+echo ( new Router )->checkRoute($routes);
 ?>
