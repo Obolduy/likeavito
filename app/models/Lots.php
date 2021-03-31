@@ -1,6 +1,5 @@
 <?php
-
-require_once 'classes.php';
+namespace App\Models;
 
 class Lots
 {

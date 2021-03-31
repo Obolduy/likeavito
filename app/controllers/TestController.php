@@ -1,8 +1,9 @@
 <?php
+namespace App\Controllers;
 
 class TestController
 {
-    public function testFunc()
+    public static function testFunc()
     {
         return 'dmdmgdgmdfm';
     }

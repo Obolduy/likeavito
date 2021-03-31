@@ -1,7 +1,5 @@
 <?php
-
-require 'C:\OpenServer\domains\likeavito\app\models\Base.php';
-require 'C:\OpenServer\domains\likeavito\app\models\User.php';
+namespace App\Controllers;
 
 class RegistrationController
 {   

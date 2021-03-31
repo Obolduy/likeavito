@@ -1,6 +1,5 @@
 <?php
-
-require 'C:\OpenServer\domains\likeavito\app\models\Base.php';
+namespace App\Controllers;;
 
 class ManageLotController
 {   

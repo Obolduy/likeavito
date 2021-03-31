@@ -1,5 +1,5 @@
 <?php
-//require_once 'classes.php';
+namespace App\Middlewares;
 
 class AuthMiddleware
 {    
