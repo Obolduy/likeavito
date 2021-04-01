@@ -1,8 +1,12 @@
 <?php
 namespace App\Models;
 
-class Lots
+class Lots extends Model
 {
+    public function __construct()
+    {
+        $this->db = self::connection();
+    }
 
     public function showLot(int $id)
     {
@@ -83,5 +87,25 @@ class Lots
             }
         $content .= '</table>';
         return $content;
+    }
+
+    public function selectQuery(string $query): array
+    {
+        $this->result = $this->db->query("$query");
+
+        return $this->show($this->result);
+    }
+
+    /**
+	 * Returning the PDO fetch.
+	 * @param array PDOObject with data
+	 * @return array
+	 */
+
+    public function show(\PDOStatement $fetch): array
+    {
+        for ($data = []; $row = $fetch->fetch(); $data[] = $row);
+
+        return $data;
     }
 }

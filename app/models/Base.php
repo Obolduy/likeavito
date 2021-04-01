@@ -9,7 +9,7 @@ class Base
     public function __construct()
     {
         try {
-            $this->db = new PDO('mysql:host=localhost;dbname=marketplace', 'root', 'root');
+            $this->db = new \PDO('mysql:host=localhost;dbname=marketplace', 'root', 'root');
         } catch (PDOException $e) {
             echo 'Ошибка: ' . $e->getMessage();
             die();

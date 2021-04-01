@@ -1,14 +1,14 @@
 <?php
 namespace App\Models;
 
-class User
+class User extends Model
 {
     public $data = [];
 
     public function __construct(int $id)
     {
-        $base = new Base();
-
+        $this->db = self::connection();
+        
         $info = $base->getOne('users', $id);
 
         foreach ($info as $elem) {
