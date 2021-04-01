@@ -8,6 +8,45 @@ class Lots extends Model
         $this->db = self::connection();
     }
 
+    /**
+	 * Adding new lot into db
+	 * @param string title
+     * @param int price
+     * @param string description
+     * @param string filename of lot picture or NULL
+     * @param int lot`s category id
+     * @param int user`s id
+	 * @return void
+	 */
+
+    public function addLot(string $title, int $price, string $description, int $category_id, int $owner_id): void
+    {
+        $query = $this->db->prepare("INSERT INTO lots SET owner_id = ?', category_id = ?, title = ?, price = ?, 
+            description = ?, add_time = NOW(), update_time = NOW()");
+        $query->execute([$_SESSION['user']['id'], $category_id, $title, $price, $description]);
+    }
+
+    public function updateLot(string $title, int $price, string $description, int $lot_id): void
+    {
+        $query = $this->db->prepare("UPDATE lots SET title = ?, price = ?, description = ?, update_time = NOW()
+            WHERE id = ?");
+        $query->execute([$title, $price, $description, $photo, $lot_id]);
+    }
+
+    /**
+	 * Adding lot`s pictures (if they are exists).
+	 * @param string hashed name of picture
+     * @param int lot id
+	 * @return void
+	 */
+
+    public function addLotPictures(string $picture, int $id): void
+    {
+        $query = $this->db->prepare("INSERT INTO lots_pictures SET lot_id = ?, picture = ?");
+        $query->execute([$id, $picture]);
+    }
+
+
     public function showLot(int $id)
     {
         $one = $this->base->getOne('lots', $id, 'id');
@@ -87,25 +126,5 @@ class Lots extends Model
             }
         $content .= '</table>';
         return $content;
-    }
-
-    public function selectQuery(string $query): array
-    {
-        $this->result = $this->db->query("$query");
-
-        return $this->show($this->result);
-    }
-
-    /**
-	 * Returning the PDO fetch.
-	 * @param array PDOObject with data
-	 * @return array
-	 */
-
-    public function show(\PDOStatement $fetch): array
-    {
-        for ($data = []; $row = $fetch->fetch(); $data[] = $row);
-
-        return $data;
     }
 }

@@ -9,7 +9,7 @@ class User extends Model
     {
         $this->db = self::connection();
         
-        $info = $base->getOne('users', $id);
+        $info = $this->db->getOne('users', $id);
 
         foreach ($info as $elem) {
             $this->data = ['id' => $elem['id'], 'login' => $elem['login'],
@@ -21,6 +21,51 @@ class User extends Model
         }
 
         // Заменить на join
+    }
+
+        /**
+	 * Adding new user into db
+	 * @param string login
+     * @param string hashed password
+     * @param string name
+     * @param int user`s city id
+	 * @return void
+	 */
+
+    public function addUser(string $login, string $password, string $email, int $city_id): void
+    {
+        $query = $this->db->prepare("INSERT INTO users SET email = ?, password = ?, city_id = ?, status_id = 1,
+            ban_status = 0, active = 0, registration_time = NOW(), login = ?");
+        $query->execute([$email, $password, $city_id, $login]);
+    }
+
+    /**
+	 * Adding data into names\surnames tables and updating users table
+	 * @param string name
+     * @param string surnames
+     * @param int user`s id
+	 * @return void
+	 */
+
+    public function addUserInfo(string $name, string $surname, int $user_id): void
+    {
+        $query = $this->db->prepare("INSERT INTO names SET name = ?, user_id = ?");
+        $query->execute([$name, $user_id]);
+
+        $query = $this->db->prepare("INSERT INTO surnames SET surname = ?, user_id = ?");
+        $query->execute([$surname, $user_id]);
+
+        $data = $this->getOne('names', $user_id, 'user_id');
+        
+        foreach ($data as $elem) {
+            $this->updateQuery("UPDATE users SET name_id = ? WHERE id = ?", [$elem['id'], $user_id]);
+        }
+
+        $data = $this->getOne('surnames', $user_id, 'user_id');
+
+        foreach ($data as $elem) {
+            $this->updateQuery("UPDATE users SET surname_id = ? WHERE id = ?", [$elem['id'], $user_id]);
+        }
     }
 
     /*
