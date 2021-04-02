@@ -48,7 +48,7 @@ class Model
         return $data;
     }
 
-    public function delete(string $table, int $chosen, string $column = 'id'): void
+    public function delete(string $table, $chosen, string $column = 'id'): void
     {
         $this->result = $this->db->prepare("DELETE FROM $table WHERE $column = ?");
         $this->result->execute([$chosen]);

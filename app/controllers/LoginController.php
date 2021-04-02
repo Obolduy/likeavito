@@ -1,5 +1,6 @@
 <?php
 namespace App\Controllers;
+use App\Models\User;
 
 class LoginController
 {   
@@ -11,51 +12,23 @@ class LoginController
             $login = strip_tags($_POST['login']);
             $password = strip_tags($_POST['password']);
 
-            $check = self::authCheck($login, $password);
+            $check = User::authCheck($login, $password);
 
             if ($check == true) {
                 session_start();
                 $_SESSION['userauth'] = true;
 
-                $base = new Base();
+                $user = new User();
 
                 $user_info = $base->getOne('users', $login, 'login');
 
                 foreach($user_info as $elem) {
-                    $user = new User($elem['id']);
+                    $user->setData($elem['id']);
 
                     $_SESSION['user'] = $user->data;
                 }
                 
                 header('Location: index.php'); die();
-            }
-        }
-    }
-
-    /**
-	 * Validate login and password
-	 * @param string login
-     * @param string non-hashed password
-	 * @return bool
-	 */
-
-    protected static function authCheck(string $login, string $password): bool
-    {
-        $base = new Base();
-
-        $check = $base->getOne('users', $login, 'login');
-
-        if (!empty($check)) {
-            $user = $base->selectQuery("SELECT * FROM users WHERE login = '$login'");
-
-            foreach($user as $elem) {
-                $checkpassword = password_verify($password, $elem['password']);
-            }
-
-            if (!empty($user) and $checkpassword == true) {
-                return true;
-            } else {
-                echo 'Неправильный логин или пароль';
             }
         }
     }

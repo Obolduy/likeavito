@@ -9,6 +9,19 @@ class Lots extends Model
     }
 
     /**
+	 * Select lot`s id by user`s id
+     * @param int user (owner) id
+	 * @return array
+	 */
+
+    public function selectLotId(int $owner_id)
+    {
+        $query = $this->db->query("SELECT id FROM lots WHERE owner_id = $owner_id ORDER BY id DESC");
+
+        return $this->show($query);
+    }
+
+    /**
 	 * Adding new lot into db
 	 * @param string title
      * @param int price

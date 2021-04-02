@@ -1,21 +1,12 @@
 <?php
-namespace App\Controllers;;
+namespace App\Controllers;
+use App\Models\Lots;
 
-class ManageLotController
+class ChangeLotController
 {   
-    public function deleteLot(int $lot_id): void
-    {
-        $base = new Base();
-        
-        $base->delete('lots_pictures', $lot_id, 'lot_id');
-        $base->delete('lots', $lot_id);
-
-        rmdir("img/lots/$lot_id");
-    }
-
     public function changeLot(int $lot_id): void
     {
-        $base = new Base();
+        $base = new Lots();
         $lot = $base->getOne('lots', $lot_id);
 
         if ($_SERVER['REQUEST_METHOD'] == 'GET') {

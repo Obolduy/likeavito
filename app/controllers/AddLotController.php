@@ -1,5 +1,6 @@
 <?php
 namespace App\Controllers;
+use App\Models\Lots;
 
 class AddLotController
 {   
@@ -19,11 +20,11 @@ class AddLotController
             $category_id = strip_tags($_POST['category_id']);
             $owner_id = $_SESSION['user']['id'];
 
-            $base = new Base();
+            $base = new Lots();
             $base->addLot($title, $price, $description, $category_id, $owner_id);
 
             if ($photo) {
-                $lot = $base->selectQuery("SELECT id FROM lots WHERE owner_id = $owner_id ORDER BY id DESC");
+                $lot = $base->selectLotId($owner_id);
                 $id = $lot[0][0];
 
                 mkdir("img/lots/$id");
