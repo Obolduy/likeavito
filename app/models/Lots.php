@@ -89,16 +89,6 @@ class Lots extends Model
         return $lots;
     }
 
-    public function showAllLots()
-    {
-        $data = $this->base->getAll('lots')->showAll();
-        foreach ($data as $elem) {
-            $lots .= "<p><a href=\"lots.php?lot={$elem['id']}\">{$elem['title']}</a><br>{$elem['price']}<br>
-            <img src=\"img/{$elem['photo']}\" alt=\"Здесь должна быть картинка\" width=\"400\" height=\"360\"><br>{$elem['add_time']}<br><br></p>";
-        }
-        return $lots;
-    }
-
     public function showLots()
     {
         $data = $this->base->getWithout('jobs')->showAll();
