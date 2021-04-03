@@ -68,15 +68,9 @@ class Lots extends Model
 
     public function showLot(int $id)
     {
-        $one = $this->base->getOne('lots', $id, 'id');
-        $lots .= "
-            <h2><p>{$one['title']}</p></h2>
-            <h5><p>{$one['price']}₽</p></h5>
-            <p><img src=\"img/{$one['photo']}\" alt=\"Здесь должна быть картинка\" width=\"480\" height=\"480\"></p>
-            <h4><p>{$one['description']}</p></h4>
-            <p><a href=\"/index.php?tag={$one['name']}\">{$one['name']}</a></p>
-            <h6>Добавлено: <p>{$one['add_time']}</p></h6>";
-        return $lots;
+        $lot = $this->db->getOne('lots', $id);
+
+        return $lot;
     }
 
     public function showTag($tag)
