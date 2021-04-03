@@ -17,48 +17,6 @@ class Base
     }
 
     /**
-	 * Taking non fiction select query and returning the PDO fetch.
-	 * @param string SQL query
-	 * @return array
-	 */
-
-    public function selectQuery(string $query): array
-    {
-        $this->result = $this->db->query("$query");
-
-        return $this->show($this->result);
-    }
-
-    /**
-	 * Taking non fiction update query and array with query values. Then it makes a query and returns void.
-	 * @param string SQL query
-	 * @return array
-	 */
-
-    public function updateQuery(string $query, array $data): void
-    {
-        $this->result = $this->db->prepare("$query");
-        $this->result->execute($data);
-    }
-
-    /**
-	 * Getting all DB matches (query SELECT). Returning the PDO fetch.
-	 * @param string required DB table
-	 * @return array
-	 */
-
-    public function getAll(string $table): array
-    {
-        if ($table == 'lots') {
-            $this->result = $this->db->query("SELECT * FROM $table ORDER BY update_time DESC");
-        } else {
-            $this->result = $this->db->query("SELECT * FROM $table ORDER BY id DESC");
-        }
-
-        return $this->show($this->result);
-    }
-
-    /**
 	 * Getting required lot`s tag (query SELECT, JOIN). Returning the PDO fetch.
 	 * @param string <- WHERE lots_category.name =
 	 * @return array

@@ -69,6 +69,12 @@ class User extends Model
         }
     }
 
+    public function updateUser(string $query, array $data): void
+    {
+        $query = $this->db->prepare("$query");
+        $query->execute($data);
+    }
+
     /*
     public function getUserTable($user_id)
     {
@@ -87,33 +93,6 @@ class User extends Model
     */
 
     /**
-	 * Change user`s data by himself
-	 * @param string new login
-     * @param string new non-hashed password
-     * @param string non-hashed password confirm
-     * @param string new name
-     * @param int user id
-	 * @return boolean
-	 */
-
-    public function changeInformation(string $login, string $password, string $confirmPassword, string $name, int $user_id)
-    {
-        $check = $this->changeCheck(strip_tags($login), strip_tags($password), strip_tags($confirmPassword), $this->data['login']);
-
-        if ($check == true) {
-            $cryptpassword = password_hash(strip_tags($password), PASSWORD_DEFAULT);
-            
-            $data = [strip_tags($login), $cryptpassword, strip_tags($name), $user_id];
-
-            $base = new Base();
-    
-            $base->updateQuery("UPDATE users SET login = ?, password = ?, name = ?, update_time = now() WHERE id = ?", $data);
-    
-            return 'Информация успешно изменена';
-        }
-    }
-
-    /**
 	 * Validate login and password
 	 * @param string new login
      * @param string new non-hashed password
@@ -122,13 +101,13 @@ class User extends Model
 	 * @return boolean
 	 */
 
-    public function changeCheck(string $login, string $password, string $confirmPassword, string $current_login): bool
+    public static function changeCheck(string $login, string $password, string $confirmPassword, string $current_login): bool
     {
         $emptyCheck = 0;
         $correctCheck = 0;
 
         if (!empty($login) and !empty($password)) {
-            $emptyCheck = $this->base->getOne('users', $login, 'login');
+            $emptyCheck = Model::getOne('users', $login, 'login');
 
             foreach($emptyCheck as $elem) {
                 if (!empty($emptyCheck) AND $elem['login'] != $current_login) {
