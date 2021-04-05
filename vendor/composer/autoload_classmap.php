@@ -6,14 +6,21 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'App\\Controllers\\AddCommentController' => $baseDir . '/App/Controllers/AddCommentController.php',
     'App\\Controllers\\AddLotController' => $baseDir . '/App/Controllers/AddLotController.php',
+    'App\\Controllers\\ChangeLotController' => $baseDir . '/App/Controllers/ChangeLotController.php',
+    'App\\Controllers\\ChangeUserController' => $baseDir . '/App/Controllers/ChangeUserController.php',
+    'App\\Controllers\\DeleteLotController' => $baseDir . '/App/Controllers/DeleteLotController.php',
     'App\\Controllers\\LoginController' => $baseDir . '/App/Controllers/LoginController.php',
-    'App\\Controllers\\ManageLotController' => $baseDir . '/App/Controllers/ManageLotController.php',
+    'App\\Controllers\\MainPageController' => $baseDir . '/App/Controllers/MainPageController.php',
     'App\\Controllers\\RegistrationController' => $baseDir . '/App/Controllers/RegistrationController.php',
+    'App\\Controllers\\ShowLotController' => $baseDir . '/App/Controllers/ShowLotController.php',
     'App\\Controllers\\TestController' => $baseDir . '/App/Controllers/TestController.php',
     'App\\Middlewares\\AuthMiddleware' => $baseDir . '/App/Middlewares/AuthMiddleware.php',
     'App\\Models\\Base' => $baseDir . '/App/Models/Base.php',
+    'App\\Models\\Comments' => $baseDir . '/App/Models/Comments.php',
     'App\\Models\\Lots' => $baseDir . '/App/Models/Lots.php',
+    'App\\Models\\Model' => $baseDir . '/App/Models/Model.php',
     'App\\Models\\User' => $baseDir . '/App/Models/User.php',
     'App\\Router\\Route' => $baseDir . '/App/Router/Route.php',
     'App\\Router\\Router' => $baseDir . '/App/Router/Router.php',

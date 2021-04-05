@@ -16,7 +16,7 @@ class ChangeLotController
                 $description = $elem['description'];
             }
             
-            include_once 'C:\OpenServer\domains\likeavito\changelot.php';
+            include_once $_SERVER['DOCUMENT_ROOT'] . '/App/Views/changelot.php';
         } else {
             if (!is_numeric(strip_tags($_POST['price']))) {
                 throw new Exception('Цена должна быть записана числом');

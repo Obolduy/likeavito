@@ -7,7 +7,7 @@ class AddLotController
     public function newLot(): void
     {
         if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-            include_once 'C:\OpenServer\domains\likeavito\addlot.php';
+            include_once $_SERVER['DOCUMENT_ROOT'] . '/App/Views/addlot.php';
         } else {
             if (!is_numeric($_POST['price'])) {
                 throw new Exception('Цена должна быть записана числом');

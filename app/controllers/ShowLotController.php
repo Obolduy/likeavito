@@ -2,12 +2,12 @@
 namespace App\Controllers;
 use App\Models\Lots;
 
-class MainPageController
+class ShowLotController
 {   
     public function showLot(int $id)
     {
         $lots = ( new Lots )->showLot($id);
 
-        include 'lot.php';
+        include_once $_SERVER['DOCUMENT_ROOT'] . '/App/Views/lot.php';
     }
 }

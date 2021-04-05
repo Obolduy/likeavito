@@ -10,6 +10,7 @@ class ComposerStaticInit90a52acc7e118953688a90bee41268f4
         'ec07570ca5a812141189b1fa81503674' => __DIR__ . '/..' . '/phpunit/phpunit/src/Framework/Assert/Functions.php',
         '320cde22f66dd4f5d3fd621d3e88b98f' => __DIR__ . '/..' . '/symfony/polyfill-ctype/bootstrap.php',
         '6124b4c8570aa390c21fafd04a26c69f' => __DIR__ . '/..' . '/myclabs/deep-copy/src/DeepCopy/deep_copy.php',
+        'cfe4039aa2a78ca88e07dadb7b1c6126' => __DIR__ . '/../..' . '/config.php',
     );
 
     public static $prefixLengthsPsr4 = array (
@@ -79,14 +80,21 @@ class ComposerStaticInit90a52acc7e118953688a90bee41268f4
     );
 
     public static $classMap = array (
+        'App\\Controllers\\AddCommentController' => __DIR__ . '/../..' . '/App/Controllers/AddCommentController.php',
         'App\\Controllers\\AddLotController' => __DIR__ . '/../..' . '/App/Controllers/AddLotController.php',
+        'App\\Controllers\\ChangeLotController' => __DIR__ . '/../..' . '/App/Controllers/ChangeLotController.php',
+        'App\\Controllers\\ChangeUserController' => __DIR__ . '/../..' . '/App/Controllers/ChangeUserController.php',
+        'App\\Controllers\\DeleteLotController' => __DIR__ . '/../..' . '/App/Controllers/DeleteLotController.php',
         'App\\Controllers\\LoginController' => __DIR__ . '/../..' . '/App/Controllers/LoginController.php',
-        'App\\Controllers\\ManageLotController' => __DIR__ . '/../..' . '/App/Controllers/ManageLotController.php',
+        'App\\Controllers\\MainPageController' => __DIR__ . '/../..' . '/App/Controllers/MainPageController.php',
         'App\\Controllers\\RegistrationController' => __DIR__ . '/../..' . '/App/Controllers/RegistrationController.php',
+        'App\\Controllers\\ShowLotController' => __DIR__ . '/../..' . '/App/Controllers/ShowLotController.php',
         'App\\Controllers\\TestController' => __DIR__ . '/../..' . '/App/Controllers/TestController.php',
         'App\\Middlewares\\AuthMiddleware' => __DIR__ . '/../..' . '/App/Middlewares/AuthMiddleware.php',
         'App\\Models\\Base' => __DIR__ . '/../..' . '/App/Models/Base.php',
+        'App\\Models\\Comments' => __DIR__ . '/../..' . '/App/Models/Comments.php',
         'App\\Models\\Lots' => __DIR__ . '/../..' . '/App/Models/Lots.php',
+        'App\\Models\\Model' => __DIR__ . '/../..' . '/App/Models/Model.php',
         'App\\Models\\User' => __DIR__ . '/../..' . '/App/Models/User.php',
         'App\\Router\\Route' => __DIR__ . '/../..' . '/App/Router/Route.php',
         'App\\Router\\Router' => __DIR__ . '/../..' . '/App/Router/Router.php',

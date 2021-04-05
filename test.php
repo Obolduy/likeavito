@@ -1,9 +1,8 @@
 <?php
-
-require_once 'app/models/Base.php';
+require_once 'config.php';
 //session_start();
-
-$base = new Base();
+$email = 'testmail';
+echo EMAIL_MESSAGE;
 
 // $rand = rand();
 // mkdir("img/lots/$rand");

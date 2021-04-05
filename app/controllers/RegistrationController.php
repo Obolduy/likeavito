@@ -7,7 +7,7 @@ class RegistrationController
     public static function registration()
     {
         if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-            include_once 'C:\OpenServer\domains\likeavito\registration.php';
+            include_once $_SERVER['DOCUMENT_ROOT'] . '/App/Views/registration.php';
         } else {
             $login = strip_tags($_POST['login']);
             $email = strip_tags($_POST['email']);
@@ -38,8 +38,18 @@ class RegistrationController
                     $_SESSION['user'] = $user->data;
                 }
 
+                $user->sendEmail($email);
+                
                 header('Location: index.php'); die();       
             }
+        }
+    }
+
+    public static function verifyEmail()
+    {
+        if ($_SESSION['user']['updated_at'] != null) {
+            ( new User )->verifycationEmail();
+            include_once $_SERVER['DOCUMENT_ROOT'] . '/App/Views/emailconfirm.php';
         }
     }
 }

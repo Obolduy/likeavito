@@ -75,6 +75,29 @@ class User extends Model
         $query->execute($data);
     }
 
+    public function sendEmail(string $email): void
+    {
+        $link = hash($email . time());
+
+        mail("<$email>", 'Закончите Вашу регистрацию', EMAIL_MESSAGE_START . $link . EMAIL_MESSAGE_END, implode("\r\n", EMAIL_HEADERS));
+    }
+
+    public function verifycationEmail(): void
+    {
+        $query = $this->db->prepare("UPDATE users SET updated_at = ?, active = ? WHERE id = ?");
+        $query->execute([now(), 1, $_SESSION['user']['id']]);
+    }
+
+    public function setRememberToken(int $id): void
+    {
+        $remember_token = hash(rand() . time());
+
+        $query = $this->db->prepare("UPDATE users SET remember_token = ? WHERE id = ?");
+        $query->execute([$remember_token, $id]);
+
+        setcookie('remember_token', $remember_token);
+    }
+
     /*
     public function getUserTable($user_id)
     {

@@ -8,6 +8,6 @@ class MainPageController
     {
         $lots = ( new Lots )->getAllLots();
 
-        include 'mainpage.php';
+        include_once $_SERVER['DOCUMENT_ROOT'] . '/App/Views/mainpage.php';
     }
 }

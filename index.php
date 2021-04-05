@@ -12,5 +12,5 @@ require_once 'vendor/autoload.php';
 // echo $test[1];
 // var_dump($test);
 $routes = require 'App/routes.php';
-//echo ( new Router )->checkRoute($routes); //
+echo ( new Router )->checkRoute($routes); //
 ?>
