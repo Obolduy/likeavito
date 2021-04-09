@@ -47,9 +47,14 @@ class RegistrationController
 
     public static function verifyEmail()
     {
-        if ($_SESSION['user']['updated_at'] != null) {
+        if ($_SESSION['user']['updated_at'] === null && $_SESSION['user']['active'] === 0) {
             ( new User )->verifycationEmail();
             include_once $_SERVER['DOCUMENT_ROOT'] . '/App/Views/emailconfirm.php';
         }
+    }
+
+    public static function testсont($textinskobka, $newtext)
+    {
+        echo $textinskobka . $newtext;
     }
 }

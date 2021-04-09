@@ -8,14 +8,8 @@ class Route
 
     public function __construct($uri, $callable)
     {
-        // доделать
-        // $match = '';
-        // if (preg_match('#%7B(.+)%7D#', $uri, $test)) {
-        //     preg_replace()
-        //     $this->uri = $match[1];
-        // } else {
-            $this->uri = $uri;
-        // }
+        $this->uri = $uri;
+
         $this->callable = $callable;
     }
 

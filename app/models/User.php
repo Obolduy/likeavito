@@ -12,7 +12,7 @@ class User extends Model
 
     public function setData(int $id): void
     {
-        $info = $this->db->getOne('users', $id);
+        $info = $this->getOne('users', $id);
 
         foreach ($info as $elem) {
             $this->data = ['id' => $elem['id'], 'login' => $elem['login'],
@@ -59,13 +59,13 @@ class User extends Model
         $data = $this->getOne('names', $user_id, 'user_id');
         
         foreach ($data as $elem) {
-            $this->updateQuery("UPDATE users SET name_id = ? WHERE id = ?", [$elem['id'], $user_id]);
+            $this->updateUser("UPDATE users SET name_id = ? WHERE id = ?", [$elem['id'], $user_id]);
         }
 
         $data = $this->getOne('surnames', $user_id, 'user_id');
 
         foreach ($data as $elem) {
-            $this->updateQuery("UPDATE users SET surname_id = ? WHERE id = ?", [$elem['id'], $user_id]);
+            $this->updateUser("UPDATE users SET surname_id = ? WHERE id = ?", [$elem['id'], $user_id]);
         }
     }
 
@@ -77,7 +77,7 @@ class User extends Model
 
     public function sendEmail(string $email): void
     {
-        $link = hash($email . time());
+        $link = md5($email . time());
 
         mail("<$email>", 'Закончите Вашу регистрацию', EMAIL_MESSAGE_START . $link . EMAIL_MESSAGE_END, implode("\r\n", EMAIL_HEADERS));
     }
@@ -86,6 +86,8 @@ class User extends Model
     {
         $query = $this->db->prepare("UPDATE users SET updated_at = ?, active = ? WHERE id = ?");
         $query->execute([now(), 1, $_SESSION['user']['id']]);
+
+        $this->data['active'] = 1;
     }
 
     public function setRememberToken(int $id): void
@@ -168,7 +170,7 @@ class User extends Model
         $emptyCheck = 0;
         $correctCheck = 0;
 
-        $base = Model::connection();
+        $base = new Model();
 
         if (!empty($login) and !empty($password)) {
             $emptyCheck = $base->getOne('users', $login, 'login');

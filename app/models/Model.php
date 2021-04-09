@@ -5,6 +5,16 @@ class Model
 {
     protected $db;
 
+    public function __construct()
+    {
+        try {
+            $this->db = new \PDO('mysql:host=localhost;dbname=marketplace', 'root', 'root');
+        } catch (PDOException $e) {
+            echo 'Ошибка: ' . $e->getMessage();
+            die();
+        }  
+    }
+
     public static function connection()
     {
         try {
