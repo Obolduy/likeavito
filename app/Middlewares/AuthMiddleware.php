@@ -1,7 +1,8 @@
 <?php
 namespace App\Middlewares;
+use App\Middlewares\IMiddleware;
 
-class Authmiddleware
+class Authmiddleware implements IMiddleware
 {    
     public function middleware($uri)
     {
