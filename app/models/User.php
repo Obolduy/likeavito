@@ -100,6 +100,13 @@ class User extends Model
         setcookie('remember_token', $remember_token);
     }
 
+    public static function showUser(int $id)
+    {
+        $user = (new Parent)->db->getOne('users', $id);
+
+        return $user;
+    }
+
     /*
     public function getUserTable($user_id)
     {

@@ -1,8 +1,9 @@
 <?php
 use App\Router\Route;
 use App\Controllers\{
-    MainPageController, ShowLotController, TestController, RegistrationController, LoginController,
-    DeleteLotController, ChangeLotController, ChangeUserController, AddLotController, AddCommentController};
+    MainPageController, ShowLotController, ShowUserController, RegistrationController, LoginController,
+    DeleteLotController, ChangeLotController, ChangeUserController, AddLotController, AddCommentController,
+    ShowOtherUserController};
 
 return [
     new Route('/test/uri', [TestController::class, 'testFunc']),
@@ -15,6 +16,8 @@ return [
     new Route('/managelot/{lot_id}/change', [ChangeLotController::class, 'changeLot'], 'authmiddleware'),
     new Route('/addlot', [AddLotController::class, 'newLot'], 'noauthmiddleware'),
     new Route('/category/{category_id}/{lot_id}/add_comment', [AddCommentController::class, 'addComment'], 'noauthmiddleware'),
+    new Route('/user', [ShowUserController::class, 'showuser'], 'authmiddleware'),
+    new Route('/user/{user_id}', [ShowOtherUserController::class, 'showotheruser']),
     new Route('/user/{user_id}/change', [ChangeUserController::class, 'changeInformation'], 'authmiddleware'),
     new Route('/index/df/{textinskobka}/{newtext}', [RegistrationController::class, 'testсont'], 'authmiddleware'),
 
