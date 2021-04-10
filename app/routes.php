@@ -10,6 +10,7 @@ return [
     new Route('/', [MainPageController::class, 'testFunc']),
     new Route('/registration', [RegistrationController::class, 'registration'], 'authmiddleware'),
     new Route('/login', [LoginController::class, 'login'], 'noauthmiddleware'),
+    new Route('/logout', [LoginController::class, 'logout']),
     new Route('/category/{category_id}', [MainPageController::class, 'showcategory']),
     new Route('/category/{category_id}/{lot_id}', [ShowLotController::class, 'showlot']),
     new Route('/managelot/{lot_id}/delete', [DeleteLotController::class, 'deleteLot'], 'authmiddleware'),

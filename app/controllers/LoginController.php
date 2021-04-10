@@ -37,4 +37,12 @@ class LoginController
             }
         }
     }
+
+    public static function logout(): void
+    {
+        session_destroy();
+        setcookie('remember_token', '', time());
+
+        header('Location: /');
+    }
 }
