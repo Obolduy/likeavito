@@ -1,6 +1,7 @@
 <?php
 namespace App\Controllers;
 use App\Models\Lots;
+use App\View\View;
 
 class ShowLotController
 {   
@@ -8,6 +9,6 @@ class ShowLotController
     {
         $lots = ( new Lots )->showLot($id);
 
-        include_once $_SERVER['DOCUMENT_ROOT'] . '/App/Views/lot.php';
+        (new View('lot'));
     }
 }

@@ -1,13 +1,14 @@
 <?php
 namespace App\Controllers;
 use App\Models\Lots;
+use App\View\View;
 
 class AddLotController
 {   
     public function newLot(): void
     {
         if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-            include_once $_SERVER['DOCUMENT_ROOT'] . '/App/Views/addlot.php';
+            (new View('addlot'));
         } else {
             if (!is_numeric($_POST['price'])) {
                 throw new Exception('Цена должна быть записана числом');

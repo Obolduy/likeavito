@@ -1,13 +1,14 @@
 <?php
 namespace App\Controllers;
 use App\Models\User;
+use App\View\View;
 
 class LoginController
 {   
     public static function login()
     {
         if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-            include_once $_SERVER['DOCUMENT_ROOT'] . '/App/Views/login.php';
+            (new View('login'));
         } else {
             $login = strip_tags($_POST['login']);
             $password = strip_tags($_POST['password']);

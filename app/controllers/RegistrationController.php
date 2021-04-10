@@ -1,13 +1,14 @@
 <?php
 namespace App\Controllers;
 use App\Models\User;
+use App\View\View;
 
 class RegistrationController
 {   
     public static function registration()
     {
         if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-            include_once $_SERVER['DOCUMENT_ROOT'] . '/App/Views/registration.php';
+            (new View('registration'));
         } else {
             $login = strip_tags($_POST['login']);
             $email = strip_tags($_POST['email']);

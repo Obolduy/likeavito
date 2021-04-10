@@ -1,6 +1,7 @@
 <?php
 namespace App\Controllers;
 use App\Models\Lots;
+use App\View\View;
 
 class MainPageController
 {   
@@ -8,6 +9,6 @@ class MainPageController
     {
         $lots = ( new Lots )->getAllLots();
 
-        include_once $_SERVER['DOCUMENT_ROOT'] . '/App/Views/mainpage.php';
+        (new View('main'));
     }
 }
