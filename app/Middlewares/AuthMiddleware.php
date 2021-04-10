@@ -1,9 +1,9 @@
 <?php
 namespace App\Middlewares;
 
-class AuthMiddleware
+class Authmiddleware
 {    
-    public static function authenticateMiddleware($uri)
+    public function middleware($uri)
     {
         if (!isset($_SESSION['user'])) {
             $data = ['/myads.php', '/add.php', '/myarea.php', '/logout.php'];

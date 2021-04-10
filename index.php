@@ -1,5 +1,6 @@
 <?php
 session_start();
+$_SESSION['check'] = false;
 
 require_once 'vendor/autoload.php';
 

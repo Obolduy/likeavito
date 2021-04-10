@@ -1,5 +1,6 @@
 <?php
 namespace App\Router;
+use App\Middlewares;
 
 class Router
 {
@@ -9,7 +10,14 @@ class Router
             $pregexp = '#^' . preg_replace('#/\{([^/]+)\}#', '/(?<$1>[^/]+)', $elem->uri) . '/?$#';
 
             if ($elem->uri === $_SERVER['REQUEST_URI']) {
-                return call_user_func($elem->callable);
+                if ($elem->middleware !== null) {
+                    if (class_exists($elem->middleware)) {
+                        $middleware = (new $elem->middleware)->middleware($this->uri);
+                    }
+                }
+                if ($middleware === true || !isset($middleware)) {
+                    return call_user_func($elem->callable);
+                }
             }
 
             if (preg_match($pregexp, $_SERVER['REQUEST_URI'], $params)) {
@@ -18,7 +26,15 @@ class Router
                         $param[] = $element;
                     }
                 }
-                return call_user_func_array($elem->callable, $param);
+                if ($elem->middleware !== null) {
+                    if (class_exists("App\Middlewares\\$elem->middleware")) {
+                        $middlewareClass = "App\Middlewares\\$elem->middleware";
+                        $middleware = (new $middlewareClass)->middleware($this->uri);
+                    }
+                }
+                if ($middleware === true || !isset($middleware)) {
+                    return call_user_func_array($elem->callable, $param);
+                }
             }
         }
     }
