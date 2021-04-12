@@ -212,20 +212,18 @@ class User extends Model
 	 * @return bool
 	 */
 
-    protected static function authCheck(string $login, string $password): bool
+    public static function authCheck(string $login, string $password)
     {
-        $base = Model::connection();
+        $base = new Model();
 
         $check = $base->getOne('users', $login, 'login');
 
         if (!empty($check)) {
-            $user = $base->selectQuery("SELECT * FROM users WHERE login = '$login'");
-
-            foreach($user as $elem) {
+            foreach ($check as $elem) {
                 $checkpassword = password_verify($password, $elem['password']);
             }
 
-            if (!empty($user) and $checkpassword == true) {
+            if ($checkpassword == true) {
                 return true;
             } else {
                 echo 'Неправильный логин или пароль';

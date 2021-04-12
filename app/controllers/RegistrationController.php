@@ -8,7 +8,7 @@ class RegistrationController
     public static function registration()
     {
         if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-            (new View('registration'));
+            new View('registration');
         } else {
             $login = strip_tags($_POST['login']);
             $email = strip_tags($_POST['email']);
@@ -21,7 +21,6 @@ class RegistrationController
             $check = User::registrationCheck($login, $password, $confirmPassword);
 
             if ($check == true) {
-                session_start();
                 $_SESSION['userauth'] = true;
 
                 $user = new User();
@@ -32,7 +31,7 @@ class RegistrationController
 
                 $user_info = $user->getOne('users', $email, 'email');
 
-                foreach($user_info as $elem) {
+                foreach ($user_info as $elem) {
                     $user->addUserInfo($name, $surname, $elem['id']);
                     $user->setData($elem['id']);
                     
@@ -46,10 +45,17 @@ class RegistrationController
         }
     }
 
-    public static function verifyEmail()
+    /**
+	 * Checking does user has non-confirmated account.
+     * If he is, it update DB(active status and update time) and return emailconfirm view.
+	 * @return void
+	 */
+
+    public static function verifyEmail(): void
     {
         if ($_SESSION['user']['updated_at'] === null && $_SESSION['user']['active'] === 0) {
             ( new User )->verifycationEmail();
+
             include_once $_SERVER['DOCUMENT_ROOT'] . '/App/Views/emailconfirm.php';
         }
     }

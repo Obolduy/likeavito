@@ -8,7 +8,7 @@ class LoginController
     public static function login()
     {
         if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-            (new View('login'));
+            new View('login');
         } else {
             $login = strip_tags($_POST['login']);
             $password = strip_tags($_POST['password']);
@@ -16,12 +16,11 @@ class LoginController
             $check = User::authCheck($login, $password);
 
             if ($check == true) {
-                session_start();
                 $_SESSION['userauth'] = true;
 
                 $user = new User();
 
-                $user_info = $base->getOne('users', $login, 'login');
+                $user_info = $user->getOne('users', $login, 'login');
 
                 foreach($user_info as $elem) {
                     $user->setData($elem['id']);
