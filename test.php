@@ -1,8 +1,10 @@
 <?php
-require_once 'config.php';
-//session_start();
-$email = 'testmail';
-echo EMAIL_MESSAGE;
+// require_once 'vendor/autoload.php';
+// use App\Models\Lots;
+// session_start();
+
+// $lot = new Lots();
+// echo $lot->addLot('dfdfd', 84, 'dfsdfdf', 1, 20);
 
 // $rand = rand();
 // mkdir("img/lots/$rand");

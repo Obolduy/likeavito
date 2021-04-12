@@ -7,8 +7,6 @@ use App\Controllers\LoginController;
 class LoginControllerTest extends TestCase
 {
     private $loginController;
-    private $user;
-    private $model;
 
     protected function setUp(): void 
     {
@@ -32,7 +30,6 @@ class LoginControllerTest extends TestCase
 
     protected function tearDown(): void
     {
-        $this->registrationController = NULL;
-        $this->user = NULL;
+        $this->loginController = NULL;
     }
 }

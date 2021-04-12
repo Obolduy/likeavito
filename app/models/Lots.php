@@ -34,9 +34,9 @@ class Lots extends Model
 
     public function addLot(string $title, int $price, string $description, int $category_id, int $owner_id): void
     {
-        $query = $this->db->prepare("INSERT INTO lots SET owner_id = ?', category_id = ?, title = ?, price = ?, 
+        $query = $this->db->prepare("INSERT INTO lots SET owner_id = ?, category_id = ?, title = ?, price = ?, 
             description = ?, add_time = NOW(), update_time = NOW()");
-        $query->execute([$_SESSION['user']['id'], $category_id, $title, $price, $description]);
+        $query->execute([$owner_id, $category_id, $title, $price, $description]);
     }
 
     public function updateLot(string $title, int $price, string $description, int $lot_id): void

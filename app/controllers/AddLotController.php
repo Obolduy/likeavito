@@ -8,7 +8,7 @@ class AddLotController
     public function newLot(): void
     {
         if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-            (new View('addlot'));
+            new View('addlot');
         } else {
             if (!is_numeric($_POST['price'])) {
                 throw new Exception('Цена должна быть записана числом');
