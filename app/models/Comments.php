@@ -8,10 +8,10 @@ class Comments extends Model
         $this->db = self::connection();
     }
 
-    public function newComment(int $user_id, int $lot_id, string $description): void
+    public function newComment(int $lot_id, int $user_id, string $description): void
     {
-        $query = $this->db->prepare("INSERT INTO comments SET user_id = ?', lot_id = ?,
+        $query = $this->db->prepare("INSERT INTO comments SET user_id = ?, lot_id = ?,
             description = ?, add_time = NOW(), update_time = NOW()");
-        $query->execute([$_SESSION['user']['id'], $lot_id, $description]);
+        $query->execute([$user_id, $lot_id, $description]);
     }
 }

@@ -6,11 +6,8 @@ class AddCommentController
 {   
     public function addComment(int $lot_id)
     {
-        $lot_id = 'id';
-        $description = $_POST['description'];
+        $description = strip_tags($_POST['description']);
 
-        $comment = ( new Comments )->newComment($_SESSION['user']['id'], $lot_id, $description);
-
-        // Доделать
+        $comment = ( new Comments )->newComment($lot_id, $_SESSION['user']['id'], $description);
     }
 }
