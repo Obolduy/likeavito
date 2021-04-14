@@ -15,10 +15,6 @@ class AddCommentControllerTest extends TestCase
         $this->model = new Model();
     }
 
-    /**
-     * Headers already sent by PHPUnit but everythings is ok.
-     */
-
     public function testaddComment() 
     {
         $_POST['description'] = 'Description test comment';
