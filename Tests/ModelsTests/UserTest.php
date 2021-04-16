@@ -27,28 +27,22 @@ class UserTest extends TestCase
     public function addUserInfoProvider()
     {
         return [
-            ['TestLogin1', '12345678', 21, 21],
-            ['TestLogin2', '12345678', 22, 22],
-            ['TestLogin3', '12345678', 23, 23],
-            ['TestLogin4', '12345678', 24, 24]
-        ];
-    }
-
-    public function updateUserProvider()
-    {
-        return [
-            ['UPDATE users SET login = ?, city_id = ? WHERE id = ?', ['newlogin1', 1, 21], 21],
-            ['UPDATE users SET login = ?, city_id = ? WHERE id = ?', ['newlogin2', 4, 22], 22],
-            ['UPDATE users SET login = ?, city_id = ? WHERE id = ?', ['newlogin3', 6, 23], 23],
-            ['UPDATE users SET login = ?, city_id = ? WHERE id = ?', ['newlogin4', 5, 24], 24]
+            ['NewName1', 'NewSurname1', 21, 21],
+            ['NewName2', 'NewSurname2', 22, 22],
+            ['NewName3', 'NewSurname3', 23, 23],
+            ['NewName4', 'NewSurname4', 24, 24]
         ];
     }
 
     public function testSetData() 
     {
-        $this->user->setData(20);
+        $this->user->setData(2);
 
-        $this->assertEquals(20, $this->user->data['id']);
+        $this->assertEquals(2, $this->user->data['id']);
+
+        $user_data = $this->user->data;
+        
+        return $user_data;
     }
     
     /**
@@ -62,6 +56,51 @@ class UserTest extends TestCase
 
         foreach ($data as $elem) {
             $this->assertEquals($expected, $elem['id']);
+        }
+    }
+
+    /**
+     * @dataProvider addUserInfoProvider
+     */
+    public function testAddUserInfo(string $name, string $surname, int $user_id, $expected) 
+    {
+        $this->user->addUserInfo($name, $surname, $user_id);
+
+        $data = $this->user->getOne('names', $name, 'name');
+
+        foreach ($data as $elem) {
+            $this->assertEquals($expected, $elem['user_id']);
+        }
+    }
+
+    public function testsendEmail() 
+    {
+        $this->user->sendEmail('TestEmail@mail.ru');
+
+        $data = scandir('C:\openserver\userdata\temp\email');
+
+        foreach ($data as $elem) {
+            if (preg_match('#2021-04-18_(.+)\.txt#', $elem)) {
+                $match = $elem;
+            }
+        }
+
+        $this->assertFileIsReadable("C:\\openserver\\userdata\\temp\\email\\$match");
+    }
+
+    /**
+     * @depends testSetData
+     */
+    public function testVerifycationEmail($user_data) 
+    {
+        $_SESSION['user'] = $user_data;
+
+        $this->user->verifycationEmail();
+
+        $data = $this->user->getOne('users', $_SESSION['user']['id']);
+
+        foreach ($data as $elem) {
+            $this->assertEquals(1, $elem['active']);
         }
     }
 

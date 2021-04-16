@@ -59,13 +59,13 @@ class User extends Model
         $data = $this->getOne('names', $user_id, 'user_id');
         
         foreach ($data as $elem) {
-            $this->updateUser("UPDATE users SET name_id = ? WHERE id = ?", [$elem['id'], $user_id]);
+            $this->update("UPDATE users SET name_id = ? WHERE id = ?", [$elem['id'], $user_id]);
         }
 
         $data = $this->getOne('surnames', $user_id, 'user_id');
 
         foreach ($data as $elem) {
-            $this->updateUser("UPDATE users SET surname_id = ? WHERE id = ?", [$elem['id'], $user_id]);
+            $this->update("UPDATE users SET surname_id = ? WHERE id = ?", [$elem['id'], $user_id]);
         }
     }
 
@@ -78,8 +78,8 @@ class User extends Model
 
     public function verifycationEmail(): void
     {
-        $query = $this->db->prepare("UPDATE users SET updated_at = ?, active = ? WHERE id = ?");
-        $query->execute([now(), 1, $_SESSION['user']['id']]);
+        $query = $this->db->prepare("UPDATE users SET updated_at = now(), active = ? WHERE id = ?");
+        $query->execute([1, $_SESSION['user']['id']]);
 
         $this->data['active'] = 1;
     }
