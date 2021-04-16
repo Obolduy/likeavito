@@ -11,6 +11,16 @@ class ModelTest extends TestCase
         $this->model = new Model();
     }
 
+    public function deleteProvider()
+    {
+        return [
+            ['users', 21],
+            ['users', 22],
+            ['users', 23],
+            ['users', 24]
+        ];
+    }
+
     public function updateProvider()
     {
         return [
@@ -22,8 +32,22 @@ class ModelTest extends TestCase
     }
 
     /**
+     * @dataProvider deleteProvider
+     */
+    public function testDelete(string $table, $chosen) 
+    {
+        $this->model->delete($table, $data);
+
+        $info = $this->model->getOne($table, $chosen);
+
+        foreach ($info as $elem) {
+            $this->assertNull($expected, $elem['id']);
+        }
+    }
+
+    /**
      * @dataProvider updateProvider
-     * Доделать
+     * Добавить лоты и комменты в проверку
      */
     public function testUpdate(string $query, array $data, $expected) 
     {
