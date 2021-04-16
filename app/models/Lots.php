@@ -39,13 +39,6 @@ class Lots extends Model
         $query->execute([$owner_id, $category_id, $title, $price, $description]);
     }
 
-    public function updateLot(string $title, int $price, string $description, int $lot_id): void
-    {
-        $query = $this->db->prepare("UPDATE lots SET title = ?, price = ?, description = ?, update_time = NOW()
-            WHERE id = ?");
-        $query->execute([$title, $price, $description, $photo, $lot_id]);
-    }
-
     /**
 	 * Adding lot`s pictures (if they are exists).
 	 * @param string hashed name of picture

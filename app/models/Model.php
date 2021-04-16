@@ -63,4 +63,10 @@ class Model
         $this->result = $this->db->prepare("DELETE FROM $table WHERE $column = ?");
         $this->result->execute([$chosen]);
     }
+
+    public function update(string $query, array $data): void
+    {
+        $query = $this->db->prepare("$query");
+        $query->execute($data);
+    }
 }

@@ -69,12 +69,6 @@ class User extends Model
         }
     }
 
-    public function updateUser(string $query, array $data): void
-    {
-        $query = $this->db->prepare("$query");
-        $query->execute($data);
-    }
-
     public function sendEmail(string $email): void
     {
         $link = md5($email . time());
