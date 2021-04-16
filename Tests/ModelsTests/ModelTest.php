@@ -11,6 +11,16 @@ class ModelTest extends TestCase
         $this->model = new Model();
     }
 
+    public function getOneProvider()
+    {
+        return [
+            ['users', 15, 15],
+            ['lots', 'SomeTitle', 21, 'title'],
+            ['users', 2, 2],
+            ['users', 3, 3]
+        ];
+    }
+
     public function deleteProvider()
     {
         return [
@@ -30,6 +40,20 @@ class ModelTest extends TestCase
             ['UPDATE users SET login = ?, city_id = ? WHERE id = ?', ['newlogin4', 5, 24], 24]
         ];
     }
+
+     /**
+     * @dataProvider getOneProvider
+     * 2 тест переподумать
+     */
+    public function testGetOne(string $table, $what, $expected, string $column = 'id') 
+    {
+        $info = $this->model->getOne($table, $what);
+
+        foreach ($info as $elem) {
+            $this->assertEquals($expected, $elem['id']);
+        }
+    }
+      
 
     /**
      * @dataProvider deleteProvider

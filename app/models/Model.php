@@ -35,12 +35,7 @@ class Model
 
     public function getOne(string $table, $what, string $column = 'id'): array
     {
-        if ($table == 'lots') {
-            $query = $this->db->query("SELECT title, price, photo, description, name, add_time FROM $table JOIN lots_category 
-                ON lots.category_id=lots_category.id WHERE $table.$column = '$what'"); 
-        } else {
-            $query = $this->db->query("SELECT * FROM $table WHERE $column = '$what'");
-        }
+        $query = $this->db->query("SELECT * FROM $table WHERE $column = '$what'");
         
         return $this->show($query);
     }
