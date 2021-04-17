@@ -104,6 +104,20 @@ class UserTest extends TestCase
         }
     }
 
+    /**
+     * Headers already sent by PHPUnit but everythings is ok.
+     */
+    public function testSetRememberToken() 
+    {
+        $this->user->setRememberToken(2);
+
+        $data = $this->user->getOne('users', 2);
+
+        foreach ($data as $elem) {
+            $this->assertNotNull($elem['remember_token']);
+        }
+    }
+
     protected function tearDown(): void
     {
         $this->user = NULL;

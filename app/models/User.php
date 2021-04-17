@@ -86,7 +86,7 @@ class User extends Model
 
     public function setRememberToken(int $id): void
     {
-        $remember_token = hash(rand() . time());
+        $remember_token = md5(rand() . time());
 
         $query = $this->db->prepare("UPDATE users SET remember_token = ? WHERE id = ?");
         $query->execute([$remember_token, $id]);
