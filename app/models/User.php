@@ -94,13 +94,6 @@ class User extends Model
         setcookie('remember_token', $remember_token);
     }
 
-    public static function showUser(int $id)
-    {
-        $user = (new Parent)->db->getOne('users', $id);
-
-        return $user;
-    }
-
     /*
     public function getUserTable($user_id)
     {
@@ -119,54 +112,15 @@ class User extends Model
     */
 
     /**
-	 * Validate login and password
-	 * @param string new login
-     * @param string new non-hashed password
-     * @param string non-hashed password confirm
-     * @param string current user login (before changing)
-	 * @return boolean
-	 */
-
-    public static function changeCheck(string $login, string $password, string $confirmPassword, string $current_login): bool
-    {
-        $emptyCheck = 0;
-        $correctCheck = 0;
-
-        if (!empty($login) and !empty($password)) {
-            $emptyCheck = Model::getOne('users', $login, 'login');
-
-            foreach($emptyCheck as $elem) {
-                if (!empty($emptyCheck) AND $elem['login'] != $current_login) {
-                    echo 'Данный логин занят';
-                } else {
-                    $emptyCheck = 1;
-                }
-            }
-            
-            if (!preg_match('#^[A-Za-z0-9]+$#', $login) or !preg_match('#^[A-Za-z0-9]+$#', $password)) {
-                echo 'Пароль и логин могут содержать только латинские буквы и цифры';
-            } else if (strlen($login) < 6 or strlen($login) > 32) {
-                echo 'Логин должен состоять из 6-32 символов';
-            } else if ($password != $confirmPassword) {
-                echo 'Пароли не совпадают';
-            } else {
-                $correctCheck = 1;
-            }
-        }
-        if ($emptyCheck == 1 and $correctCheck == 1) {
-            return true;
-        }
-    }
-
-    /**
 	 * Checks login availability, login`s and password`s content 
 	 * @param string login
+     * @param string email
      * @param string non-hashed password
      * @param string non-hashed confirmed password
 	 * @return bool
 	 */
 
-    public static function registrationCheck(string $login, string $password, string $confirmPassword)
+    public static function registrationCheck(string $login, string $email, string $password, string $confirmPassword)
     {
         $emptyCheck = 0;
         $correctCheck = 0;
@@ -184,6 +138,8 @@ class User extends Model
             
             if (!preg_match('#^[A-Za-z0-9]+$#', $login) or !preg_match('#^[A-Za-z0-9]+$#', $password)) {
                 echo 'Пароль и логин могут содержать только латинские буквы и цифры';
+            } else if (!preg_match('#^[A-Za-z0-9_-]+@.+\..{2,4}$#', $email)) {
+                echo 'Проверьте правильность ввода Вашего Email';
             } else if (strlen($login) < 6 or strlen($login) > 32) {
                 echo 'Логин должен состоять из 6-32 символов';
             } else if ($password != $confirmPassword) {
@@ -192,7 +148,8 @@ class User extends Model
                 $correctCheck = 1;
             }
         }
-        if ($emptyCheck == 1 and $correctCheck == 1) {
+
+        if ($emptyCheck === 1 and $correctCheck === 1) {
             return true;
         } else {
             return false;
@@ -222,6 +179,51 @@ class User extends Model
             } else {
                 echo 'Неправильный логин или пароль';
             }
+        }
+    }
+
+    /**
+	 * Validate login and password
+	 * @param string new login
+     * @param string new non-hashed password
+     * @param string non-hashed password confirm
+     * @param string current user login (before changing)
+     * @param string email
+	 * @return boolean
+	 */
+
+    public static function changeCheck(string $login, $password, $confirmPassword, string $current_login, string $email): bool
+    {
+        $emptyCheck = 0;
+        $correctCheck = 0;
+
+        if (!empty($login) and !empty($password)) {
+            $emptyCheck = (new Model)->getOne('users', $login, 'login');
+
+            foreach($emptyCheck as $elem) {
+                if (!empty($emptyCheck) AND $elem['login'] != $current_login) {
+                    echo 'Данный логин занят';
+                }
+            }
+            
+            $emptyCheck = 1;
+            
+            if (!preg_match('#^[A-Za-z0-9]+$#', $login) or !preg_match('#^[A-Za-z0-9]+$#', $password)) {
+                echo 'Пароль и логин могут содержать только латинские буквы и цифры';
+            } else if (!preg_match('#^[A-Za-z0-9_-]+@.+\..{2,4}$#', $email)) {
+                echo 'Проверьте правильность Вашего email';
+            } else if (strlen($login) < 6 or strlen($login) > 32) {
+                echo 'Логин должен состоять из 6-32 символов';
+            } else if ($password != $confirmPassword) {
+                echo 'Пароли не совпадают';
+            } else {
+                $correctCheck = 1;
+            }
+        }
+        if ($emptyCheck === 1 and $correctCheck === 1) {
+            return true;
+        } else {
+            return false;
         }
     }
 }

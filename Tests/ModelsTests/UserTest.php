@@ -34,6 +34,36 @@ class UserTest extends TestCase
         ];
     }
 
+    public function registrationCheckProvider()
+    {
+        return [
+            ['AbsoluteNew1', 'Newemail1@ada.com', 12345678, 12345678],
+            ['AbsoluteNew2', 'Newemail2@ada.com', 12345678, 12345678],
+            ['AbsoluteNew3', 'Newemail3@ada.com', 12345678, 12345678],
+            ['AbsoluteNew4', 'Newemail4@ada.com', 12345678, 12345678]
+        ];
+    }
+
+    public function authCheckProvider()
+    {
+        return [
+            ['newlogin1', '12345678'],
+            ['newlogin2', '12345678'],
+            ['newlogin3', '12345678'],
+            ['newlogin4', '12345678']
+        ];
+    }
+
+    public function changeCheckProvider()
+    {
+        return [
+            ['AbsoluteNew1', 12345678, 12345678, 'newlogin1', 'just1newemail@com.ru'],
+            ['AbsoluteNew2', 12345678, 12345678, 'newlogin2', 'just2newemail@com.ru'],
+            ['AbsoluteNew3', 12345678, 12345678, 'newlogin3', 'just3newemail@com.ru'],
+            ['AbsoluteNew4', 12345678, 12345678, 'newlogin4', 'just4newemail@com.ru']
+        ];
+    }
+
     public function testSetData() 
     {
         $this->user->setData(2);
@@ -48,6 +78,7 @@ class UserTest extends TestCase
     /**
      * @dataProvider addUserProvider
      */
+
     public function testAddUser(string $login, string $password, string $email, int $city_id, $expected) 
     {
         $this->user->addUser($login, $password, $email, $city_id);
@@ -62,6 +93,7 @@ class UserTest extends TestCase
     /**
      * @dataProvider addUserInfoProvider
      */
+
     public function testAddUserInfo(string $name, string $surname, int $user_id, $expected) 
     {
         $this->user->addUserInfo($name, $surname, $user_id);
@@ -91,6 +123,7 @@ class UserTest extends TestCase
     /**
      * @depends testSetData
      */
+
     public function testVerifycationEmail($user_data) 
     {
         $_SESSION['user'] = $user_data;
@@ -107,6 +140,7 @@ class UserTest extends TestCase
     /**
      * Headers already sent by PHPUnit but everythings is ok.
      */
+
     public function testSetRememberToken() 
     {
         $this->user->setRememberToken(2);
@@ -116,6 +150,39 @@ class UserTest extends TestCase
         foreach ($data as $elem) {
             $this->assertNotNull($elem['remember_token']);
         }
+    }
+
+    /**
+     * @dataProvider registrationCheckProvider
+     */
+
+    public function testRegistrationCheck($login, $email, $password, $confirmPassword) 
+    {
+        $test = User::registrationCheck($login, $email, $password, $confirmPassword);
+
+        $this->assertTrue($test);
+    }
+
+    /**
+     * @dataProvider authCheckProvider
+     */
+
+    public function testAuthCheck($login, $password) 
+    {
+        $test = User::authCheck($login, $password);
+
+        $this->assertTrue($test);
+    }
+
+    /**
+     * @dataProvider changeCheckProvider
+     */
+
+    public function testChangeCheck($login, $password, $confirmPassword, $current_login, $email) 
+    {
+        $test = User::changeCheck($login, $password, $confirmPassword, $current_login, $email);
+
+        $this->assertTrue($test);
     }
 
     protected function tearDown(): void
