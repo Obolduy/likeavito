@@ -14,4 +14,16 @@ class Comments extends Model
             description = ?, add_time = NOW(), update_time = NOW()");
         $query->execute([$user_id, $lot_id, $description]);
     }
+
+    public function changeComment(int $comment_id, string $description): void
+    {
+        $query = $this->db->prepare("UPDATE comments SET description = ?, update_time = NOW() WHERE id = ?");
+        $query->execute([$description, $comment_id]);
+    }
+
+    public function deleteComment(int $comment_id): void
+    {
+        $query = $this->db->prepare("DELETE FROM comments WHERE id = ?");
+        $query->execute([$comment_id]);
+    }
 }
