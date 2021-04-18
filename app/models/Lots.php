@@ -59,13 +59,6 @@ class Lots extends Model
         return $this->show($lots);
     }
 
-    public function showLot(int $id)
-    {
-        $lot = $this->db->getOne('lots', $id);
-
-        return $lot;
-    }
-
     public function showTag($tag)
     {
         $data = $this->base->getTag($tag)->showAll();
