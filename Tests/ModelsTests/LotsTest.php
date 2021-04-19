@@ -32,34 +32,34 @@ class LotsTest extends TestCase
     }
 
     /**
-     * @\dataProvider addLotProvider
+     * @dataProvider addLotProvider
      */
 
-    // public function testAddLot($title, $price, $description, $category_id, $owner_id, $expected) 
-    // {
-    //     $this->lot->addLot($title, $price, $description, $category_id, $owner_id);
+    public function testAddLot($title, $price, $description, $category_id, $owner_id, $expected) 
+    {
+        $this->lot->addLot($title, $price, $description, $category_id, $owner_id);
 
-    //     $data = $this->lot->getOne('lots', $owner_id, 'owner_id');
+        $data = $this->lot->getOne('lots', $owner_id, 'owner_id');
 
-    //     foreach ($data as $elem) {
-    //         $this->assertEquals($expected, $elem['id']);
-    //     }
-    // }
+        foreach ($data as $elem) {
+            $this->assertEquals($expected, $elem['id']);
+        }
+    }
 
     /**
-     * @\dataProvider addLotPictureProvider
+     * @dataProvider addLotPictureProvider
      */
 
-    // public function testAddLotPictures($lot_id, $picture, $expected) 
-    // {
-    //     $this->lot->addLotPictures($picture, $lot_id);
+    public function testAddLotPictures($lot_id, $picture, $expected) 
+    {
+        $this->lot->addLotPictures($picture, $lot_id);
 
-    //     $data = $this->lot->getOne('lots_pictures', $lot_id, 'lot_id');
+        $data = $this->lot->getOne('lots_pictures', $lot_id, 'lot_id');
 
-    //     foreach ($data as $elem) {
-    //         $this->assertEquals($expected, $elem['id']);
-    //     }
-    // }
+        foreach ($data as $elem) {
+            $this->assertEquals($expected, $elem['id']);
+        }
+    }
 
     public function testGetAllLots() 
     {

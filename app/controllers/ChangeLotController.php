@@ -40,7 +40,8 @@ class ChangeLotController
                 }
             }
 
-            $base->updateLot($_POST['title'], $_POST['price'], $_POST['description'], $lot_id);
+            $base->update("UPDATE lots SET title = ?, price = ?, description = ?, update_time = now() WHERE id = ?",
+                [$_POST['title'], $_POST['price'], $_POST['description'], $lot_id]);
         }
     }
 }
