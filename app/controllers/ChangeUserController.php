@@ -14,28 +14,28 @@ class ChangeUserController
 	 * @return boolean
 	 */
 
-    public function changeInformation(string $login, string $password, string $confirmPassword, string $name, int $user_id): string
+    public function changeInformation(string $login, string $password, string $confirmPassword, string $name, string $surname, $email, int $user_id): void
     {
-        $check = User::changeCheck(strip_tags($login), strip_tags($password), strip_tags($confirmPassword), $_SESSION['user']['login']);
+        $check = User::changeCheck(strip_tags($login), strip_tags($password), strip_tags($confirmPassword), $_SESSION['user']['login'], strip_tags($email));
 
         if ($check == true) {
             $cryptpassword = password_hash(strip_tags($password), PASSWORD_DEFAULT);
             
-            $data = [strip_tags($login), $cryptpassword, strip_tags($name), $user_id];
+            $data = [strip_tags($login), $cryptpassword, strip_tags($email), $user_id];
     
             $user = new User();
 
-            $user->updateUser("UPDATE users SET login = ?, password = ?, name = ?, update_time = now() WHERE id = ?", $data);
+            $user->update("UPDATE users SET login = ?, password = ?, email = ?, updated_at = now() WHERE id = ?", $data);
+            $user->update("UPDATE names SET name = ? WHERE user_id = ?", [strip_tags($name), $user_id]);
+            $user->update("UPDATE surnames SET surname = ? WHERE user_id = ?", [strip_tags($surname), $user_id]);
 
-            $user_info = $base->getOne('users', $login, 'login');
+            $user_info = $user->getOne('users', $user_id);
 
             foreach($user_info as $elem) {
                 $user->setData($elem['id']);
 
                 $_SESSION['user'] = $user->data;
             }
-    
-            return 'Информация успешно изменена';
         }
     }
 }

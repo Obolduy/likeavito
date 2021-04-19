@@ -42,7 +42,7 @@ class ChangeLotControllerTest extends TestCase
         $data = $this->model->getOne('lots', $title, 'title');
 
         foreach($data as $elem) {
-            $this->assertEquals($expected, $title);
+            $this->assertEquals($expected, $elem['title']);
         }
     }
 
