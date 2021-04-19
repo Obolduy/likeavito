@@ -46,7 +46,7 @@ class Model
 	 * @return array
 	 */
 
-    private function show(\PDOStatement $fetch): array
+    protected function show(\PDOStatement $fetch): array
     {
         for ($data = []; $row = $fetch->fetch(); $data[] = $row);
 

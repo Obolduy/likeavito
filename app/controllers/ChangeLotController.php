@@ -17,7 +17,7 @@ class ChangeLotController
                 $description = $elem['description'];
             }
             
-            (new View('changelot'));
+            new View('changelot');
         } else {
             if (!is_numeric(strip_tags($_POST['price']))) {
                 throw new Exception('Цена должна быть записана числом');

@@ -25,8 +25,11 @@ class AddLotController
             $base->addLot($title, $price, $description, $category_id, $owner_id);
 
             if ($photo) {
-                $lot = $base->selectLotId($owner_id);
-                $id = $lot[0][0];
+                $lot = $base->getOne('lots', $owner_id, 'owner_id');
+
+                foreach ($lot as $elem) {
+                    $id = $elem['id'];
+                }
 
                 mkdir("img/lots/$id");
 
