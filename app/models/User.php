@@ -94,6 +94,27 @@ class User extends Model
         setcookie('remember_token', $remember_token);
     }
 
+    public function sendResetEmail(int $id): void
+    {
+        $info = $this->getOne('users', $id);
+
+        foreach ($info as $elem) {
+            $email = $elem['email'];
+        }
+
+        $link = md5($email . time());
+
+        mail("<$email>", 'Восстановить пароль', EMAIL_MESSAGE_START . $link . EMAIL_MESSAGE_END, implode("\r\n", EMAIL_HEADERS)); // Подрихтовать текст
+    }
+
+    public function resetPassword($password): void
+    {
+        $query = $this->db->prepare("UPDATE users SET password = ?, updated_at = now() WHERE id = ?");
+        $query->execute([$password, $_SESSION['user']['id']]);
+
+        $this->setData($_SESSION['user']['id']);
+    }
+
     /*
     public function getUserTable($user_id)
     {
