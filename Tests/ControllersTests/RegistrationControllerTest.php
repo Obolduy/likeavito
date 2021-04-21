@@ -42,42 +42,42 @@ class RegistrationControllerTest extends TestCase
         $this->assertEquals(20, $result);
     }
 
-    // public function testLogIn() 
-    // {
-    //     $_POST['login'] = 'logsin';
-    //     $_POST['password'] = '123456789';
+    public function testLogIn() 
+    {
+        $_POST['login'] = 'logsin';
+        $_POST['password'] = '123456789';
 
-    //     $reg = Authorization::logIn();
+        $reg = Authorization::logIn();
 
-    //     $data = $this->base->getOne('users', 'logsin', 'login');
+        $data = $this->base->getOne('users', 'logsin', 'login');
 
-    //     foreach ($data as $elem) {
-    //         $user = new User($elem['id']);
-    //     }
+        foreach ($data as $elem) {
+            $user = new User($elem['id']);
+        }
 
-    //     $this->assertEquals(4, $user->data['id']);
-    // }
+        $this->assertEquals(4, $user->data['id']);
+    }
 
-    // public function testRegistrationCheck() 
-    // {
-    //     $login = 'logi58n';
-    //     $password = '123456';
-    //     $confirmPassword = '123456';
+    public function testRegistrationCheck() 
+    {
+        $login = 'logi58n';
+        $password = '123456';
+        $confirmPassword = '123456';
 
-    //     $result = Authorization::registrationCheck($login, $password, $confirmPassword);
+        $result = Authorization::registrationCheck($login, $password, $confirmPassword);
 
-    //     $this->assertEquals(true, $result);
-    // }
+        $this->assertEquals(true, $result);
+    }
     
-    // public function testAuthCheck() 
-    // {
-    //     $login = 'logsin';
-    //     $password = '123456';
+    public function testAuthCheck() 
+    {
+        $login = 'logsin';
+        $password = '123456';
 
-    //     $result = Authorization::authCheck($login, $password);
+        $result = Authorization::authCheck($login, $password);
 
-    //     $this->assertEquals(true, $result);
-    // }
+        $this->assertEquals(true, $result);
+    }
 
     protected function tearDown(): void
     {
