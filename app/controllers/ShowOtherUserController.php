@@ -9,6 +9,6 @@ class ShowUserController
     {
         $user = User::showOtherUser($user_id);
 
-        (new View('otheruser'));
+        new View('otheruser');
     }
 }

@@ -9,6 +9,6 @@ class MainPageController
     {
         $lots = ( new Lots )->getAllLots();
 
-        (new View('main'));
+        new View('main');
     }
 }

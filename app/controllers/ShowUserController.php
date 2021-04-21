@@ -9,6 +9,6 @@ class ShowUserController
     {
         $user = User::showUser($_SESSION['user']['id']);
 
-        (new View('user'));
+        new View('user');
     }
 }

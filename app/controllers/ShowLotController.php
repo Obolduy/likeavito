@@ -7,8 +7,8 @@ class ShowLotController
 {   
     public function showLot(int $category_id, int $lot_id)
     {
-        $lots = ( new Lots )->showLot($id);
+        $lots = ( new Lots )->getOne('lots', $id);
 
-        (new View('lot'));
+        new View('lot');
     }
 }
