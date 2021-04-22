@@ -9,7 +9,7 @@ class AdminChangeLotController
     {
         if ($_SERVER['REQUEST_METHOD'] == 'GET') {
             $lot = new Lots;
-            $info = $lot->getOne($lot_id, 'lots');
+            $info = $lot->getOne('lots', $lot_id);
 
             new View('adminchangelot');
         } else {
