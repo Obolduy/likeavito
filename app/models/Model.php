@@ -41,6 +41,19 @@ class Model
     }
 
     /**
+	 * Returning the PDO fetch of whole table
+	 * @param string table name
+	 * @return array
+	 */
+
+    public function getAll(string $table): array
+    {
+        $query = $this->db->query("SELECT * FROM $table ORDER BY DESC");
+        
+        return $this->show($query);
+    }
+
+    /**
 	 * Returning the PDO fetch.
 	 * @param array PDOObject with data
 	 * @return array

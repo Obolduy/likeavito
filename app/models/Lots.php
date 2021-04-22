@@ -39,13 +39,6 @@ class Lots extends Model
         $query->execute([$id, $picture]);
     }
 
-    public function getAllLots()
-    {
-        $lots = $this->db->query("SELECT * FROM lots ORDER BY update_time DESC");
-
-        return $this->show($lots);
-    }
-
     public function showTag($tag)
     {
         $data = $this->base->getTag($tag)->showAll();

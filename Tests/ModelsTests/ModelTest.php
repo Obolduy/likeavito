@@ -21,6 +21,14 @@ class ModelTest extends TestCase
         ];
     }
 
+    public function getAllProvider()
+    {
+        return [
+            ['users'],
+            ['lots']
+        ];
+    }
+
     public function deleteProvider()
     {
         return [
@@ -53,7 +61,18 @@ class ModelTest extends TestCase
             $this->assertEquals($expected, $elem['id']);
         }
     }
-      
+
+    /**
+     * @dataProvider getAllProvider
+     */
+    public function testGetAll(string $table) 
+    {
+        $info = $this->model->getAll($table);
+
+        foreach ($info as $elem) {
+            $this->assertNotNull($elem['id']);
+        }
+    }
 
     /**
      * @dataProvider deleteProvider

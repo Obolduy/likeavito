@@ -7,7 +7,7 @@ class MainPageController
 {   
     public function showLots()
     {
-        $lots = ( new Lots )->getAllLots();
+        $lots = ( new Lots )->getAll('users');
 
         new View('main');
     }

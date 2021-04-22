@@ -61,15 +61,6 @@ class LotsTest extends TestCase
         }
     }
 
-    public function testGetAllLots() 
-    {
-        $data = $this->lot->getAllLots();
-
-        foreach ($data as $elem) {
-            $this->assertNotNull($elem['id']);
-        }
-    }
-
     protected function tearDown(): void
     {
         $this->lot = NULL;
