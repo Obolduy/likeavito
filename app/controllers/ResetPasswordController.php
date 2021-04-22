@@ -3,7 +3,7 @@ namespace App\Controllers;
 use App\Models\User;
 use App\View\View;
 
-class RegistrationController
+class ResetPasswordController
 {   
     public function resetRequest($user_id)
     {
