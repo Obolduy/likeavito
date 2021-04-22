@@ -5,7 +5,7 @@ use App\View\View;
 
 class AdminChangeUserController
 {   
-    public function adminChangeUser($user_id)
+    public function adminChangeUser(int $user_id): void
     {
         if ($_SERVER['REQUEST_METHOD'] == 'GET') {
             $user = (new User)->getOne($user_id, 'users');
