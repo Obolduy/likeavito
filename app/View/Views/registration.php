@@ -5,6 +5,10 @@
     <div>Введите Вашу фамилию: <input type="text" name="surname"></div>
     <div>Введите пароль: <input type="password" name="password"></div>
     <div>Подтвердите пароль: <input type="password" name="confirmPassword"></div>
-    <div><input type="checkbox" name="city_id" value="2">Город тут короче</div>
+    <div><select name="city_id">
+        <?php foreach($cities as $city): ?>
+        <option value="<?= $city['id'] ?>"><?= $city['city']; ?></option>
+        <?php endforeach; ?>
+    </select></div>
     <div><input type="submit" name="submit"></div>
 </form>

@@ -48,7 +48,7 @@ class Model
 
     public function getAll(string $table): array
     {
-        $query = $this->db->query("SELECT * FROM $table ORDER BY DESC");
+        $query = $this->db->query("SELECT * FROM $table");
         
         return $this->show($query);
     }

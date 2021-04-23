@@ -1,6 +1,7 @@
 <?php
 namespace App\Controllers;
 use App\Models\User;
+use App\Models\Model;
 use App\View\View;
 
 class RegistrationController
@@ -8,7 +9,9 @@ class RegistrationController
     public static function registration()
     {
         if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-            new View('registration');
+            $cities = (new Model)->getAll('cities');
+
+            new View('registration', ['cities' => $cities]);
         } else {
             $login = strip_tags($_POST['login']);
             $email = strip_tags($_POST['email']);
@@ -18,7 +21,7 @@ class RegistrationController
             $surname = strip_tags($_POST['surname']);
             $city_id = $_POST['city_id'];
 
-            $check = User::registrationCheck($login, $password, $confirmPassword);
+            $check = User::registrationCheck($login, $email, $password, $confirmPassword);
 
             if ($check == true) {
                 $_SESSION['userauth'] = true;
@@ -40,7 +43,7 @@ class RegistrationController
 
                 $user->sendEmail($email);
                 
-                header('Location: index.php'); die();       
+                header('Location: /');
             }
         }
     }
