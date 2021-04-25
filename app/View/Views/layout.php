@@ -11,7 +11,7 @@
                 Здесь сделать хэдэр
             </header>
             <main>
-                <!-- MAIN CONTENT  -->
+                <?php include_once "{$_SERVER['DOCUMENT_ROOT']}/App/View/Views/$view.php"; ?>
             </main>
             <footer>
                 А здесь футер

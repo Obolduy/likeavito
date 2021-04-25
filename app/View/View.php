@@ -11,7 +11,6 @@ class View
             }
             
             include_once "{$_SERVER['DOCUMENT_ROOT']}/App/View/Views/layout.php";
-            include_once "{$_SERVER['DOCUMENT_ROOT']}/App/View/Views/$view.php";
         } else {
             echo 'Такого представления нет';
         }
