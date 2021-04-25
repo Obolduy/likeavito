@@ -6,8 +6,7 @@ use App\Controllers\{
     ShowOtherUserController};
 
 return [
-    new Route('/test/uri', [TestController::class, 'testFunc']),
-    new Route('/', [MainPageController::class, 'testFunc']),
+    new Route('/', [MainPageController::class, 'showlots']),
     new Route('/registration', [RegistrationController::class, 'registration'], 'authmiddleware'),
     new Route('/login', [LoginController::class, 'login'], 'noauthmiddleware'),
     new Route('/logout', [LoginController::class, 'logout']),

@@ -5,10 +5,10 @@ use App\View\View;
 
 class MainPageController
 {   
-    public function showLots()
+    public static function showLots()
     {
-        $lots = ( new Lots )->getAll('users');
+        $lots = ( new Lots )->getAll('lots');
 
-        new View('main');
+        new View('main', ['lots' => $lots]);
     }
 }
