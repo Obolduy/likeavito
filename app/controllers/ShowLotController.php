@@ -1,6 +1,7 @@
 <?php
 namespace App\Controllers;
 use App\Models\Lots;
+use App\Models\Comments;
 use App\View\View;
 
 class ShowLotController
@@ -9,6 +10,8 @@ class ShowLotController
     {
         $lot = ( new Lots )->getOne('lots', $lot_id);
 
-        new View('showlot', ['lot' => $lot]);
+        $comments = ( new Comments )->getOne('comments', $lot_id, 'lot_id');
+
+        new View('showlot', ['lot' => $lot, 'comments' => $comments]);
     }
 }

@@ -115,22 +115,20 @@ class User extends Model
         $this->setData($_SESSION['user']['id']);
     }
 
-    /*
-    public function getUserTable($user_id)
+     /**
+	 * Get left join query with full user info (from 'users', 'names', 'surnames' and 'cities')
+	 * @param int user`s id
+	 * @return void
+	 */
+
+    public function getFullUserInfo(int $user_id)
     {
-        $user = $this->base->getOne('users', $user_id);
-
-        $content = "<br><form method=POST>
-        Имя и фамилия: <input type=\"text\" name=\"name\" value=\"{$user['name']}\"><br><br>
-        Логин: <input type=\"text\" name=\"login\" value=\"{$user['login']}\"><br><br>
-        Пароль: <input type=\"password\" name=\"password\" value=\"\"><br><br>
-        Подтвердите пароль: <input type=\"text\" name=\"confirmpassword\" value=\"\"><br><br>
-        <input type=\"submit\" name=\"submit\">
-        </form>";
-
-        return $content;
+        $query = $this->db->query("SELECT u.id, u.login, n.name, s.surname, c.city, u.registration_time FROM users AS u
+            LEFT JOIN names AS n ON u.id = n.user_id
+                LEFT JOIN surnames AS s ON u.id = s.user_id LEFT JOIN cities AS c ON c.id = u.city_id WHERE u.id = $user_id");
+        
+        return $this->show($query);
     }
-    */
 
     /**
 	 * Checks login availability, login`s and password`s content 

@@ -12,13 +12,13 @@ return [
     new Route('/logout', [LoginController::class, 'logout']),
     new Route('/category/{category_id}', [MainPageController::class, 'showcategory']),
     new Route('/category/{category_id}/{lot_id}', [ShowLotController::class, 'showlot']),
+    new Route('/addlot', [AddLotController::class, 'newLot'], 'noauthmiddleware'),
     new Route('/managelot/{lot_id}/delete', [DeleteLotController::class, 'deleteLot'], 'authmiddleware'),
     new Route('/managelot/{lot_id}/change', [ChangeLotController::class, 'changeLot'], 'authmiddleware'),
-    new Route('/addlot', [AddLotController::class, 'newLot'], 'noauthmiddleware'),
     new Route('/category/{category_id}/{lot_id}/add_comment', [AddCommentController::class, 'addComment'], 'noauthmiddleware'),
     new Route('/user', [ShowUserController::class, 'showuser'], 'authmiddleware'),
-    new Route('/user/{user_id}', [ShowOtherUserController::class, 'showotheruser']),
-    new Route('/user/{user_id}/change', [ChangeUserController::class, 'changeInformation'], 'authmiddleware'),
+    new Route('/user/change', [ChangeUserController::class, 'changeInformation'], 'authmiddleware'),
+    new Route('/users/{user_id}', [ShowUserController::class, 'showotheruser']),
     new Route('/index/df/{textinskobka}/{newtext}', [RegistrationController::class, 'testсont'], 'authmiddleware'),
 
     // new Route('/test/uri', function(){

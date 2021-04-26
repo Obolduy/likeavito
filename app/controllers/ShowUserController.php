@@ -5,10 +5,17 @@ use App\View\View;
 
 class ShowUserController
 {   
-    public function showUser()
+    public static function showUser(): void
     {
-        $user = User::showUser($_SESSION['user']['id']);
+        $user = (new User)->getFullUserInfo($_SESSION['user']['id']);
 
-        new View('user');
+        new View('showuser', ['user' => $user]);
+    }
+
+    public static function showOtherUser(int $user_id): void
+    {
+        $user = (new User)->getFullUserInfo($user_id);
+
+        new View('showotheruser', ['user' => $user]);
     }
 }
