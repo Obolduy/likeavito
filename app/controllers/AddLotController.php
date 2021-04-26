@@ -5,13 +5,19 @@ use App\View\View;
 
 class AddLotController
 {   
-    public function newLot(): void
+    public static function newLot(): void
     {
+        $base = new Lots();
+
         if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-            new View('addlot');
+            $categories = $base->getAll('lots_category');
+
+            new View('addlot', ['categories' => $categories]);
         } else {
             if (!is_numeric($_POST['price'])) {
-                throw new Exception('Цена должна быть записана числом');
+                echo 'Цена должна быть записана числом';
+                
+                new View('addlot', ['categories' => $categories]);
             }
 
             $title = strip_tags($_POST['title']);
@@ -21,16 +27,15 @@ class AddLotController
             $category_id = strip_tags($_POST['category_id']);
             $owner_id = $_SESSION['user']['id'];
 
-            $base = new Lots();
             $base->addLot($title, $price, $description, $category_id, $owner_id);
 
+            $lot = $base->getOne('lots', $owner_id, 'owner_id');
+
+            foreach ($lot as $elem) {
+                $id = $elem['id'];
+            }
+
             if ($photo) {
-                $lot = $base->getOne('lots', $owner_id, 'owner_id');
-
-                foreach ($lot as $elem) {
-                    $id = $elem['id'];
-                }
-
                 mkdir("img/lots/$id");
 
                 $dir = "img/lots/$id";
@@ -45,7 +50,7 @@ class AddLotController
                 }
             }
 
-            header('Location: index.php'); die();
+            header("Location: /category/$category_id/$id");
         }
     }
 }
