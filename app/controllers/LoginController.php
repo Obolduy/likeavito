@@ -5,7 +5,7 @@ use App\View\View;
 
 class LoginController
 {   
-    public static function login()
+    public static function login(): void
     {
         if ($_SERVER['REQUEST_METHOD'] == 'GET') {
             new View('login');

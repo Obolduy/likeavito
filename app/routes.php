@@ -20,8 +20,4 @@ return [
     new Route('/user/change', [ChangeUserController::class, 'changeInformation'], 'authmiddleware'),
     new Route('/users/{user_id}', [ShowUserController::class, 'showotheruser']),
     new Route('/index/df/{textinskobka}/{newtext}', [RegistrationController::class, 'testсont'], 'authmiddleware'),
-
-    // new Route('/test/uri', function(){
-    //     echo 'Можно и так';
-    //   })
 ];
