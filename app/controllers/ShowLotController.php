@@ -5,10 +5,10 @@ use App\View\View;
 
 class ShowLotController
 {   
-    public function showLot(int $category_id, int $lot_id)
+    public static function showLot(int $category_id, int $lot_id): void
     {
-        $lots = ( new Lots )->getOne('lots', $id);
+        $lot = ( new Lots )->getOne('lots', $lot_id);
 
-        new View('lot');
+        new View('showlot', ['lot' => $lot]);
     }
 }

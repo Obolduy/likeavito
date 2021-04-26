@@ -35,7 +35,7 @@ class Model
 
     public function getOne(string $table, $what, string $column = 'id'): array
     {
-        $query = $this->db->query("SELECT * FROM $table WHERE $column = '$what'");
+        $query = $this->db->query("SELECT * FROM $table WHERE $column = $what");
         
         return $this->show($query);
     }
