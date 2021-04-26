@@ -35,7 +35,11 @@ class Model
 
     public function getOne(string $table, $what, string $column = 'id'): array
     {
-        $query = $this->db->query("SELECT * FROM $table WHERE $column = $what");
+        $query = $this->db->query("SELECT * FROM $table WHERE $column = \"$what\"");
+
+        if ($query === false) {
+            throw new \Exception('Data not found');
+        }
         
         return $this->show($query);
     }
@@ -49,6 +53,10 @@ class Model
     public function getAll(string $table): array
     {
         $query = $this->db->query("SELECT * FROM $table");
+
+        if ($query === false) {
+            throw new \Exception('Data not found');
+        }
         
         return $this->show($query);
     }

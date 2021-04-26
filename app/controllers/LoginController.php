@@ -28,11 +28,11 @@ class LoginController
                     $_SESSION['user'] = $user->data;
                 }
                 
-                if ($_POST['remember_me'] === 1) {
+                if ($_POST['remember_me'] == 1) {
                     $user->setRememberToken($user->data['id']);
                 }
                 
-                header('Location: index.php'); die();
+                header('Location: /');
             }
         }
     }

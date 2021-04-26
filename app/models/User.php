@@ -186,18 +186,20 @@ class User extends Model
     {
         $base = new Model();
 
-        $check = $base->getOne('users', $login, 'login');
+        try {
+            $check = $base->getOne('users', $login, 'login');
+        } catch (\Exception $e) {
+            echo 'Пользователя с таким именем не существует.'; die();
+        }
 
-        if (!empty($check)) {
-            foreach ($check as $elem) {
-                $checkpassword = password_verify($password, $elem['password']);
-            }
+        foreach ($check as $elem) {
+            $checkpassword = password_verify($password, $elem['password']);
+        }
 
-            if ($checkpassword == true) {
-                return true;
-            } else {
-                echo 'Неправильный логин или пароль';
-            }
+        if ($checkpassword === true) {
+            return true;
+        } else {
+            echo 'Пароль неправильный.'; die();
         }
     }
 

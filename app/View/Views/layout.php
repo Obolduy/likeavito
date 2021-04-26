@@ -8,7 +8,13 @@
     <body>
         <div id="wrapper">
             <header>
-                Здесь сделать хэдэр
+                <?php if ($_SESSION['userauth']): ?>
+                <div class="user"><a href="/user"><?= $_SESSION['user']['login']; ?></a></div>
+                <div class="logout"><a href="/logout">Выйти</a></div>
+                <?php else: ?>
+                <div class="login"><a href="/login">Войти</a></div>
+                <div class="registration"><a href="/registration">Зарегистрироваться</a></div>
+                <?php endif; ?>
             </header>
             <main>
                 <?php include_once "{$_SERVER['DOCUMENT_ROOT']}/App/View/Views/$view.php"; ?>
