@@ -5,22 +5,18 @@ use App\View\View;
 
 class ChangeLotController
 {   
-    public function changeLot(int $lot_id): void
+    public static function changeLot(int $lot_id): void
     {
         $base = new Lots();
         $lot = $base->getOne('lots', $lot_id);
 
-        if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-            foreach ($lot as $elem) {
-                $title = $elem['title'];
-                $price = $elem['price'];
-                $description = $elem['description'];
-            }
-            
-            new View('changelot');
+        if ($_SERVER['REQUEST_METHOD'] == 'GET') {            
+            new View('changelot', ['lot' => $lot]);
         } else {
             if (!is_numeric(strip_tags($_POST['price']))) {
-                throw new Exception('Цена должна быть записана числом');
+                echo 'Цена должна быть записана числом';
+                
+                new View('changelot', ['lot' => $lot]);
             }
 
             if ($_FILES['photos']['name']) {
