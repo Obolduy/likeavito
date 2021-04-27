@@ -1,11 +1,14 @@
 <?php
 namespace App\Router;
 use App\Middlewares;
+use App\Controllers\Controller404;
 
 class Router
 {
     public function checkRoute($routes)
     {
+        $check = false;
+
         foreach ($routes as $elem) {
             $pregexp = '#^' . preg_replace('#/\{([^/]+)\}#', '/(?<$1>[^/]+)', $elem->uri) . '/?$#';
 
@@ -16,6 +19,7 @@ class Router
                 }
 
                 if ($middleware === true || !isset($middleware)) {
+                    $check = true;
                     return call_user_func($elem->callable);
                 }
             }
@@ -33,9 +37,14 @@ class Router
                 }
 
                 if ($middleware === true || !isset($middleware)) {
+                    $check = true;
                     return call_user_func_array($elem->callable, $param);
                 }
             }
+        }
+        
+        if ($check == false) {
+            return (new Controller404)->error404();
         }
     }
 }
