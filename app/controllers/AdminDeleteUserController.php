@@ -5,7 +5,7 @@ use App\View\View;
 
 class AdminDeleteUserController
 {   
-    public function adminDeleteUser(int $user_id): void
+    public static function adminDeleteUser(int $user_id): void
     {
         $user = new User;
 

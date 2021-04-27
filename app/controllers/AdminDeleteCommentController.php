@@ -5,7 +5,7 @@ use App\View\View;
 
 class AdminDeleteCommentController
 {   
-    public function adminDeleteComment(int $comment_id): void
+    public static function adminDeleteComment(int $comment_id): void
     {
         $comment = new Comments;
 

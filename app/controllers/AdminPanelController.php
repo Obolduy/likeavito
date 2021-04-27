@@ -4,7 +4,7 @@ use App\View\View;
 
 class AdminPanelController
 {   
-    public function showAdminPanel()
+    public static function showAdminPanel()
     {
         new View('adminpanel');
     }

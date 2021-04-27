@@ -5,14 +5,14 @@ use App\View\View;
 
 class AdminChangeCommentController
 {   
-    public function adminShowCommentsTable(): void
+    public static function adminShowCommentsTable(): void
     {
-        $comments = (new Comments)->getFullUserInfo();///////////
+        $comments = (new Comments)->getAll('comments');///////////
 
         new View('adminshowcomments', ['comments' => $comments]);
     }
 
-    public function adminChangeComment(int $comment_id): void
+    public static function adminChangeComment(int $comment_id): void
     {
         $comments = new Comments;
 

@@ -5,7 +5,7 @@ use App\View\View;
 
 class AdminDeleteLotController
 {   
-    public function adminDeleteLot(int $lot_id): void
+    public static function adminDeleteLot(int $lot_id): void
     {
         $lot = new Lots;
 

@@ -5,14 +5,14 @@ use App\View\View;
 
 class AdminChangeLotController
 {   
-    public function adminShowLotsTable(): void
+    public static function adminShowLotsTable(): void
     {
-        $lots = (new Lots)->getFullUserInfo();///////////
+        $lots = (new Lots)->getAll('lots');///////////
 
         new View('adminshowlots', ['lots' => $lots]);
     }
 
-    public function adminChangeLot(int $lot_id): void
+    public static function adminChangeLot(int $lot_id): void
     {
         if ($_SERVER['REQUEST_METHOD'] == 'GET') {
             $lot = new Lots;

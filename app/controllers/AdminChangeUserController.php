@@ -5,14 +5,14 @@ use App\View\View;
 
 class AdminChangeUserController
 {  
-    public function adminShowUsersTable(): void
+    public static function adminShowUsersTable(): void
     {
         $users = (new User)->getFullUserInfo();
 
         new View('adminshowusers', ['users' => $users]);
     }
 
-    public function adminChangeUser(int $user_id): void
+    public static function adminChangeUser(int $user_id): void
     {
         if ($_SERVER['REQUEST_METHOD'] == 'GET') {
             $user = (new User)->getFullUserInfo($user_id);
