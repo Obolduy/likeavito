@@ -15,9 +15,7 @@ class AddLotController
             new View('addlot', ['categories' => $categories]);
         } else {
             if (!is_numeric($_POST['price'])) {
-                echo 'Цена должна быть записана числом';
-                
-                new View('addlot', ['categories' => $categories]);
+                eader("Location: /addlot");
             }
 
             $title = strip_tags($_POST['title']);

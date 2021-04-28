@@ -14,14 +14,16 @@ class AdminChangeLotController
 
     public static function adminChangeLot(int $lot_id): void
     {
-        if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-            $lot = new Lots;
-            $info = $lot->getOne('lots', $lot_id);
+        $lot = new Lots;
 
-            new View('adminchangelot');
+        if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+            $info = $lot->getOne('lots', $lot_id);
+            $categories = $lot->getAll('lots_category');
+
+            new View('adminchangelot', ['info' => $info, 'categories' => $categories]);
         } else {
-            if (!is_numeric(strip_tags($_POST['price']))) {
-                throw new Exception('Цена должна быть записана числом');
+            if (!is_numeric($_POST['price'])) {               
+                header("Location: /admin/change/lot/$lot_id");
             }
 
             if ($_FILES['photos']['name']) {

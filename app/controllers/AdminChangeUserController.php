@@ -14,22 +14,19 @@ class AdminChangeUserController
 
     public static function adminChangeUser(int $user_id): void
     {
+        $user = new User();
+
         if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-            $user = (new User)->getFullUserInfo($user_id);
+            $cities = $user->getAll('cities');
+            $user = $user->getFullUserInfo($user_id);
 
-            new View('adminchangeuser');
-        } else {
-            $password = password_hash(strip_tags($_POST['password']), PASSWORD_DEFAULT);
-            
-            $data = [strip_tags($_POST['login']), $password, strip_tags($_POST['email']),
-                $_POST['email'], $_POST['ban_status'], $user_id];
-    
-            $user = new User();
+            new View('adminchangeuser', ['user' => $user, 'cities' => $cities]);
+        } else {           
+            $data = [strip_tags($_POST['login']), strip_tags($_POST['email']), $_POST['city_id'], $_POST['ban_status'], $user_id];
 
-            $user->update("UPDATE users SET login = ?, password = ?, email = ?, city_id, ban_status, updated_at = now()
-                WHERE id = ?", $data);
-            $user->update("UPDATE names SET name = ? WHERE user_id = ?", [strip_tags($name), $user_id]);
-            $user->update("UPDATE surnames SET surname = ? WHERE user_id = ?", [strip_tags($surname), $user_id]);
+            $user->update("UPDATE users SET login = ?, email = ?, city_id = ?, ban_status = ?, updated_at = now() WHERE id = ?", $data);
+            $user->update("UPDATE names SET name = ? WHERE user_id = ?", [strip_tags($_POST['name']), $user_id]);
+            $user->update("UPDATE surnames SET surname = ? WHERE user_id = ?", [strip_tags($_POST['surname']), $user_id]);
         }
     }
 }

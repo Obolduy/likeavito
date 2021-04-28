@@ -10,8 +10,10 @@ class ChangeLotController
         $base = new Lots();
         $lot = $base->getOne('lots', $lot_id);
 
-        if ($_SERVER['REQUEST_METHOD'] == 'GET') {            
-            new View('changelot', ['lot' => $lot]);
+        if ($_SERVER['REQUEST_METHOD'] == 'GET') {   
+            $categories = $lot->getAll('lots_category');
+
+            new View('changelot', ['lot' => $lot, 'categories' => $categories]);
         } else {
             if (!is_numeric(strip_tags($_POST['price']))) {
                 echo 'Цена должна быть записана числом';

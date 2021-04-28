@@ -19,7 +19,7 @@ class AdminChangeCommentController
         if ($_SERVER['REQUEST_METHOD'] == 'GET') {
             $comment = $comments->getOne('comments', $comment_id);
 
-            new View('adminchangecomment');
+            new View('adminchangecomment', ['comment' => $comment]);
         } else {
             $comments->update("UPDATE comments SET description = ? WHERE id = ?", [strip_tags($_POST['description']), $comment_id]);
         }
