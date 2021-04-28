@@ -6,9 +6,7 @@ class Noauthmiddleware implements IMiddleware
 {    
     public function middleware($uri)
     {
-        if (!isset($_SESSION['user'])) {
-            return true;
-        } else {
+        if (isset($_SESSION['user'])) {
             header('Location: /');
         }
     }
