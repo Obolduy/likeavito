@@ -7,7 +7,7 @@ class AdminChangeLotController
 {   
     public static function adminShowLotsTable(): void
     {
-        $lots = (new Lots)->getAll('lots');///////////
+        $lots = (new Lots)->getFullLotInfo();
 
         new View('adminshowlots', ['lots' => $lots]);
     }

@@ -39,61 +39,26 @@ class Lots extends Model
         $query->execute([$id, $picture]);
     }
 
-    public function showTag($tag)
+    /**
+	 * Get left join query with full lot (or all lots if ID is null) info (from 'lots', 'users', 'lots_category' and 'lots_pictures')
+	 * @param int lot`s id
+	 * @return array
+	 */
+
+    public function getFullLotInfo(int $lot_id = null)
     {
-        $data = $this->base->getTag($tag)->showAll();
-        foreach ($data as $elem) {
-            $lots .= "<p><a href=\"lots.php?lot={$elem['id']}\">{$elem['title']}</a><br>{$elem['price']}<br>
-                {$elem['photo']}<br>{$elem['add_time']}</p>";
+        if ($lot_id !== null) {
+            $query = $this->db->query("SELECT l.*, u.login, c.category, p.picture FROM lots AS l
+                LEFT JOIN users AS u ON u.id = l.owner_id
+                    LEFT JOIN lots_category AS c ON l.category_id = c.id
+                        LEFT JOIN lots_pictures AS p ON l.id = p.lot_id WHERE l.id = $lot_id");
+        } else {
+            $query = $this->db->query("SELECT l.*, u.login, c.category, p.picture FROM lots AS l
+                LEFT JOIN users AS u ON u.id = l.owner_id
+                    LEFT JOIN lots_category AS c ON l.category_id = c.id
+                        LEFT JOIN lots_pictures AS p ON l.id = p.lot_id");
         }
-        return $lots;
-    }
-
-    public function showLots()
-    {
-        $data = $this->base->getWithout('jobs')->showAll();
-        foreach ($data as $elem) {
-            $lots .= "<p><a href=\"lots.php?lot={$elem['id']}\">{$elem['title']}</a><br>{$elem['price']}<br>
-                {$elem['photo']}<br>{$elem['add_time']}</p>";
-        }
-        return $lots;
-    }
-
-    public function showJobs()
-    {
-        $data = $this->base->getWithout('lots')->showAll();
-        foreach ($data as $elem) {
-            $lots .= "<p><a href=\"lots.php?lot={$elem['id']}\">{$elem['title']}</a><br>{$elem['price']}<br>
-                {$elem['photo']}<br>{$elem['add_time']}</p>";
-        }
-        return $lots;
-    }
-
-    public function joinColumn($user_id)
-    {
-        $this->base->query = "SELECT l.id, l.title, l.price, lc.name, l.category_id, l.add_time, l.update_time FROM lots AS l 
-            JOIN users AS u JOIN lots_category AS lc ON l.owner_id=u.id AND l.category_id=lc.id WHERE u.id=$user_id";
-        $this->base->result = mysqli_query($this->base->link, $this->base->query);
-
-        for ($data = []; $row = mysqli_fetch_assoc($this->base->result); $data[] = $row);
-        $content = '<table border=1px solid black>
-            <tr>
-                <th>Название товара</th>
-                <th>Цена товара</th>
-                <th>Категория</th>
-                <th>Время добавления</th>
-                <th>Время изменения</th>
-            </tr>';
-            foreach ($data as $elem) {
-                $content .= "<tr>
-                    <td><a href=\"?edit={$elem['id']}\">{$elem['title']}</a></td>
-                    <td>{$elem['price']}</td>
-                    <td>{$elem['name']}</td>
-                    <td>{$elem['add_time']}</td>
-                    <td>{$elem['update_time']}</td>
-                </tr>";
-            }
-        $content .= '</table>';
-        return $content;
+             
+        return $this->show($query);
     }
 }

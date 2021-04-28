@@ -118,7 +118,7 @@ class User extends Model
      /**
 	 * Get left join query with full user (or all users if ID is null) info (from 'users', 'names', 'surnames' and 'cities')
 	 * @param int user`s id
-	 * @return void
+	 * @return array
 	 */
 
     public function getFullUserInfo(int $user_id = null)

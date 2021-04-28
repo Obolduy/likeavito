@@ -7,7 +7,7 @@ class AdminChangeCommentController
 {   
     public static function adminShowCommentsTable(): void
     {
-        $comments = (new Comments)->getAll('comments');///////////
+        $comments = (new Comments)->getFullCommentInfo();
 
         new View('adminshowcomments', ['comments' => $comments]);
     }
