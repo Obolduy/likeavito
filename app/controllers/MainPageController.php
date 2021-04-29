@@ -7,9 +7,10 @@ class MainPageController
 {   
     public static function showLots(): void
     {
-        $lots = ( new Lots )->getAll('lots');
+        $lots = ( new Lots )->getAll('lots', [0, 5], true);//
+        $categories = ( new Lots )->getAll('lots_category');
 
-        new View('main', ['lots' => $lots]);
+        new View('main', ['lots' => $lots, 'categories' => $categories]);
     }
 
     public static function showCategory(int $category_id): void

@@ -1,3 +1,11 @@
+<nav>
+    <ul>
+        <?php foreach($categories as $category): ?>
+        <li><a href="/category/<?= $category['id'] ?>/"><?= $category['category'] ?></a></li>
+        <?php endforeach ?>
+
+    </ul>
+</nav>
 <div class="main">
 Последние 5 объявлений:
 <?php foreach($lots as $lot): ?>

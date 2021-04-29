@@ -30,6 +30,7 @@ class Model
 	 * @param string table name
      * @param string 'where' expression
      * @param string column name
+     * @param array limit
 	 * @return array
 	 */
 
@@ -47,12 +48,19 @@ class Model
     /**
 	 * Returning the PDO fetch of whole table
 	 * @param string table name
+     * @param array limit
+     * @param bool desc
 	 * @return array
 	 */
 
-    public function getAll(string $table): array
+    public function getAll(string $table, array $limit = [0, 1000], bool $desc = false): array
     {
-        $query = $this->db->query("SELECT * FROM $table");
+        if ($desc == false) {
+            $query = $this->db->query("SELECT * FROM $table LIMIT $limit[0], $limit[1]");
+        } else {
+            $query = $this->db->query("SELECT * FROM $table ORDER BY id DESC LIMIT $limit[0], $limit[1]");
+        }
+        
 
         if ($query === false) {
             throw new \Exception('Data not found');
