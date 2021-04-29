@@ -33,9 +33,9 @@ class Model
 	 * @return array
 	 */
 
-    public function getOne(string $table, $what, string $column = 'id'): array
+    public function getOne(string $table, $what, string $column = 'id', array $limit = [0, 1000]): array
     {
-        $query = $this->db->query("SELECT * FROM $table WHERE $column = \"$what\"");
+        $query = $this->db->query("SELECT * FROM $table WHERE $column = \"$what\" LIMIT $limit[0], $limit[1]");
 
         if ($query === false) {
             throw new \Exception('Data not found');
@@ -84,5 +84,16 @@ class Model
     {
         $query = $this->db->prepare("$query");
         $query->execute($data);
+    }
+
+    public function getTableCount(string $table, $what, string $column = 'id'): array
+    {
+        $query = $this->db->query("SELECT COUNT(*) FROM $table WHERE $column = \"$what\"");
+
+        if ($query === false) {
+            throw new \Exception('Data not found');
+        }
+        
+        return $this->show($query);
     }
 }

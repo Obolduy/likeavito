@@ -14,8 +14,21 @@ class MainPageController
 
     public static function showCategory(int $category_id): void
     {
-        $lots = ( new Lots )->getOne('lots', 'category_id', $category_id);
+        if (!isset($_GET['page']) || $_GET['page'] == 1) {
+            $_GET['page'] = 1;
+        }
 
-        new View('showcategory', ['lots' => $lots]);
+        $lots = (new Lots)->getOne('lots', $category_id, 'category_id', [(($_GET['page'] * 5) - 5), 5]);
+        $count = (new Lots)->getTableCount('lots', $category_id, 'category_id');
+
+        if ($count[0][0] % 5 != 0) {
+            while ($count[0][0] % 5 != 0) {
+                $count[0][0]++;
+            }
+
+            $str_count = $count[0][0] / 5;
+        }
+
+        new View('showcategory', ['lots' => $lots, 'str_count' => $str_count]);
     }
 }
