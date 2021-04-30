@@ -31,5 +31,4 @@ return [
     new Route('/admin/delete/user/{user_id}', [AdminDeleteUserController::class, 'adminDeleteUser'], 'adminmiddleware'),
     new Route('/admin/delete/lot/{lot_id}', [AdminDeleteLotController::class, 'adminDeleteLot'], 'adminmiddleware'),
     new Route('/admin/delete/comment/{comment_id}', [AdminDeleteCommentController::class, 'adminDeleteComment'], 'adminmiddleware'),
-    new Route('/index/df/{textinskobka}/{newtext}', [RegistrationController::class, 'testсont'], 'authmiddleware'),
 ];

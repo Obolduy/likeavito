@@ -7,5 +7,5 @@
 <?php endforeach; ?>
 <div>
     <?php if ($_GET['page'] != 1): ?><a href="/category/<?= $lot['category_id'] ?>?page=<?= ($_GET['page'] - 1)?>">Назад</a><? endif; ?>
-    <?php if ($_GET['page'] < $str_count): ?><a href="/category/<?= $lot['category_id'] ?>?page=<?= ($_GET['page'] + 1)?>">Вперед</a><? endif; ?>
+    <?php if ($_GET['page'] < $page_count): ?><a href="/category/<?= $lot['category_id'] ?>?page=<?= ($_GET['page'] + 1)?>">Вперед</a><? endif; ?>
 </div>
