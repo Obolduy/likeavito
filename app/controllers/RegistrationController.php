@@ -11,7 +11,7 @@ class RegistrationController
         if ($_SERVER['REQUEST_METHOD'] == 'GET') {
             $cities = (new Model)->getAll('cities');
 
-            new View('registration', ['cities' => $cities]);
+            new View('registration', ['cities' => $cities, 'title' => 'Зарегистрироваться']);
         } else {
             $login = strip_tags($_POST['login']);
             $email = strip_tags($_POST['email']);

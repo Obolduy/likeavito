@@ -8,7 +8,7 @@ class AdminLoginController
     public static function adminLogin(): void
     {
         if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-            new View('adminlogin');
+            new View('adminlogin', ['title' => 'Вход в панель администратора']);
         } else {
             if (strip_tags($_POST['password']) === 123) {
                 $_SESSION['adminauth'] = true;

@@ -12,7 +12,7 @@ class AddLotController
         if ($_SERVER['REQUEST_METHOD'] == 'GET') {
             $categories = $base->getAll('lots_category');
 
-            new View('addlot', ['categories' => $categories]);
+            new View('addlot', ['categories' => $categories, 'title' => 'Добавление товара']);
         } else {
             if (!is_numeric($_POST['price'])) {
                 eader("Location: /addlot");

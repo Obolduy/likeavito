@@ -12,6 +12,6 @@ class ShowLotController
 
         $comments = ( new Comments )->getOne('comments', $lot_id, 'lot_id');
 
-        new View('showlot', ['lot' => $lot, 'comments' => $comments]);
+        new View('showlot', ['lot' => $lot, 'comments' => $comments, 'title' => $lot[0]['title']]);
     }
 }

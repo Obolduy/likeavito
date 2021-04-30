@@ -9,13 +9,13 @@ class ShowUserController
     {
         $user = (new User)->getFullUserInfo($_SESSION['user']['id']);
 
-        new View('showuser', ['user' => $user]);
+        new View('showuser', ['user' => $user, 'title' => $user[0]['login']]);
     }
 
     public static function showOtherUser(int $user_id): void
     {
         $user = (new User)->getFullUserInfo($user_id);
 
-        new View('showotheruser', ['user' => $user]);
+        new View('showotheruser', ['user' => $user, 'title' => "Просмотр пользователя {$user[0]['login']}"]);
     }
 }

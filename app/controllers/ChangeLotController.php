@@ -13,12 +13,12 @@ class ChangeLotController
         if ($_SERVER['REQUEST_METHOD'] == 'GET') {   
             $categories = $lot->getAll('lots_category');
 
-            new View('changelot', ['lot' => $lot, 'categories' => $categories]);
+            new View('changelot', ['lot' => $lot, 'categories' => $categories, 'title' => 'Изменить товар']);
         } else {
             if (!is_numeric(strip_tags($_POST['price']))) {
                 echo 'Цена должна быть записана числом';
                 
-                new View('changelot', ['lot' => $lot]);
+                new View('changelot', ['lot' => $lot, 'title' => 'Изменить товар']);
             }
 
             if ($_FILES['photos']['name']) {

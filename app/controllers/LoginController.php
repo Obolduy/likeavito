@@ -8,7 +8,7 @@ class LoginController
     public static function login(): void
     {
         if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-            new View('login');
+            new View('login', ['title' => 'Вход на сайт']);
         } else {
             $login = strip_tags($_POST['login']);
             $password = strip_tags($_POST['password']);

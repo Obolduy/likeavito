@@ -1,40 +1,44 @@
 <?php
 namespace App\Controllers;
 use App\Models\User;
+use App\View\View;
 
 class ChangeUserController
 {   
     /**
 	 * Change user`s data by himself
-	 * @param string new login
-     * @param string new non-hashed password
-     * @param string non-hashed password confirm
-     * @param string new name
      * @param int user id
-	 * @return boolean
+	 * @return void
 	 */
 
-    public function changeInformation(string $login, string $password, string $confirmPassword, string $name, string $surname, $email, int $user_id): void
+    public static function changeInformation(int $user_id): void
     {
-        $check = User::changeCheck(strip_tags($login), strip_tags($password), strip_tags($confirmPassword), $_SESSION['user']['login'], strip_tags($email));
+        $user = new User();
 
-        if ($check == true) {
-            $cryptpassword = password_hash(strip_tags($password), PASSWORD_DEFAULT);
-            
-            $data = [strip_tags($login), $cryptpassword, strip_tags($email), $user_id];
-    
-            $user = new User();
+        if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+            $user = $user->getFullUserInfo($user_id);
 
-            $user->update("UPDATE users SET login = ?, password = ?, email = ?, updated_at = now() WHERE id = ?", $data);
-            $user->update("UPDATE names SET name = ? WHERE user_id = ?", [strip_tags($name), $user_id]);
-            $user->update("UPDATE surnames SET surname = ? WHERE user_id = ?", [strip_tags($surname), $user_id]);
+            new View('changelot', ['lot' => $lot, 'categories' => $categories, 'title' => 'Изменить данные']);
+        } else {
+            $check = User::changeCheck(strip_tags($_POST['login']), strip_tags($_POST['password']),
+                strip_tags($_POST['confirmPassword']), $_SESSION['user']['login'], strip_tags($_POST['email']));
 
-            $user_info = $user->getOne('users', $user_id);
+            if ($check == true) {
+                $cryptpassword = password_hash(strip_tags($_POST['password']), PASSWORD_DEFAULT);
+                
+                $data = [strip_tags($_POST['login']), $cryptpassword, strip_tags($_POST['email']), $user_id];
 
-            foreach($user_info as $elem) {
-                $user->setData($elem['id']);
+                $user->update("UPDATE users SET login = ?, password = ?, email = ?, updated_at = now() WHERE id = ?", $data);
+                $user->update("UPDATE names SET name = ? WHERE user_id = ?", [strip_tags($_POST['name']), $user_id]);
+                $user->update("UPDATE surnames SET surname = ? WHERE user_id = ?", [strip_tags($_POST['surname']), $user_id]);
 
-                $_SESSION['user'] = $user->data;
+                $user_info = $user->getOne('users', $user_id);
+
+                foreach($user_info as $elem) {
+                    $user->setData($elem['id']);
+
+                    $_SESSION['user'] = $user->data;
+                }
             }
         }
     }

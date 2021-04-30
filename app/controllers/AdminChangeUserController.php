@@ -9,7 +9,7 @@ class AdminChangeUserController
     {
         $users = (new User)->getFullUserInfo();
 
-        new View('adminshowusers', ['users' => $users]);
+        new View('adminshowusers', ['users' => $users, 'title' => 'Просмотр пользователей']);
     }
 
     public static function adminChangeUser(int $user_id): void
@@ -20,7 +20,7 @@ class AdminChangeUserController
             $cities = $user->getAll('cities');
             $user = $user->getFullUserInfo($user_id);
 
-            new View('adminchangeuser', ['user' => $user, 'cities' => $cities]);
+            new View('adminchangeuser', ['user' => $user, 'cities' => $cities, 'title' => 'Изменение пользователя']);
         } else {           
             $data = [strip_tags($_POST['login']), strip_tags($_POST['email']), $_POST['city_id'], $_POST['ban_status'], $user_id];
 

@@ -6,6 +6,6 @@ class AdminPanelController
 {   
     public static function showAdminPanel()
     {
-        new View('adminpanel');
+        new View('adminpanel', ['title' => 'Панель администратора']);
     }
 }

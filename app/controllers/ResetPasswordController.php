@@ -8,7 +8,7 @@ class ResetPasswordController
     public function resetRequest($user_id)
     {
         if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-            new View('resetpassword');
+            new View('resetpassword', ['title' => 'Сброс пароля']);
         } else {
             $user = new User();
 
@@ -21,7 +21,7 @@ class ResetPasswordController
     public function passwordResetForm()
     {
         if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-            new View('resetpasswordform');
+            new View('resetpasswordform', ['title' => 'Восстановление пароля']);
         } else {
             $password = $_POST['password'];
             $confirmPassword = $_POST['confirmPassword'];

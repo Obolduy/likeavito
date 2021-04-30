@@ -8,6 +8,6 @@ class Controller404
     {
         header("HTTP/1.1 404 Not Found");
         
-        new View('404');
+        new View('404', ['title' => 'Упс... Страница не найдена']);
     }
 }

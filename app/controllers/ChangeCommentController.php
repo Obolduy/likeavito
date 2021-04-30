@@ -12,7 +12,7 @@ class ChangeCommentController
         if ($_SERVER['REQUEST_METHOD'] == 'GET') {
             $comment = $comments->getOne('comments', $comment_id);
 
-            new View('changecomment');
+            new View('changecomment', ['title' => 'Изменить комментарий']);
         } else {
             $comments->update("UPDATE comments SET description = ? WHERE id = ?", [strip_tags($_POST['description']), $comment_id]);
         }

@@ -9,7 +9,7 @@ class AdminChangeLotController
     {
         $lots = (new Lots)->getFullLotInfo();
 
-        new View('adminshowlots', ['lots' => $lots]);
+        new View('adminshowlots', ['lots' => $lots, 'title' => 'Просмотр товаров']);
     }
 
     public static function adminChangeLot(int $lot_id): void
@@ -20,7 +20,7 @@ class AdminChangeLotController
             $info = $lot->getOne('lots', $lot_id);
             $categories = $lot->getAll('lots_category');
 
-            new View('adminchangelot', ['info' => $info, 'categories' => $categories]);
+            new View('adminchangelot', ['info' => $info, 'categories' => $categories, 'title' => 'Изменение товара']);
         } else {
             if (!is_numeric($_POST['price'])) {               
                 header("Location: /admin/change/lot/$lot_id");
