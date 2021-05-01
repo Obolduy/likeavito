@@ -5,26 +5,33 @@ use App\View\View;
 
 class ResetPasswordController
 {   
-    public function resetRequest($user_id)
+    public function resetRequest(int $user_id): void//
     {
         if ($_SERVER['REQUEST_METHOD'] == 'GET') {
             new View('resetpassword', ['title' => 'Сброс пароля']);
         } else {
             $user = new User();
 
-            $user->sendResetEmail($user_id);
+            $user->sendResetEmail(strip_tags($_POST['email']));
             
-            header('Location: index.php'); die();       
+            echo 'Запрос успешно отправлен!';
         }
     }
 
-    public function passwordResetForm()
+    public function passwordResetForm(string $token): void
     {
+        $user = new User();
+        $password_reset = $user->getOne('password_reset', $token, 'token');
+
         if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-            new View('resetpasswordform', ['title' => 'Восстановление пароля']);
+            if ($password_reset) {
+                new View('resetpasswordform', ['title' => 'Восстановление пароля']);
+            } else {
+                header('Location: /');
+            }
         } else {
-            $password = $_POST['password'];
-            $confirmPassword = $_POST['confirmPassword'];
+            $password = strip_tags($_POST['password']);
+            $confirmPassword = strip_tags($_POST['confirmPassword']);
 
             if (!preg_match('#^[A-Za-z0-9]+$#', $password)) {
                 echo 'Пароль может содержать только латинские буквы и цифры';
@@ -34,11 +41,9 @@ class ResetPasswordController
             
             $cryptPassword = password_hash($password, PASSWORD_DEFAULT);
 
-            $user = new User();
-
-            $user->resetPassword($cryptPassword);
+            $user->resetPassword($cryptPassword, $token, $password_reset['email']);
             
-            header('Location: index.php'); die();       
+            header('Location: /login');
         }
     }
 }

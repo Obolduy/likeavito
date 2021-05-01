@@ -78,8 +78,7 @@ class User extends Model
 
     public function verifycationEmail(): void
     {
-        $query = $this->db->prepare("UPDATE users SET updated_at = now(), active = ? WHERE id = ?");
-        $query->execute([1, $_SESSION['user']['id']]);
+        $this->update("UPDATE users SET updated_at = now(), active = ? WHERE id = ?", [1, $_SESSION['user']['id']]);
 
         $this->data['active'] = 1;
     }
@@ -88,15 +87,14 @@ class User extends Model
     {
         $remember_token = md5(rand() . time());
 
-        $query = $this->db->prepare("UPDATE users SET remember_token = ? WHERE id = ?");
-        $query->execute([$remember_token, $id]);
+        $this->update("UPDATE users SET remember_token = ? WHERE id = ?", [$remember_token, $id]);
 
         setcookie('remember_token', $remember_token);
     }
 
-    public function sendResetEmail(int $id): void
+    public function sendResetEmail(string $email): void
     {
-        $info = $this->getOne('users', $id);
+        $info = $this->getOne('users', $email, 'email');
 
         foreach ($info as $elem) {
             $email = $elem['email'];
@@ -104,15 +102,21 @@ class User extends Model
 
         $link = md5($email . time());
 
+        $this->setPasswordResetToken($email, $link);
+
         mail("<$email>", 'Восстановить пароль', EMAIL_MESSAGE_START . $link . EMAIL_MESSAGE_END, implode("\r\n", EMAIL_HEADERS)); // Подрихтовать текст
     }
 
-    public function resetPassword($password): void
+    public function setPasswordResetToken(string $email, string $link): void
     {
-        $query = $this->db->prepare("UPDATE users SET password = ?, updated_at = now() WHERE id = ?");
-        $query->execute([$password, $_SESSION['user']['id']]);
+        $query = $this->db->prepare("INSERT INTO password_reset SET email = ?, token = ?");
+        $query->execute([$email, $link]);
+    }
 
-        $this->setData($_SESSION['user']['id']);
+    public function resetPassword($password, string $token, string $email): void
+    {
+        $this->update("UPDATE users SET password = ?, updated_at = now() WHERE email = ?", [$password, $email]);
+        $this->delete('password_reset', $token, 'token');
     }
 
      /**
