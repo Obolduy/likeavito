@@ -80,7 +80,7 @@ class User extends Model
     {
         $this->update("UPDATE users SET updated_at = now(), active = ? WHERE id = ?", [1, $_SESSION['user']['id']]);
 
-        $this->data['active'] = 1;
+        $this->setData($_SESSION['user']['id']);
     }
 
     public function setRememberToken(int $id): void
