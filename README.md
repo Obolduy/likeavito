@@ -1,3 +1,2 @@
-Avatar
-Added change & co. URLs to userview
+Avatar - отображение, изменение, удаление
 Tests

@@ -45,10 +45,11 @@ class User extends Model
 	 * @param string name
      * @param string surnames
      * @param int user`s id
+     * @param string hashed avatar
 	 * @return void
 	 */
 
-    public function addUserInfo(string $name, string $surname, int $user_id): void
+    public function addUserInfo(string $name, string $surname, int $user_id, string $photo = null): void
     {
         $query = $this->db->prepare("INSERT INTO names SET name = ?, user_id = ?");
         $query->execute([$name, $user_id]);
@@ -66,6 +67,10 @@ class User extends Model
 
         foreach ($data as $elem) {
             $this->update("UPDATE users SET surname_id = ? WHERE id = ?", [$elem['id'], $user_id]);
+        }
+
+        if ($photo != null) {
+            $this->update("UPDATE users SET avatar = ? WHERE id = ?", [$photo, $user_id]);
         }
     }
 
