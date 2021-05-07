@@ -50,21 +50,19 @@ class RegistrationController
 
     /**
 	 * Checking does user has non-confirmated account.
-     * If he is, it update DB(active status and update time) and return emailconfirm view.
+     * If he is, it updates DB (active status and update time) and return emailconfirm view.
+     * @param string generated hash token
 	 * @return void
 	 */
 
-    public static function verifyEmail(): void
+    public static function verifyEmail(string $token): void
     {
-        if ($_SESSION['user']['updated_at'] === null && $_SESSION['user']['active'] === 0) {
+        if ($_SESSION['verifylink'] == $token && $_SESSION['user']['active'] == 0) {
             ( new User )->verifycationEmail();
+
+            $_SESSION['verifylink'] = null;
 
             include_once $_SERVER['DOCUMENT_ROOT'] . '/App/Views/emailconfirm.php';
         }
-    }
-
-    public static function testсont($textinskobka, $newtext)
-    {
-        echo $textinskobka . $newtext;
     }
 }

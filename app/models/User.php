@@ -73,6 +73,8 @@ class User extends Model
     {
         $link = md5($email . time());
 
+        $_SESSION['verifylink'] = $link;
+
         mail("<$email>", 'Закончите Вашу регистрацию', EMAIL_MESSAGE_START . $link . EMAIL_MESSAGE_END, implode("\r\n", EMAIL_HEADERS));
     }
 
@@ -129,12 +131,12 @@ class User extends Model
     {
         if ($user_id !== null) {
             $query = $this->db->query("SELECT u.id, u.login, u.email, n.name, s.surname, c.city, u.city_id,
-                u.registration_time, u.ban_status FROM users AS u
+                u.registration_time, u.ban_status, u.active FROM users AS u
                     LEFT JOIN names AS n ON u.id = n.user_id
                         LEFT JOIN surnames AS s ON u.id = s.user_id LEFT JOIN cities AS c ON c.id = u.city_id WHERE u.id = $user_id");
         } else {
             $query = $this->db->query("SELECT u.id, u.login, u.email, n.name, s.surname, c.city, u.city_id,
-                u.registration_time, u.ban_status FROM users AS u
+                u.registration_time, u.ban_status, u.active FROM users AS u
                     LEFT JOIN names AS n ON u.id = n.user_id
                         LEFT JOIN surnames AS s ON u.id = s.user_id LEFT JOIN cities AS c ON c.id = u.city_id");
         }
