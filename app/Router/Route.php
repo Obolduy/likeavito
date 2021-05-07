@@ -14,7 +14,9 @@ class Route
         $this->callable = $callable;
 
         if ($middleware !== null) {
-            $this->middleware = ucfirst($middleware);
+            foreach($middleware as $elem) {
+                $this->middleware[] = ucfirst($elem);
+            }
         }
     }
 

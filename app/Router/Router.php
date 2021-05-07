@@ -13,9 +13,11 @@ class Router
             $pregexp = '#^' . preg_replace('#/\{([^/]+)\}#', '/(?<$1>[^/]+)', $elem->uri) . '/?$#';
 
             if ($elem->uri === $_SERVER['REQUEST_URI']) {
-                if ($elem->middleware !== null && class_exists("App\Middlewares\\$elem->middleware")) {
-                    $middlewareClass = "App\Middlewares\\$elem->middleware";
-                    $middleware = (new $middlewareClass)->middleware($this->uri);
+                if ($elem->middleware !== null) {
+                    foreach ($elem->middleware as $middlewares) {
+                        $middlewareClass = "App\Middlewares\\$middlewares";
+                        $middleware = (new $middlewareClass)->middleware($this->uri);
+                    }
                 }
 
                 if ($middleware === true || !isset($middleware)) {
@@ -31,9 +33,11 @@ class Router
                     }
                 }
 
-                if ($elem->middleware !== null && class_exists("App\Middlewares\\$elem->middleware")) {
-                    $middlewareClass = "App\Middlewares\\$elem->middleware";
-                    $middleware = (new $middlewareClass)->middleware($this->uri);
+                if ($elem->middleware !== null) {
+                    foreach ($elem->middleware as $middlewares) {
+                        $middlewareClass = "App\Middlewares\\$middlewares";
+                        $middleware = (new $middlewareClass)->middleware($this->uri);
+                    }
                 }
 
                 if ($middleware === true || !isset($middleware)) {
