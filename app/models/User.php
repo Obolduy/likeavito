@@ -111,7 +111,8 @@ class User extends Model
 
         $this->setPasswordResetToken($email, $link);
 
-        mail("<$email>", 'Восстановить пароль', EMAIL_MESSAGE_START . $link . EMAIL_MESSAGE_END, implode("\r\n", EMAIL_HEADERS)); // Подрихтовать текст
+        mail("<$email>", 'Восстановить пароль', EMAIL_MESSAGE_START . $link . EMAIL_MESSAGE_END,
+            implode("\r\n", EMAIL_HEADERS)); // Подрихтовать текст
     }
 
     public function setPasswordResetToken(string $email, string $link): void
@@ -124,6 +125,37 @@ class User extends Model
     {
         $this->update("UPDATE users SET password = ?, updated_at = now() WHERE email = ?", [$password, $email]);
         $this->delete('password_reset', $token, 'token');
+    }
+
+    public function sendDeleteMail(string $email): void
+    {
+        $link = md5($email . time());
+
+        $_SESSION['deletelink'] = $link;
+
+        mail("<$email>", 'Подтвердите удаление Вашего аккаунта', EMAIL_MESSAGE_START . $link . EMAIL_MESSAGE_END,
+            implode("\r\n", EMAIL_HEADERS)); // Подрихтовать текст
+    }
+
+    public function deleteUser(int $user_id): void
+    {        
+        $this->delete('users', $user_id);
+
+        $user_lots = $this->getOne('lots', $user_id, 'owner_id');
+
+        foreach($user_lots as $elem) {
+            $this->delete('lots_pictures', $elem['id'], 'lot_id');
+
+            if (is_dir("/img/lots/{$elem['id']}")) {
+                rmdir("/img/lots/{$elem['id']}");
+            }
+        }
+
+        $this->delete('lots', $user_id, 'owner_id');
+
+        if (is_dir("/img/users/$user_id")) {
+            rmdir("/img/users/$user_id");
+        }
     }
 
      /**

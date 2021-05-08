@@ -21,6 +21,8 @@ return [
     new Route('/managelot/{lot_id}/change', [ChangeLotController::class, 'changeLot'], ['authmiddleware', 'emailcheckmiddleware']),
     new Route('/user', [ShowUserController::class, 'showuser'], ['authmiddleware']),
     new Route('/user/change', [ChangeUserController::class, 'changeInformation'], ['authmiddleware', 'emailcheckmiddleware']),
+    new Route('/user/delete', [DeleteUserController::class, 'deleterequest'], ['authmiddleware', 'emailcheckmiddleware']),
+    new Route('/user/delete/{token}', [DeleteUserController::class, 'deleteuser'], ['authmiddleware', 'emailcheckmiddleware']),
     new Route('/user/resetpassword', [ResetPasswordController::class, 'resetRequest'], ['noauthmiddleware']),
     new Route('/user/resetpassword/{token}', [ResetPasswordController::class, 'passwordResetForm'], ['noauthmiddleware']),
     new Route('/users/{user_id}', [ShowUserController::class, 'showotheruser']),
