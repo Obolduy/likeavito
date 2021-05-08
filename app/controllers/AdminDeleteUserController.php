@@ -19,6 +19,10 @@ class AdminDeleteUserController
 
         $user->delete('lots', $user_id, 'owner_id');
 
+        if (is_dir("/img/users/$user_id")) {
+            rmdir("/img/users/$user_id");
+        }
+
         header('Location: /');
     }
 }

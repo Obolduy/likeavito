@@ -1,2 +1,2 @@
-Avatar - отображение, изменение, удаление
+Delete account via token
 Tests

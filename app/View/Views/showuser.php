@@ -1,5 +1,8 @@
 <div class="user">
     <?php foreach($user as $elem): ?>
+    <?php if ($elem['avatar'] != null): ?>
+    <div><img src="/img/users/<?= $elem['id'] ?>/<?= $elem['avatar'] ?>" alt="Аватар"></div>
+    <?php endif; ?>
     <div class="login">Логин: <?= $elem['login'] ?></div>
     <div class="email">Email: <?php echo $elem['email']; if ($elem['active'] == 0) echo ' (Не подтвержден)';  ?></div>
     <div class="name">Имя: <?= $elem['name'] ?></div>

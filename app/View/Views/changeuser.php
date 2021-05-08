@@ -1,7 +1,8 @@
-<form method="POST">
+<form enctype="multipart/form-data" method="POST">
     <?php foreach($user as $elem): ?>
     <div>Введите логин: <input type="text" name="login" value="<?= $elem['login'] ?>" required></div>
     <div>Введите email: <input type="text" name="email" value="<?= $elem['email'] ?>" required></div>
+    <div>Обновите Ваш аватар (Необязательно): <input type="file" accept="image/*" name="photo"></div>
     <div>Введите имя: <input type="text" name="name" value="<?= $elem['name'] ?>" required></div>
     <div>Введите фамилию: <input type="text" name="surname" value="<?= $elem['surname'] ?>" required></div>
     <div>Введите пароль: <input type="password" name="password" required></div>
