@@ -57,7 +57,7 @@ class RegistrationController
                     $_SESSION['user'] = $user->data;
                 }
 
-                $user->sendEmail($email);
+                $user->sendRegistrationEmail($email);
                 
                 header('Location: /');
             }

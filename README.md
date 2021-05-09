@@ -1,2 +1,3 @@
-Delete account via token
 Tests
+API
+Decoration

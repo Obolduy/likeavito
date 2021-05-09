@@ -34,6 +34,16 @@ class UserTest extends TestCase
         ];
     }
 
+    public function sendResetEmailProvider()
+    {
+        return [
+            ['test@mail.ru'],
+            ['fern@yande.ru'],
+            ['newemail@iss.ru'],
+            ['Emewail@wadw.ru']
+        ];
+    }
+
     public function registrationCheckProvider()
     {
         return [
@@ -105,7 +115,7 @@ class UserTest extends TestCase
         }
     }
 
-    public function testsendEmail() 
+    public function testSendEmail() 
     {
         $this->user->sendEmail('TestEmail@mail.ru');
 
@@ -149,6 +159,39 @@ class UserTest extends TestCase
 
         foreach ($data as $elem) {
             $this->assertNotNull($elem['remember_token']);
+        }
+    }
+
+    /**
+     * @dataProvider sendResetEmailProvider
+     */
+
+    public function testSendResetEmail($email) 
+    {
+        $this->user->sendResetEmail($email);
+
+        $data = scandir('C:\openserver\userdata\temp\email');
+
+        foreach ($data as $elem) {
+            if (preg_match('#' . date('Y-m-d') . '_(.+)\.txt#', $elem)) {
+                $match = $elem;
+            }
+        }
+
+        $this->assertFileIsReadable("C:\\openserver\\userdata\\temp\\email\\$match");
+
+        $file = file("C:\\openserver\\userdata\\temp\\email\\$match");
+
+        $line = $file[13];
+
+        preg_match('#http://likeavito/user/resetpassword/(.+)#', $line, $match);
+
+        $this->assertNotNull(trim($match[0]));
+
+        $token = $this->model->getOne('password_reset', trim($match[1]), 'token');
+
+        foreach ($token as $elem) {
+            $this->assertEquals(trim($match[1]), $elem['token']);
         }
     }
 

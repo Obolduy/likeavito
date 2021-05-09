@@ -5,7 +5,7 @@ use App\View\View;
 
 class ResetPasswordController
 {   
-    public function resetRequest(int $user_id): void//
+    public static function resetRequest(): void
     {
         if ($_SERVER['REQUEST_METHOD'] == 'GET') {
             new View('resetpassword', ['title' => 'Сброс пароля']);
@@ -18,7 +18,7 @@ class ResetPasswordController
         }
     }
 
-    public function passwordResetForm(string $token): void
+    public static function passwordResetForm(string $token): void
     {
         $user = new User();
         $password_reset = $user->getOne('password_reset', $token, 'token');
@@ -41,7 +41,9 @@ class ResetPasswordController
             
             $cryptPassword = password_hash($password, PASSWORD_DEFAULT);
 
-            $user->resetPassword($cryptPassword, $token, $password_reset['email']);
+            foreach ($password_reset as $elem) {
+                $user->resetPassword($cryptPassword, $token, $elem['email']);
+            }
             
             header('Location: /login');
         }

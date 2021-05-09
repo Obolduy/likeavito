@@ -74,13 +74,14 @@ class User extends Model
         }
     }
 
-    public function sendEmail(string $email): void
+    public function sendRegistrationEmail(string $email): void
     {
         $link = md5($email . time());
 
         $_SESSION['verifylink'] = $link;
 
-        mail("<$email>", 'Закончите Вашу регистрацию', EMAIL_MESSAGE_START . $link . EMAIL_MESSAGE_END, implode("\r\n", EMAIL_HEADERS));
+        mail("<$email>", 'Закончите Вашу регистрацию', EMAIL_REGISTRATION_MESSAGE_START . $link . EMAIL_MESSAGE_END,
+            implode("\r\n", EMAIL_HEADERS));
     }
 
     public function verifycationEmail(): void
@@ -111,7 +112,7 @@ class User extends Model
 
         $this->setPasswordResetToken($email, $link);
 
-        mail("<$email>", 'Восстановить пароль', EMAIL_MESSAGE_START . $link . EMAIL_MESSAGE_END,
+        mail("<$email>", 'Восстановить пароль', EMAIL_RESET_PASSWORD_MESSAGE_START . $link . EMAIL_MESSAGE_END,
             implode("\r\n", EMAIL_HEADERS)); // Подрихтовать текст
     }
 
@@ -133,7 +134,7 @@ class User extends Model
 
         $_SESSION['deletelink'] = $link;
 
-        mail("<$email>", 'Подтвердите удаление Вашего аккаунта', EMAIL_MESSAGE_START . $link . EMAIL_MESSAGE_END,
+        mail("<$email>", 'Подтвердите удаление Вашего аккаунта', EMAIL_ACCOUNT_DELETE_MESSAGE_START . $link . EMAIL_MESSAGE_END,
             implode("\r\n", EMAIL_HEADERS)); // Подрихтовать текст
     }
 
