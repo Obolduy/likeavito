@@ -49,10 +49,26 @@ class ModelTest extends TestCase
         ];
     }
 
+    public function getTableCountProvider()
+    {
+        return [
+            ['users', 15, 'id', 1],
+            ['comments', 8, 'lot_id', 2],
+        ];
+    }
+
+    public function testConnection()
+    {
+        $test = Model::connection();
+
+        $this->assertIsObject($test);
+    }
+
      /**
      * @dataProvider getOneProvider
      * 2 тест переподумать
      */
+
     public function testGetOne(string $table, $what, $expected, string $column = 'id') 
     {
         $info = $this->model->getOne($table, $what);
@@ -65,6 +81,7 @@ class ModelTest extends TestCase
     /**
      * @dataProvider getAllProvider
      */
+
     public function testGetAll(string $table) 
     {
         $info = $this->model->getAll($table);
@@ -77,6 +94,7 @@ class ModelTest extends TestCase
     /**
      * @dataProvider deleteProvider
      */
+
     public function testDelete(string $table, $chosen) 
     {
         $this->model->delete($table, $data);
@@ -92,6 +110,7 @@ class ModelTest extends TestCase
      * @dataProvider updateProvider
      * Добавить лоты и комменты в проверку
      */
+
     public function testUpdate(string $query, array $data, $expected) 
     {
         $this->model->update($query, $data);
@@ -101,6 +120,17 @@ class ModelTest extends TestCase
         foreach ($info as $elem) {
             $this->assertEquals($expected, $elem['id']);
         }
+    }
+
+    /**
+     * @dataProvider getTableCountProvider
+     */
+
+    public function testGetTableCount($table, $what, $column, $expected) 
+    {
+        $data = $this->model->getTableCount($table, $what, $column);
+        
+        $this->assertEquals($expected, $data[0][0]);
     }
 
     protected function tearDown(): void
