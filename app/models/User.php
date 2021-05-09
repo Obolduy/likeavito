@@ -113,7 +113,7 @@ class User extends Model
         $this->setPasswordResetToken($email, $link);
 
         mail("<$email>", 'Восстановить пароль', EMAIL_RESET_PASSWORD_MESSAGE_START . $link . EMAIL_MESSAGE_END,
-            implode("\r\n", EMAIL_HEADERS)); // Подрихтовать текст
+            implode("\r\n", EMAIL_HEADERS));
     }
 
     public function setPasswordResetToken(string $email, string $link): void
@@ -135,12 +135,14 @@ class User extends Model
         $_SESSION['deletelink'] = $link;
 
         mail("<$email>", 'Подтвердите удаление Вашего аккаунта', EMAIL_ACCOUNT_DELETE_MESSAGE_START . $link . EMAIL_MESSAGE_END,
-            implode("\r\n", EMAIL_HEADERS)); // Подрихтовать текст
+            implode("\r\n", EMAIL_HEADERS));
     }
 
     public function deleteUser(int $user_id): void
     {        
         $this->delete('users', $user_id);
+        $this->delete('names', $user_id, 'user_id');
+        $this->delete('surnames', $user_id, 'user_id');
 
         $user_lots = $this->getOne('lots', $user_id, 'owner_id');
 

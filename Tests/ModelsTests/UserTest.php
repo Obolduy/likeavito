@@ -44,6 +44,46 @@ class UserTest extends TestCase
         ];
     }
 
+    public function setPasswordResetTokenProvider()
+    {
+        return [
+            ['test@mail.ru', '8d35b1c4e76d8de0e7fd6485e1ee6957'],
+            ['fern@yande.ru', '033871c67ca9bdb0f04bdb391d98d585'],
+            ['newemail@iss.ru', '69efef72045d440fc065d054261eddc0'],
+            ['Emewail@wadw.ru', '74d599cd9a5b638c9ab94a1e72f2eddc']
+        ];
+    }
+
+    public function resetPasswordProvider()
+    {
+        return [
+            ['test@mail.ru', '8d35b1c4e76d8de0e7fd6485e1ee6957', 111111],
+            ['fern@yande.ru', '033871c67ca9bdb0f04bdb391d98d585', 111111],
+            ['newemail@iss.ru', '69efef72045d440fc065d054261eddc0', 111111],
+            ['Emewail@wadw.ru', '74d599cd9a5b638c9ab94a1e72f2eddc', 111111]
+        ];
+    }
+
+    public function sendDeleteMailProvider()
+    {
+        return [
+            ['test@mail.ru', 1],
+            ['fern@yande.ru', 5],
+            ['newemail@iss.ru', 12],
+            ['Emewail@wadw.ru', 18]
+        ];
+    }
+
+    public function getFullUserInfoProvider()
+    {
+        return [
+            [null],
+            [45],
+            [46],
+            [null]
+        ];
+    }
+
     public function registrationCheckProvider()
     {
         return [
@@ -192,6 +232,111 @@ class UserTest extends TestCase
 
         foreach ($token as $elem) {
             $this->assertEquals(trim($match[1]), $elem['token']);
+        }
+    }
+
+    /**
+     * @dataProvider setPasswordResetTokenProvider
+     */
+
+    public function testSetPasswordResetToken($email, $link) 
+    {
+        $this->user->setPasswordResetToken($email, $link);
+
+        $data = $this->user->getOne('password_reset', $email, 'email');
+
+        foreach ($data as $elem) {
+            $this->assertNotNull($elem['email']);
+            $this->assertNotNull($elem['token']);
+        }
+    }
+
+    /**
+     * @dataProvider resetPasswordProvider
+     */
+
+    public function testResetPassword($email, $token, $password) 
+    {
+        $this->user->resetPassword($password, $token, $email);
+
+        $data = $this->user->getOne('users', $email, 'email');
+
+        foreach ($data as $elem) {
+            $this->assertEquals($elem['password'], $password);
+        }
+
+        $data = $this->user->getOne('password_reset', $email, 'email');
+
+        foreach ($data as $elem) {
+            $this->assertNull($elem['token']);
+        }
+    }
+
+    /**
+     * @dataProvider sendDeleteMailProvider
+     */
+
+    public function testSendDeleteMail($email, $user_id) 
+    {
+        $this->user->sendDeleteMail($email);
+
+        $data = scandir('C:\openserver\userdata\temp\email');
+
+        foreach ($data as $elem) {
+            if (preg_match('#' . date('Y-m-d') . '_(.+)\.txt#', $elem)) {
+                $match = $elem;
+            }
+        }
+
+        $this->assertFileIsReadable("C:\\openserver\\userdata\\temp\\email\\$match");
+
+        $file = file("C:\\openserver\\userdata\\temp\\email\\$match");
+
+        $line = $file[13];
+
+        preg_match('#http://likeavito/user/delete/(.+)#', $line, $match);
+
+        $this->assertNotNull(trim($match[0]));
+
+        $stack = [$user_id => trim($match[0])];
+
+        return $stack;
+    }
+
+    /**
+     * @depends testSendDeleteMail
+     */
+
+    public function testDeleteUser($stack) 
+    {
+        $this->user->deleteUser($stack[0]);
+
+        $lots = $this->model->getOne('lots', $stack[0], 'owner_id');
+        $user = $this->model->getOne('users', $stack[0], 'id');
+        $name = $this->model->getOne('names', $stack[0], 'user_id');
+        $surname = $this->model->getOne('surnames', $stack[0], 'user_id');
+
+        $this->assertNull($lots);
+        $this->assertNull($user);
+        $this->assertNull($name);
+        $this->assertNull($surname);
+        $this->assertTrue(!is_dir("/img/users/{$stack[0]}")); 
+    }
+
+    /**
+     * @dataProvider getFullUserInfoProvider
+     */
+
+    public function testGetFullUserInfo($user_id) 
+    {
+        $user = $this->user->getFullUserInfo($user_id);
+
+        foreach ($user as $elem) {
+            $this->assertNotNull($elem['id']);
+            $this->assertNotNull($elem['email']);
+            $this->assertNotNull($elem['name']);
+            $this->assertNotNull($elem['surname']);
+            $this->assertNotNull($elem['city']);
         }
     }
 
