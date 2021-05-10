@@ -19,7 +19,7 @@ class UserApi extends ModelApi
 
         foreach($dataArray as $elem) {
             $userData[] = ["id" => $elem['id'], "login" => $elem['login'], "name" => $elem['name'],
-                "surname" => $elem['surname'], "city" => $elem['city']];
+                "surname" => $elem['surname'], "city" => $elem['city'], "link" => "http://likeavito/users/{$elem['id']}"];
         }
 
         return $this->showJson($userData);

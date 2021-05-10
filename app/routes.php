@@ -5,11 +5,13 @@ use App\Controllers\{
     DeleteLotController, ChangeLotController, ChangeUserController, AddLotController, AddCommentController,
     ShowOtherUserController, AdminLoginController, AdminPanelController, AdminChangeUserController, AdminChangeLotController,
     AdminChangeCommentController, AdminDeleteUserController, AdminDeleteLotController, AdminDeleteCommentController,
-    ResetPasswordController, ApiGetUserController};
+    ResetPasswordController, ApiGetUserController, ApiGetLotController, ApiChangeLotController};
 
 return [
     new Route('/api/getuser/{user_id}', [ApiGetUserController::class, 'apiGetUser']),
-    new Route('/api/getuser/{user_id}/lots', [ApiGetUserController::class, 'apiGetUser']),
+    new Route('/api/getuser/{user_id}/lots', [ApiGetLotController::class, 'apiGetUsersLots']),
+    new Route('/api/getlot/{lot_id}', [ApiGetLotController::class, 'apiGetLot']),
+    new Route('/api/changelot/{lot_id}/{data}', [ApiChangeLotController::class, 'apiChangeLot']),
     new Route('/', [MainPageController::class, 'showlots']),
     new Route('/registration', [RegistrationController::class, 'registration'], ['noauthmiddleware']),
     new Route('/registration/{token}', [RegistrationController::class, 'verifyemail'], ['authmiddleware']),
