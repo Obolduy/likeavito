@@ -48,20 +48,19 @@ class LotsApi extends ModelApi
     public function changeLot(int $lot_id, $data)
     {
         $array = json_decode($data, true);
-        var_dump($array);
 
-        // $query = $this->db->prepare("UPDATE lots SET title = ?, price = ?, category_id = ?, description = ?, updated_at = now()
-        //     WHERE id = $lot_id");
-        // $query->execute([$array['title'], $array['price'], $array['category_id'], $array['description']]);
+        $query = $this->db->prepare("UPDATE lots SET title = ?, price = ?, category_id = ?, description = ?, update_time = now()
+            WHERE id = ?");
+        $query->execute([$array['title'], $array['price'], $array['category_id'], $array['description'], $lot_id]);
 
-        // $query = $this->db->query("SELECT id, category_id FROM lots WHERE id = $lot_id");
+        $query = $this->db->query("SELECT id, category_id FROM lots WHERE id = $lot_id");
                     
-        // $dataArray = $this->show($query);
+        $dataArray = $this->show($query);
 
-        // foreach ($dataArray as $elem) {
-        //     $lotData[] = ["id" => $elem['id'], "link" => "http://likeavito/category/{$elem['category_id']}/{$elem['id']}"];
-        // }
+        foreach ($dataArray as $elem) {
+            $lotData[] = ["id" => $elem['id'], "link" => "http://likeavito/category/{$elem['category_id']}/{$elem['id']}"];
+        }
 
-        // return $this->showJson($lotData);
+        return $this->showJson($lotData);
     }
 }

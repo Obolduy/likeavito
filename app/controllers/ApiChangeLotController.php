@@ -8,10 +8,13 @@ class ApiChangeLotController
     {
         $lot = new LotsApi();
 
-        // header('HTTP/1.0 201');
-        // header('Content-Type: application/json; charset=UTF-8');
-        preg_replace();
+        header('HTTP/1.0 201');
+        header('Content-Type: application/json; charset=UTF-8');
+        $data = preg_replace('#%7B#', '{', $data);
+        $data = preg_replace('#%7D#', '}', $data);
+        $data = preg_replace('#%22#', '"', $data);
+        $data = preg_replace('#%20#', ' ', $data);
     
-        echo $lot->changeLot($lot_id, $data); // заменить символы на нужные регуляркой
+        echo $lot->changeLot($lot_id, $data);
     }
 }
