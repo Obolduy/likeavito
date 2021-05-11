@@ -5,7 +5,8 @@ use App\Controllers\{
     DeleteLotController, ChangeLotController, ChangeUserController, AddLotController, AddCommentController,
     ShowOtherUserController, AdminLoginController, AdminPanelController, AdminChangeUserController, AdminChangeLotController,
     AdminChangeCommentController, AdminDeleteUserController, AdminDeleteLotController, AdminDeleteCommentController,
-    ResetPasswordController, ApiGetUserController, ApiGetLotController, ApiChangeLotController, ApiAuthUserController};
+    ResetPasswordController, ApiGetUserController, ApiGetLotController, ApiChangeLotController, ApiAuthUserController,
+    ApiDeleteLotController};
 
 return [
     new Route('/api/login', [ApiAuthUserController::class, 'apiLoginUser']),
@@ -13,6 +14,7 @@ return [
     new Route('/api/getuser/{user_id}/lots', [ApiGetLotController::class, 'apiGetUsersLots']),
     new Route('/api/getlot/{lot_id}', [ApiGetLotController::class, 'apiGetLot']),
     new Route('/api/changelot/{lot_id}/{data}', [ApiChangeLotController::class, 'apiChangeLot'], ['apiauthmiddleware', 'apiusercheckauthmiddleware']),
+    new Route('/api/deletelot/{lot_id}', [ApiDeleteLotController::class, 'apiDeleteLot'], ['apiauthmiddleware', 'apiusercheckauthmiddleware']),
     new Route('/', [MainPageController::class, 'showlots']),
     new Route('/registration', [RegistrationController::class, 'registration'], ['noauthmiddleware']),
     new Route('/registration/{token}', [RegistrationController::class, 'verifyemail'], ['authmiddleware']),

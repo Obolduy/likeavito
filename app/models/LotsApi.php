@@ -1,5 +1,6 @@
 <?php
 namespace App\Models;
+use App\Controllers\DeleteLotController;
 
 class LotsApi extends ModelApi
 {
@@ -8,7 +9,7 @@ class LotsApi extends ModelApi
         $this->db = self::connection();
     }
 
-    public function getLot(int $lot_id)
+    public function getLot(int $lot_id): string
     {
         $query = $this->db->query("SELECT l.id, l.title, c.category, l.price, l.description,
             u.login, l.add_time, l.update_time, l.category_id
@@ -27,7 +28,7 @@ class LotsApi extends ModelApi
         return $this->showJson($lotData);
     }
 
-    public function getUsersLots(int $user_id)
+    public function getUsersLots(int $user_id): string
     {
         $query = $this->db->query("SELECT l.id, l.title, c.category, l.price, l.description,
             l.add_time, l.update_time, l.category_id FROM lots AS l
@@ -45,7 +46,7 @@ class LotsApi extends ModelApi
         return $this->showJson($lotData);
     }
 
-    public function changeLot(int $lot_id, $data)
+    public function changeLot(int $lot_id, $data): string
     {
         $array = json_decode($data, true);
 
@@ -62,5 +63,12 @@ class LotsApi extends ModelApi
         }
 
         return $this->showJson($lotData);
+    }
+
+    public function deleteLot(int $lot_id): string
+    {
+        DeleteLotController::deleteLot($lot_id);
+
+        return $this->showJson(['Success!' => 'Lot has deleted']);
     }
 }

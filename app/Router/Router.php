@@ -16,7 +16,7 @@ class Router
                 if ($elem->middleware !== null) {
                     foreach ($elem->middleware as $middlewares) {
                         $middlewareClass = "App\Middlewares\\$middlewares";
-                        $middleware = (new $middlewareClass)->middleware($this->uri);
+                        $middleware = (new $middlewareClass)->middleware($elem->uri);
                     }
                 }
 
@@ -36,7 +36,7 @@ class Router
                 if ($elem->middleware !== null) {
                     foreach ($elem->middleware as $middlewares) {
                         $middlewareClass = "App\Middlewares\\$middlewares";
-                        $middleware = (new $middlewareClass)->middleware($this->uri);
+                        $middleware = (new $middlewareClass)->middleware($elem->uri);
                     }
                 }
 

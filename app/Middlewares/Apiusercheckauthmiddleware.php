@@ -7,11 +7,11 @@ class Apiusercheckauthmiddleware implements IMiddleware
 {    
     public function middleware($uri)
     {
-        preg_match('#/[0-9]/#', $uri, $match);
-        preg_replace('#/#', '', $lot_id);
+        preg_match('#/[0-9]+#', $_SERVER['REQUEST_URI'], $lot_id);
+        $lot_id = preg_replace('#/#', '', $lot_id);
 
         $model = new Model();
-        $lot_owner = $model->getOne('lots', $lot_id);
+        $lot_owner = $model->getOne('lots', $lot_id[0]);
         
         if ($model->getOne('api_user_tokens', $lot_owner[0]['owner_id'], 'user_id') == null) {
             header('HTTP/1.0 200');
