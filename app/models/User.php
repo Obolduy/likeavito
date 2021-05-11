@@ -97,7 +97,7 @@ class User extends Model
 
         $this->update("UPDATE users SET remember_token = ? WHERE id = ?", [$remember_token, $id]);
 
-        setcookie('remember_token', $remember_token);
+        setcookie('remember_token', $remember_token, time()+2678400);
     }
 
     public function sendResetEmail(string $email): void
