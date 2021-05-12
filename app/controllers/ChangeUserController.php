@@ -27,11 +27,11 @@ class ChangeUserController
 
             if ($check == true) {
                 if ($_FILES['photo']['name']) {
-                    if (!is_dir("img/users/$user_id")) {
-                        mkdir("img/users/$user_id");
+                    if (!is_dir("img/users/{$_SESSION['user']['id']}")) {
+                        mkdir("img/users/{$_SESSION['user']['id']}");
                     }
                     
-                    $dir = "img/users/$user_id";
+                    $dir = "img/users/{$_SESSION['user']['id']}";
                     $ext = '';
 
                     preg_match_all('#\.[A-Za-z]{3,4}$#', $_FILES['photo']['name'], $ext);
