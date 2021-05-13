@@ -23,10 +23,10 @@ class Comments extends Model
 
     public function getFullCommentInfo(int $comment_id = null)
     {
-        if ($comment_id !== null) {
+        if ($comment_id != null) {
             $query = $this->db->query("SELECT c.*, u.login, l.title FROM comments AS c
                 LEFT JOIN users AS u ON u.id = c.user_id
-                    LEFT JOIN lots AS l ON l.lot_id = l.id WHERE c.id = $comment_id");
+                    LEFT JOIN lots AS l ON c.lot_id = l.id WHERE c.id = $comment_id");
         } else {
             $query = $this->db->query("SELECT c.*, u.login, l.title FROM comments AS c
                 LEFT JOIN users AS u ON u.id = c.user_id

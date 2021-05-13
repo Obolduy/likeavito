@@ -31,6 +31,16 @@ class LotsTest extends TestCase
         ];
     }
 
+    public function getFullLotInfoProvider()
+    {
+        return [
+            [null, [26, 'jmghgnfbd', 'Различная электроника', null]],
+            [8, [8, 'jmghgnfbd', 'Различная электроника', null]],
+            [26, [26, 'newlogin3', 'Одежда', null]],
+            [27, [27, 'jmghgnfbd', 'Одежда', null]]
+        ];
+    }
+
     /**
      * @dataProvider addLotProvider
      */
@@ -58,6 +68,22 @@ class LotsTest extends TestCase
 
         foreach ($data as $elem) {
             $this->assertEquals($expected, $elem['id']);
+        }
+    }
+
+    /**
+     * @dataProvider getFullLotInfoProvider
+     */
+
+    public function testGetFullLotInfo($lot_id, $expected) 
+    {
+        $data = $this->lot->getFullLotInfo($lot_id);
+
+        foreach ($data as $elem) {
+            $this->assertEquals($expected[0], $elem['id']);
+            $this->assertEquals($expected[1], $elem['login']);
+            $this->assertEquals($expected[2], $elem['category']);
+            $this->assertEquals($expected[3], $elem['picture']);
         }
     }
 

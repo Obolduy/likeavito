@@ -21,6 +21,16 @@ class CommentsTest extends TestCase
         ];
     }
 
+    public function getFullCommentInfoProvider()
+    {
+        return [
+            [2, [2, 'nxtewwwlogin']],
+            [3, [3, 'mjhgggtt']],
+            [4, [4, 'newlogin']],
+            [5, [5, 'login1234']]
+        ];
+    }
+
     /**
      * @dataProvider addCommentProvider
      */
@@ -33,6 +43,20 @@ class CommentsTest extends TestCase
 
         foreach ($data as $elem) {
             $this->assertEquals($expected, $elem['id']);
+        }
+    }
+
+    /**
+     * @dataProvider getFullCommentInfoProvider
+     */
+
+    public function testGetFullCommentInfo($comment_id, $expected) 
+    {
+        $data = $this->comment->getFullCommentInfo($comment_id);
+
+        foreach ($data as $elem) {
+            $this->assertEquals($expected[0], $elem['id']);
+            $this->assertEquals($expected[1], $elem['login']);
         }
     }
 
