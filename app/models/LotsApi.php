@@ -46,13 +46,17 @@ class LotsApi extends ModelApi
         return $this->showJson($lotData);
     }
 
-    public function changeLot(int $lot_id, $data): string
+    public function changeLot(int $lot_id, $data)
     {
-        $array = json_decode($data, true);
+        $query = "UPDATE lots SET ";
+        foreach ($data as $key => $value) {
+            $query .= "$key = ?, ";
+            $execute[] = $value;
+        }
+        $execute[] = $lot_id;
 
-        $query = $this->db->prepare("UPDATE lots SET title = ?, price = ?, category_id = ?, description = ?, update_time = now()
-            WHERE id = ?");
-        $query->execute([$array['title'], $array['price'], $array['category_id'], $array['description'], $lot_id]);
+        $query = $this->db->prepare("$query update_time = now() WHERE id = ?");
+        $query->execute($execute);
 
         $query = $this->db->query("SELECT id, category_id FROM lots WHERE id = $lot_id");
                     

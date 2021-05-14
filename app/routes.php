@@ -13,7 +13,7 @@ return [
     new Route('/api/getuser/{user_id}', [ApiGetUserController::class, 'apiGetUser']),
     new Route('/api/getuser/{user_id}/lots', [ApiGetLotController::class, 'apiGetUsersLots']),
     new Route('/api/getlot/{lot_id}', [ApiGetLotController::class, 'apiGetLot']),
-    new Route('/api/changelot/{lot_id}/{data}', [ApiChangeLotController::class, 'apiChangeLot'], ['apiauthmiddleware', 'apiusercheckauthmiddleware']),
+    new Route('/api/changelot/{lot_id}', [ApiChangeLotController::class, 'apiChangeLot'], ['apiauthmiddleware', 'apiusercheckauthmiddleware']),
     new Route('/api/deletelot/{lot_id}', [ApiDeleteLotController::class, 'apiDeleteLot'], ['apiauthmiddleware', 'apiusercheckauthmiddleware']),
     new Route('/', [MainPageController::class, 'showlots']),
     new Route('/registration', [RegistrationController::class, 'registration'], ['noauthmiddleware']),
