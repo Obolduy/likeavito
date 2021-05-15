@@ -14,7 +14,8 @@ class ChangeCommentController
 
             new View('changecomment', ['title' => 'Изменить комментарий']);
         } else {
-            $comments->update("UPDATE comments SET description = ? WHERE id = ?", [strip_tags($_POST['description']), $comment_id]);
+            $comments->update("UPDATE comments SET description = ?, update_time = now() WHERE id = ?",
+                [strip_tags($_POST['description']), $comment_id]);
         }
     }
 }
