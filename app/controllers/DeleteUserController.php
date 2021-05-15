@@ -3,7 +3,7 @@ namespace App\Controllers;
 use App\Models\User;
 use App\View\View;
 
-class DeleteLotController
+class DeleteUserController
 {   
     public static function deleteRequest(): void
     {
@@ -23,7 +23,7 @@ class DeleteLotController
     public static function deleteUser(string $token): void
     {
         if ($token == $_SESSION['deletelink']) {
-            (new User)->deleteUser($user_id);
+            (new User)->deleteUser($_SESSION['user']['id']);
 
             $_SESSION['user'] = null;
             $_SESSION['deletelink'] = null;
