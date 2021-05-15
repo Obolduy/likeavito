@@ -4,6 +4,9 @@ use App\Models\UserApi;
 
 class ApiAuthUserController
 {  
+    /**
+     * Login\registration of already registred user by API
+    */
     public static function apiLoginUser()
     {
         $user = new UserApi();

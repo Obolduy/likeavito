@@ -9,6 +9,11 @@ class LotsApi extends ModelApi
         $this->db = self::connection();
     }
 
+    /**
+     * Get lot by id
+     * @param int lot`s id
+     * @return string JSON \w lot information 
+     */
     public function getLot(int $lot_id): string
     {
         $query = $this->db->query("SELECT l.id, l.title, c.category, l.price, l.description,
@@ -28,6 +33,12 @@ class LotsApi extends ModelApi
         return $this->showJson($lotData);
     }
 
+    /**
+     * Get lots by user`s id
+     * @param int user`s id
+     * @return string JSON \w lots information 
+     */
+
     public function getUsersLots(int $user_id): string
     {
         $query = $this->db->query("SELECT l.id, l.title, c.category, l.price, l.description,
@@ -46,7 +57,14 @@ class LotsApi extends ModelApi
         return $this->showJson($lotData);
     }
 
-    public function changeLot(int $lot_id, $data)
+    /**
+     * Change lot by id
+     * @param int user`s id
+     * @param array json_decode array
+     * @return string JSON \w lot information 
+     */
+
+    public function changeLot(int $lot_id, array $data): string
     {
         $query = "UPDATE lots SET ";
         foreach ($data as $key => $value) {
@@ -68,6 +86,12 @@ class LotsApi extends ModelApi
 
         return $this->showJson($lotData);
     }
+
+    /**
+     * Delete lot by id
+     * @param int lot`s id
+     * @return string JSON \w information 
+     */
 
     public function deleteLot(int $lot_id): string
     {

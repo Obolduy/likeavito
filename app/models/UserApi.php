@@ -8,7 +8,13 @@ class UserApi extends ModelApi
         $this->db = self::connection();
     }
 
-    public function getUserInfo(int $user_id)
+    /**
+     * Get user by id
+     * @param int user`s id
+     * @return string JSON \w user information 
+     */
+
+    public function getUserInfo(int $user_id): string
     {
         $query = $this->db->query("SELECT u.id, u.login, u.email, c.city, n.name, s.surname FROM users AS u
             LEFT JOIN cities AS c ON c.id = u.city_id
@@ -24,6 +30,13 @@ class UserApi extends ModelApi
 
         return $this->showJson($userData);
     }
+
+    /**
+     * Create API access for user
+     * @param string user`s login
+     * @param string user`s password
+     * @return string|bool JSON \w information or true\false if it`s first time sign in
+     */
 
     public function userLogin(string $login, string $password): string
     {
@@ -41,6 +54,12 @@ class UserApi extends ModelApi
         }
     }
 
+    /**
+     * Check user`s token by id
+     * @param int user`s id
+     * @return bool 
+     */
+
     private function checkApiToken(int $user_id): bool
     {
         $query = $this->db->query("SELECT token, actual_from FROM api_user_tokens WHERE user_id = $user_id");
@@ -53,6 +72,13 @@ class UserApi extends ModelApi
             return true;
         }
     }
+
+    /**
+     * Set user API Token
+     * @param string login
+     * @param int user`s id
+     * @return string JSON \w user information 
+     */
 
     private function setUserApiToken(string $login, int $user_id): string
     {

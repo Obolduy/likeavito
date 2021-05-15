@@ -4,6 +4,12 @@ use App\Models\LotsApi;
 
 class ApiGetLotController
 {  
+    /**
+     * Show all user`s lots by user`s id
+     * @param int user`s id
+     * @return string JSON \w lots 
+     */
+
     public static function apiGetUsersLots(int $user_id)
     {
         $lot = new LotsApi();
@@ -13,6 +19,12 @@ class ApiGetLotController
     
         echo $lot->getUsersLots($user_id);
     }
+
+    /**
+     * Get lot by id
+     * @param int lot`s id
+     * @return string JSON \w lot information 
+     */
 
     public static function apiGetLot(int $lot_id)
     {

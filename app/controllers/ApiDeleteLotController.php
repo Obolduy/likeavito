@@ -4,6 +4,12 @@ use App\Models\LotsApi;
 
 class ApiDeleteLotController
 {  
+    /**
+     * Delete lot by id
+     * @param int lot`s id
+     * @return string JSON \w information 
+     */
+
     public static function apiDeleteLot(int $lot_id)
     {
         $lot = new LotsApi();
