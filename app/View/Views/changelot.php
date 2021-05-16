@@ -1,4 +1,4 @@
-<form method="POST">
+<form enctype="multipart/form-data" method="POST">
     <?php foreach($lot as $elem): ?>
     <div>Введите название: <input type="text" name="title" value="<?= $elem['title'] ?>" required></div>
     <div>Введите цену: <input type="text" name="price" value="<?= $elem['price'] ?>" required></div>
@@ -9,5 +9,6 @@
         <?php endforeach; ?>
     </select></div>
     <?php endforeach; ?>
+    <div>Загрузите картинки (Необязательно): <input type="file" accept="image/*" name="photos[]" multiple></div>
     <div><input type="submit" name="submit"></div>
 </form>
