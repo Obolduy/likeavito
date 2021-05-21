@@ -21,7 +21,8 @@ class AdminChangeCommentController
 
             new View('adminchangecomment', ['comment' => $comment, 'title' => 'Изменить комментарий']);
         } else {
-            $comments->update("UPDATE comments SET description = ? WHERE id = ?", [strip_tags($_POST['description']), $comment_id]);
+            $comments->update("UPDATE comments SET description = ? WHERE id = ?", [strip_tags($_POST['description'], '<p></p><br/><br><i><b><s><u><strong>'),
+                $comment_id]);
         }
     }
 }

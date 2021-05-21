@@ -20,7 +20,7 @@ class AddLotController
 
             $title = strip_tags($_POST['title']);
             $price = strip_tags($_POST['price']);
-            $description = strip_tags($_POST['description']);
+            $description = strip_tags($_POST['description'], '<p></p><br/><br><i><b><s><u><strong>');
             $photo = $_FILES['photos']['name'];
             $category_id = strip_tags($_POST['category_id']);
             $owner_id = $_SESSION['user']['id'];

@@ -15,7 +15,7 @@ class ChangeCommentController
             new View('changecomment', ['title' => 'Изменить комментарий']);
         } else {
             $comments->update("UPDATE comments SET description = ?, update_time = now() WHERE id = ?",
-                [strip_tags($_POST['description']), $comment_id]);
+                [strip_tags($_POST['description'], '<p></p><br/><br><i><b><s><u><strong>'), $comment_id]);
         }
     }
 }

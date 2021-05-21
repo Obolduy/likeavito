@@ -32,7 +32,7 @@ class AdminChangeLotController
 
             $lot->update("UPDATE lots SET title = ?, price = ?, description = ?, category_id = ?, update_time = now() WHERE id = ?",
                 [strip_tags($_POST['title']), strip_tags($_POST['price']),
-                    strip_tags($_POST['description']), $_POST['category_id'], $lot_id]);
+                    strip_tags($_POST['description'], '<p></p><br/><br><i><b><s><u><strong>'), $_POST['category_id'], $lot_id]);
         }
     }
 }

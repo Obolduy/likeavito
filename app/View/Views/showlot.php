@@ -13,7 +13,7 @@
     <div>Введите текст комментария: <textarea name="description"></textarea></div>
     <div><input type="submit" name="submit"></div>
 </form><br>
-<?php foreach($comments as $comment): ?>
+<?php foreach ($comments as $comment): ?>
     <div class="description"><?= $comment['description'] ?></div>
     <div class="add_time">Добавлено: <?= $comment['add_time'] ?></div>
     <br>
