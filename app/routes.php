@@ -6,7 +6,7 @@ use App\Controllers\{
     ShowOtherUserController, AdminLoginController, AdminPanelController, AdminChangeUserController, AdminChangeLotController,
     AdminChangeCommentController, AdminDeleteUserController, AdminDeleteLotController, AdminDeleteCommentController,
     ResetPasswordController, ApiGetUserController, ApiGetLotController, ApiChangeLotController, ApiAuthUserController,
-    ApiDeleteLotController, ChangeCommentController};
+    ApiDeleteLotController, ChangeCommentController, DeleteCommentController};
 
 return [
     new Route('/api/login', [ApiAuthUserController::class, 'apiLoginUser']),
@@ -26,7 +26,8 @@ return [
     new Route('/addlot', [AddLotController::class, 'newLot'], ['authmiddleware', 'emailcheckmiddleware']),
     new Route('/managelot/{lot_id}/delete', [DeleteLotController::class, 'deleteLot'], ['authmiddleware', 'emailcheckmiddleware']),
     new Route('/managelot/{lot_id}/change', [ChangeLotController::class, 'changeLot'], ['authmiddleware', 'emailcheckmiddleware']),
-    new Route('/changecomment/{comment_id}', [ChangeCommentController::class, 'changeComment']),
+    new Route('/changecomment/{comment_id}', [ChangeCommentController::class, 'changeComment'], ['authmiddleware', 'emailcheckmiddleware']),
+    new Route('/deletecomment/{comment_id}', [DeleteCommentController::class, 'deleteComment'], ['authmiddleware', 'emailcheckmiddleware']),
     new Route('/user', [ShowUserController::class, 'showuser'], ['authmiddleware']),
     new Route('/user/change', [ChangeUserController::class, 'changeInformation'], ['authmiddleware', 'emailcheckmiddleware']),
     new Route('/user/delete', [DeleteUserController::class, 'deleterequest'], ['authmiddleware', 'emailcheckmiddleware']),
