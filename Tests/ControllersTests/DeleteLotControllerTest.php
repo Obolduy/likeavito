@@ -37,7 +37,13 @@ class DeleteLotControllerTest extends TestCase
 
         $data = $this->model->getOne('lots', $lot_id);
 
-        foreach($data as $elem) {
+        foreach ($data as $elem) {
+            $this->assertNull($elem);
+        }
+
+        $data = $this->model->getOne('lots_pictures', $lot_id, 'lot_id');
+
+        foreach ($data as $elem) {
             $this->assertNull($elem);
         }
     }
