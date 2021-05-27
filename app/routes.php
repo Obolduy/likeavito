@@ -29,6 +29,8 @@ return [
     new Route('/changecomment/{comment_id}', [ChangeCommentController::class, 'changeComment'], ['authmiddleware', 'emailcheckmiddleware']),
     new Route('/deletecomment/{comment_id}', [DeleteCommentController::class, 'deleteComment'], ['authmiddleware', 'emailcheckmiddleware']),
     new Route('/user', [ShowUserController::class, 'showuser'], ['authmiddleware']),
+    new Route('/user/showlots', [ShowUserController::class, 'showUsersLots'], ['authmiddleware']),
+    new Route('/user/showcomments', [ShowUserController::class, 'showUsersComments'], ['authmiddleware']),
     new Route('/user/change', [ChangeUserController::class, 'changeInformation'], ['authmiddleware', 'emailcheckmiddleware']),
     new Route('/user/delete', [DeleteUserController::class, 'deleterequest'], ['authmiddleware', 'emailcheckmiddleware']),
     new Route('/user/delete/{token}', [DeleteUserController::class, 'deleteuser'], ['authmiddleware', 'emailcheckmiddleware']),

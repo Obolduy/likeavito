@@ -11,5 +11,7 @@
     <div class="registration_time">Дата регистрации: <?= $elem['registration_time'] ?></div>
     <?php endforeach; ?>
     <div class="change"><a href="/user/change">Изменить данные</a></div>
+    <div class="change"><a href="/user/showcomments">Мои комментарии</a></div>
+    <div class="change"><a href="/user/showlots">Мои объявления</a></div>
     <?php if ($_SESSION['user']['status_id'] == 2): ?><div class="admin"><a href="/admin">Вход в админ панель</a></div><?php endif;?>
 </div>
