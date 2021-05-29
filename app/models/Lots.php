@@ -53,7 +53,7 @@ class Lots extends Model
     }
 
     /**
-	 * Get left join query with full lot (or all lots if ID is null) info (from 'lots', 'users', 'lots_category' and 'lots_pictures')
+	 * Get left join query with full (\w no pictures) lot (or all lots if ID is null) info (from 'lots', 'users', 'lots_category')
 	 * @param int lot`s id
 	 * @return array
 	 */
@@ -61,15 +61,13 @@ class Lots extends Model
     public function getFullLotInfo(int $lot_id = null)
     {
         if ($lot_id !== null) {
-            $query = $this->db->query("SELECT l.*, u.login, c.category, p.picture FROM lots AS l
+            $query = $this->db->query("SELECT l.*, u.login, c.category FROM lots AS l
                 LEFT JOIN users AS u ON u.id = l.owner_id
-                    LEFT JOIN lots_category AS c ON l.category_id = c.id
-                        LEFT JOIN lots_pictures AS p ON l.id = p.lot_id WHERE l.id = $lot_id");
+                    LEFT JOIN lots_category AS c ON l.category_id = c.id WHERE l.id = $lot_id");
         } else {
-            $query = $this->db->query("SELECT l.*, u.login, c.category, p.picture FROM lots AS l
+            $query = $this->db->query("SELECT l.*, u.login, c.category FROM lots AS l
                 LEFT JOIN users AS u ON u.id = l.owner_id
-                    LEFT JOIN lots_category AS c ON l.category_id = c.id
-                        LEFT JOIN lots_pictures AS p ON l.id = p.lot_id");
+                    LEFT JOIN lots_category AS c ON l.category_id = c.id");
         }
              
         return $this->show($query);

@@ -9,7 +9,7 @@ class ShowLotController
     public static function showLot(int $category_id, int $lot_id): void
     {
         $lots = new Lots;
-        $lot = $lots->getOne('lots', $lot_id);
+        $lot = $lots->getFullLotInfo($lot_id);
         $pictures = $lots->getOne('lots_pictures', $lot_id, 'lot_id');
 
         $comments = ( new Comments )->getOne('comments', $lot_id, 'lot_id');

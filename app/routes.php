@@ -22,7 +22,7 @@ return [
     new Route('/logout', [LoginController::class, 'logout']),
     new Route('/category/{category_id}', [MainPageController::class, 'showcategory']),
     new Route('/category/{category_id}/{lot_id}', [ShowLotController::class, 'showlot']),
-    new Route('/category/{category_id}/{lot_id}/add_comment', [AddCommentController::class, 'addComment'], ['authmiddleware', 'emailcheckmiddleware']),
+    new Route('/category/{category_id}/{lot_id}/addcomment', [AddCommentController::class, 'addComment'], ['AuthMiddleware', 'emailcheckmiddleware']),
     new Route('/addlot', [AddLotController::class, 'newLot'], ['authmiddleware', 'emailcheckmiddleware']),
     new Route('/managelot/{lot_id}/delete', [DeleteLotController::class, 'deleteLot'], ['authmiddleware', 'emailcheckmiddleware']),
     new Route('/managelot/{lot_id}/change', [ChangeLotController::class, 'changeLot'], ['authmiddleware', 'emailcheckmiddleware']),
