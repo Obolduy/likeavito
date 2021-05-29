@@ -1,2 +1,1 @@
-Tests
-Decoration (+ photo & co.)
+Decoration

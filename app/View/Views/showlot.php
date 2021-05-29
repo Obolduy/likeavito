@@ -1,4 +1,7 @@
 <div class="lot">
+    <?php foreach($pictures as $picture): ?>
+    <div><img src="http://likeavito/img/lots/<?= $picture['lot_id'] ?>/<?= $picture['picture'] ?>" alt="Картинки"></div>
+    <?php endforeach; ?>
     <?php foreach($lot as $elem): ?>
     <div class="title"><?= $elem['title'] ?></div>
     <div class="price">Цена: <?= $elem['price'] ?>₽</div>

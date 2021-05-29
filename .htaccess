@@ -1,4 +1,5 @@
 RewriteEngine On
 RewriteBase /
 
+RewriteCond %{REQUEST_URI} !^/img
 RewriteRule .+ index.php

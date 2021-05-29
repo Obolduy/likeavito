@@ -78,7 +78,7 @@ class RegistrationController
 
             $_SESSION['verifylink'] = null;
 
-            include_once $_SERVER['DOCUMENT_ROOT'] . '/App/Views/emailconfirm.php';
+            include_once $_SERVER['DOCUMENT_ROOT'] . '/App/View/Views/emailconfirm.php';
         }
     }
 }
