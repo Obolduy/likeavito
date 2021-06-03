@@ -13,6 +13,13 @@ class Chat extends Model
         $this->db->query("DROP TABLE chat_$chat_id");
     }
 
+    public function refresh(string $chat_name)
+    {
+        $query = $this->db->query("SELECT c.*, u.login FROM $chat_name AS c LEFT JOIN users AS u ON c.user_id=u.id");
+
+        return $this->show($query);
+    }
+    
     public function showChat(int $user1_id, int $user2_id)
     {
         $chat = $this->db->query("SELECT * FROM chats_list WHERE (user1_id = $user1_id AND user2_id = $user2_id) OR

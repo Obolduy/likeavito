@@ -8,5 +8,6 @@
     <div class="surname">Фамилия: <?= $elem['surname'] ?></div>
     <div class="city">Город: <?= $elem['city'] ?></div>
     <div class="registration_time">Дата регистрации: <?= $elem['registration_time'] ?></div>
+    <div class="start_chat"><a href="/chat/<?= $elem['id'] ?>">Написать письмо</a></div>
     <?php endforeach; ?>
 </div>

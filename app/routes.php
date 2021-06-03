@@ -17,6 +17,7 @@ return [
     new Route('/api/deletelot/{lot_id}', [ApiDeleteLotController::class, 'apiDeleteLot'], ['apiauthmiddleware', 'apiusercheckauthmiddleware']),
     new Route('/', [MainPageController::class, 'showlots']),
     new Route('/chat/{user_id}', [ChatController::class, 'chat']),
+    new Route('/chat/refresh/{chat_name}', [ChatController::class, 'refreshchat']),
     new Route('/registration', [RegistrationController::class, 'registration'], ['noauthmiddleware']),
     new Route('/registration/{token}', [RegistrationController::class, 'verifyemail'], ['authmiddleware']),
     new Route('/login', [LoginController::class, 'login'], ['noauthmiddleware']),

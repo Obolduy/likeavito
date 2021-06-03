@@ -1,20 +1,21 @@
-<div class="chat__main">
-	<?php foreach ($messages as $message): ?>
-	<div class="messages">
-		<p class="message">
-			<?= $message['date'] ?>
-			<?php 
-				if($message['login'] != $_SESSION['user']['login']):
-					echo $message['login'];
-				else: echo 'Я';
-				endif;
-			?>:
-			<?= $message['message'] ?>
-		</p>
-	</div>
-	<?php endforeach; ?>
-</div>
+<div id="chat__main"></div>
 <form method="POST">
 	<input type="text" name="text">
 	<input type="submit" name="submit">
 </form>
+<script>
+	async function refreshChat(chatName) {
+    let response = await fetch('/chat/refresh/'+chatName);
+
+    if (response.ok) {
+        let text = await response.text();
+
+		let chat = document.getElementById('chat__main');
+
+		chat.innerHTML = text;
+    }
+}
+let chat = '<?php echo $chat_name; ?>';
+
+setInterval("refreshChat(chat)", 500);
+</script>
