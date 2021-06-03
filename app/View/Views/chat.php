@@ -1,18 +1,18 @@
 <div id="chat__main"></div>
 <form method="POST">
-	<input type="text" name="text">
-	<input type="submit" name="submit">
+	<input type="text" name="text" placeholder="Введите сообщение">
+	<input type="submit" name="submit" value="Отправить сообщение">
 </form>
-<script>
+<script type="text/javascript">
 	async function refreshChat(chatName) {
-    let response = await fetch('/chat/refresh/'+chatName);
+		let response = await fetch('/chat/refresh/'+chatName);
 
-    if (response.ok) {
-        let text = await response.text();
+		if (response.ok) {
+			let text = await response.text();
 
-		let chat = document.getElementById('chat__main');
+			let chat = document.getElementById('chat__main');
 
-		chat.innerHTML = text;
+			chat.innerHTML = text;
     }
 }
 let chat = '<?php echo $chat_name; ?>';

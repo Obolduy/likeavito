@@ -8,6 +8,7 @@
     <body>
         <div id="wrapper">
             <header>
+                <div class="main__title"><a href="/">Главная страница</a></div>
                 <?php if ($_SESSION['userauth']): ?>
                 <div class="user"><a href="/user"><?= $_SESSION['user']['login']; ?></a></div>
                 <div class="logout"><a href="/logout">Выйти</a></div>

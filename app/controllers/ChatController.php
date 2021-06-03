@@ -6,7 +6,7 @@ use App\View\View;
 
 class ChatController
 {   
-    public static function chat(int $user_id)
+    public static function openChat(int $user_id)
     {
         $chat = new Chat();
 
