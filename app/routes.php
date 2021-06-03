@@ -6,7 +6,7 @@ use App\Controllers\{
     ShowOtherUserController, AdminLoginController, AdminPanelController, AdminChangeUserController, AdminChangeLotController,
     AdminChangeCommentController, AdminDeleteUserController, AdminDeleteLotController, AdminDeleteCommentController,
     ResetPasswordController, ApiGetUserController, ApiGetLotController, ApiChangeLotController, ApiAuthUserController,
-    ApiDeleteLotController, ChangeCommentController, DeleteCommentController};
+    ApiDeleteLotController, ChangeCommentController, DeleteCommentController, ChatController};
 
 return [
     new Route('/api/login', [ApiAuthUserController::class, 'apiLoginUser']),
@@ -16,6 +16,7 @@ return [
     new Route('/api/changelot/{lot_id}', [ApiChangeLotController::class, 'apiChangeLot'], ['apiauthmiddleware', 'apiusercheckauthmiddleware']),
     new Route('/api/deletelot/{lot_id}', [ApiDeleteLotController::class, 'apiDeleteLot'], ['apiauthmiddleware', 'apiusercheckauthmiddleware']),
     new Route('/', [MainPageController::class, 'showlots']),
+    new Route('/chat/{user_id}', [ChatController::class, 'chat']),
     new Route('/registration', [RegistrationController::class, 'registration'], ['noauthmiddleware']),
     new Route('/registration/{token}', [RegistrationController::class, 'verifyemail'], ['authmiddleware']),
     new Route('/login', [LoginController::class, 'login'], ['noauthmiddleware']),

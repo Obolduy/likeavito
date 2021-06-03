@@ -2,4 +2,4 @@ RewriteEngine On
 RewriteBase /
 
 RewriteCond %{REQUEST_URI} !^/[img||js]
-#RewriteRule .+ index.php
+RewriteRule .+ index.php
