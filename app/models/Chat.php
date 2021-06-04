@@ -8,10 +8,25 @@ class Chat extends Model
         $this->db = self::connection();
     }
 
-    public function deleteChat(int $chat_id): void
+    /**
+	 * Deleting chat table and entry in chats_list table.
+	 * @param string chat`s name w\no "chat"
+	 * @return void
+	 */
+
+    public function deleteChat(string $chat_name): void
     {
-        $this->db->query("DROP TABLE chat_$chat_id");
+        $this->db->query("DROP TABLE chat_$chat_name");
+
+        $query = $this->db->prepare("DELETE FROM chats_list WHERE chat = ?");
+        $query->execute(["chat_$chat_name"]);
     }
+
+    /**
+	 * Reload chat`s messages. Using by AJAX.
+	 * @param string chat`s name w\"chat"
+	 * @return array
+	 */
 
     public function refresh(string $chat_name): array
     {
@@ -20,6 +35,13 @@ class Chat extends Model
         return $this->show($query);
     }
     
+    /**
+	 * Taking users ids and showing chat and call createChat method if it needs.
+	 * @param int Initiator`s id
+     * @param int Recipient`s id
+	 * @return array
+	 */
+
     public function showChat(int $user1_id, int $user2_id): array
     {
         $chat = $this->db->query("SELECT * FROM chats_list WHERE (user1_id = $user1_id AND user2_id = $user2_id) OR
@@ -40,12 +62,26 @@ class Chat extends Model
         return $this->show($query);
     }
 
+    /**
+     * @param string message text
+     * @param string chat`s name w\"chat"
+     * @param int Sender`s id
+	 * @return void
+	 */
+
     public function sendMessage(string $text, string $chat_name, int $user_id): void
     {
         $query = $this->db->prepare("INSERT INTO $chat_name SET message = ?, user_id = ?");
         $query->execute([$text, $user_id]);
     }
     
+    /**
+	 * Creating chat table and entry in chats_list table.
+	 * @param int Initiator`s id
+     * @param int Recipient`s id
+	 * @return void
+	 */
+
     private function createChat(int $user1_id, int $user2_id): void
     {
         $chat_name = md5($user1_id . '_' . $user2_id);
