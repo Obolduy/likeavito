@@ -2,15 +2,19 @@
 namespace App\Controllers;
 use App\Models\Lots;
 use App\View\View;
+use Predis\Autoloader;
+use Predis\Client;
 
 class MainPageController
 {   
     public static function showLots(): void
     {
-        $lot = new Lots();
+        Autoloader::register();
+        $cache = new Client();
 
-        $lots = $lot->getAll('lots', [0, 5], true);
-        $categories = $lot->getAll('lots_category');
+        $lots = $cache->hmget("new_lots", "link_1", "link_2", "link_3", "link_4", "link_5");
+        $categories = $cache->hmget("lots_categories", "category_1", "category_2", "category_3", "category_4",
+            "category_5", "category_6", "category_7", "category_8");
 
         new View('main', ['lots' => $lots, 'categories' => $categories, 'title' => 'Главная страница']);
     }

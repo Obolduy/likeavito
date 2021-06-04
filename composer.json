@@ -8,7 +8,8 @@
             "Tests\\": "Tests/"
         },
         "files": [
-            "config.php"
+            "config.php",
+            "predis/autoload.php"
         ]
     }
 }

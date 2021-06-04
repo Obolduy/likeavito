@@ -2,6 +2,8 @@
 namespace App\Controllers;
 use App\Models\Lots;
 use App\View\View;
+use Predis\Autoloader;
+use Predis\Client;
 
 class AddLotController
 {   
@@ -15,7 +17,7 @@ class AddLotController
             new View('addlot', ['categories' => $categories, 'title' => 'Добавление товара']);
         } else {
             if (!is_numeric($_POST['price'])) {
-                eader("Location: /addlot");
+                header("Location: /addlot");
             }
 
             $title = strip_tags($_POST['title']);
@@ -46,6 +48,17 @@ class AddLotController
 
                     $base->addLotPictures($name, $id);
                 }
+            }
+
+            $lots = $base->getAll('lots', [0, 5], true);
+            
+            Autoloader::register();
+            $cache = new Client();
+
+            for ($i = 1; $i <= 5; $i++) {
+                $cache->hmset("new_lots", [
+                    "link_$i" => "<a href=\"/category/{$lots[$i - 1]['category_id']}/{$lots[$i - 1]['id']}\">{$lots[$i - 1]['title']}</a>"
+                ]);
             }
 
             header("Location: /category/$category_id/$id");

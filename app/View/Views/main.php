@@ -1,7 +1,7 @@
 <nav>
     <ul>
         <?php foreach ($categories as $category): ?>
-        <li><a href="/category/<?= $category['id'] ?>/"><?= $category['category'] ?></a></li>
+        <li><?= $category ?></li>
         <?php endforeach ?>
 
     </ul>
@@ -10,7 +10,7 @@
 Последние 5 объявлений:
 <?php foreach ($lots as $lot): ?>
     <div>
-        <a href="/category/<?= $lot['category_id'] ?>/<?= $lot['id'] ?>"><?= $lot['title'] ?></a>
+        <?= $lot ?>
     </div>
 <?php endforeach; ?>
 </div>

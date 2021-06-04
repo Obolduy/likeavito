@@ -11,6 +11,7 @@ class ComposerStaticInit90a52acc7e118953688a90bee41268f4
         '320cde22f66dd4f5d3fd621d3e88b98f' => __DIR__ . '/..' . '/symfony/polyfill-ctype/bootstrap.php',
         '6124b4c8570aa390c21fafd04a26c69f' => __DIR__ . '/..' . '/myclabs/deep-copy/src/DeepCopy/deep_copy.php',
         'cfe4039aa2a78ca88e07dadb7b1c6126' => __DIR__ . '/../..' . '/config.php',
+        'fd8b16077a058f6411a0583df30d4ed7' => __DIR__ . '/../..' . '/predis/autoload.php',
     );
 
     public static $prefixLengthsPsr4 = array (
@@ -106,7 +107,9 @@ class ComposerStaticInit90a52acc7e118953688a90bee41268f4
         'App\\Controllers\\ChangeCommentController' => __DIR__ . '/../..' . '/App/Controllers/ChangeCommentController.php',
         'App\\Controllers\\ChangeLotController' => __DIR__ . '/../..' . '/App/Controllers/ChangeLotController.php',
         'App\\Controllers\\ChangeUserController' => __DIR__ . '/../..' . '/App/Controllers/ChangeUserController.php',
+        'App\\Controllers\\ChatController' => __DIR__ . '/../..' . '/App/Controllers/ChatController.php',
         'App\\Controllers\\Controller404' => __DIR__ . '/../..' . '/App/Controllers/Controller404.php',
+        'App\\Controllers\\DeleteCommentController' => __DIR__ . '/../..' . '/App/Controllers/DeleteCommentController.php',
         'App\\Controllers\\DeleteLotController' => __DIR__ . '/../..' . '/App/Controllers/DeleteLotController.php',
         'App\\Controllers\\DeleteUserController' => __DIR__ . '/../..' . '/App/Controllers/DeleteUserController.php',
         'App\\Controllers\\LoginController' => __DIR__ . '/../..' . '/App/Controllers/LoginController.php',
@@ -118,9 +121,11 @@ class ComposerStaticInit90a52acc7e118953688a90bee41268f4
         'App\\Middlewares\\Adminmiddleware' => __DIR__ . '/../..' . '/App/Middlewares/Adminmiddleware.php',
         'App\\Middlewares\\Apiauthmiddleware' => __DIR__ . '/../..' . '/App/Middlewares/Apiauthmiddleware.php',
         'App\\Middlewares\\Apiusercheckauthmiddleware' => __DIR__ . '/../..' . '/App/Middlewares/Apiusercheckauthmiddleware.php',
+        'App\\Middlewares\\Authmiddleware' => __DIR__ . '/../..' . '/App/Middlewares/Authmiddleware.php',
         'App\\Middlewares\\Emailcheckmiddleware' => __DIR__ . '/../..' . '/App/Middlewares/Emailcheckmiddleware.php',
         'App\\Middlewares\\IMiddleware' => __DIR__ . '/../..' . '/App/Middlewares/IMiddleware.php',
         'App\\Middlewares\\Noauthmiddleware' => __DIR__ . '/../..' . '/App/Middlewares/Noauthmiddleware.php',
+        'App\\Models\\Chat' => __DIR__ . '/../..' . '/App/Models/Chat.php',
         'App\\Models\\Comments' => __DIR__ . '/../..' . '/App/Models/Comments.php',
         'App\\Models\\Lots' => __DIR__ . '/../..' . '/App/Models/Lots.php',
         'App\\Models\\LotsApi' => __DIR__ . '/../..' . '/App/Models/LotsApi.php',
