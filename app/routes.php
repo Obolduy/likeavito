@@ -18,6 +18,7 @@ return [
     new Route('/', [MainPageController::class, 'showlots']),
     new Route('/chat/{user_id}', [ChatController::class, 'openchat'], ['authmiddleware']),
     new Route('/chat/refresh/{chat_name}', [ChatController::class, 'refreshchat'], ['authmiddleware']),
+    new Route('/chat/sendmessage/{chat_name}', [ChatController::class, 'controllerSendMessage']),
     new Route('/registration', [RegistrationController::class, 'registration'], ['noauthmiddleware']),
     new Route('/registration/{token}', [RegistrationController::class, 'verifyemail'], ['authmiddleware']),
     new Route('/login', [LoginController::class, 'login'], ['noauthmiddleware']),
