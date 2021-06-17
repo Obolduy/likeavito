@@ -5,6 +5,10 @@ session_start();
 require_once 'vendor/autoload.php';
 
 $routes = require 'App/routes.php';
+// use PhpAmqpLib\Connection\AMQPStreamConnection;
+// use PhpAmqpLib\Message\AMQPMessage;
+
+// $connection = new AMQPStreamConnection('localhost', 5672, 'guest', 'guest');
 
 try {
     echo ( new Router )->checkRoute($routes);

@@ -11,5 +11,8 @@
             "config.php",
             "predis/autoload.php"
         ]
+    },
+    "require": {
+        "php-amqplib/rabbitmq-bundle": "^2.7"
     }
 }
