@@ -1,5 +1,6 @@
 <?php
 namespace App\Controllers;
+use App\Models\SendRegistrationEmail;
 use App\Models\User;
 use App\Models\Model;
 use App\View\View;
@@ -56,9 +57,9 @@ class RegistrationController
                     
                     $_SESSION['user'] = $user->data;
                 }
-
-                $user->sendRegistrationEmail($email);
                 
+                self::prepareRegistrationEmail($email);
+
                 header('Location: /');
             }
         }
@@ -80,5 +81,24 @@ class RegistrationController
 
             include_once $_SERVER['DOCUMENT_ROOT'] . '/App/View/Views/emailconfirm.php';
         }
+    }
+
+    /**
+	 * Adding into RabbitMQ`s queue user`s email and hashed confirm link
+     * @param string email
+	 * @return void
+	 */
+
+    public static function prepareRegistrationEmail(string $email): void
+    {
+        $link = md5($email . time());
+        $_SESSION['verifylink'] = $link;
+
+        $email_data = json_encode([$email, $link]);
+
+        $queue = new SendRegistrationEmail();
+        $queue->createQueue('send_reg_email');
+        $queue->sendMessage($email_data);
+        $queue->closeConnection();
     }
 }

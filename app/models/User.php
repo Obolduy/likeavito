@@ -74,12 +74,14 @@ class User extends Model
         }
     }
 
-    public function sendRegistrationEmail(string $email): void
+    /**
+     * Sending registration email and hashed confirmation link to user email
+     * @param string user email
+     * @param string hashed link
+     */
+    
+    public function sendRegistrationEmail(string $email, string $link): void
     {
-        $link = md5($email . time());
-
-        $_SESSION['verifylink'] = $link;
-
         mail("<$email>", 'Закончите Вашу регистрацию', EMAIL_REGISTRATION_MESSAGE_START . $link . EMAIL_MESSAGE_END,
             implode("\r\n", EMAIL_HEADERS));
     }
