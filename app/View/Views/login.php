@@ -4,3 +4,4 @@
     <div><input type="checkbox" name="remember_me" value="1"> Запомнить меня</div>
     <div><input type="submit" name="submit"></div>
 </form>
+<div class="forget__pass"><a href="/user/resetpassword">Забыли пароль?</a></div>

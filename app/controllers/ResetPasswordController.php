@@ -1,5 +1,6 @@
 <?php
 namespace App\Controllers;
+use App\Models\SendResetEmail;
 use App\Models\User;
 use App\View\View;
 
@@ -10,9 +11,10 @@ class ResetPasswordController
         if ($_SERVER['REQUEST_METHOD'] == 'GET') {
             new View('resetpassword', ['title' => 'Сброс пароля']);
         } else {
-            $user = new User();
-
-            $user->sendResetEmail(strip_tags($_POST['email']));
+            $queue = new SendResetEmail();
+            $queue->createQueue('send_reset_email');
+            $queue->sendMessage(strip_tags($_POST['email']));
+            $queue->closeConnection();
             
             echo 'Запрос успешно отправлен!';
         }
