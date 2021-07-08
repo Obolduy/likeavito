@@ -187,6 +187,32 @@ class User extends Model
     }
 
     /**
+	 * Validate login and password
+	 * @param string login
+     * @param string non-hashed password
+	 * @return bool|string
+	 */
+
+    public function authCheck(string $login, string $password)
+    {       
+        $check = $this->getOne('users', $login, 'login');
+
+        if (!$check) {
+            return 'Пользователя с таким логином не существует';
+        }
+
+        foreach ($check as $elem) {
+            $checkpassword = password_verify($password, $elem['password']);
+        }
+
+        if ($checkpassword !== true) {
+            return 'Пароль неправильный';
+        }
+
+        return true;
+    }
+
+    /**
 	 * Checks login availability, login`s and password`s content 
 	 * @param string login
      * @param string email
@@ -195,14 +221,13 @@ class User extends Model
 	 * @return array|bool
 	 */
 
-    public static function registrationCheck(string $login, string $email, string $password, string $confirmPassword)
+    public function registrationCheck(string $login, string $email, string $password, string $confirmPassword)
     {
-        $base = new Model();
-
         $errorArray = [];
+
         if (!empty($login) and !empty($password)) {
-            $loginCheck = $base->getOne('users', $login, 'login');
-            $emailCheck = $base->getOne('users', $email, 'email');
+            $loginCheck = $this->getOne('users', $login, 'login');
+            $emailCheck = $this->getOne('users', $email, 'email');
 
             if (!empty($loginCheck)) {
                 $errorArray[] = 'Данный логин занят';
@@ -220,6 +245,10 @@ class User extends Model
                 $errorArray[] = 'Проверьте правильность ввода Вашего Email';
             }
 
+            if ($email == $login) {
+                $errorArray[] = 'Логин не может совпадать с паролем';
+            }
+
             if (strlen($login) < 6 or strlen($login) > 32) {
                 $errorArray[] = 'Логин должен состоять из 6-32 символов';
             }
@@ -233,34 +262,6 @@ class User extends Model
             } else {
                 return true;
             }
-        }
-    }
-
-    /**
-	 * Validate login and password
-	 * @param string login
-     * @param string non-hashed password
-	 * @return bool
-	 */
-
-    public static function authCheck(string $login, string $password)
-    {
-        $base = new Model();
-
-        try {
-            $check = $base->getOne('users', $login, 'login');
-        } catch (\Exception $e) {
-            return 'Пользователя с таким именем не существует.'; die();
-        }
-
-        foreach ($check as $elem) {
-            $checkpassword = password_verify($password, $elem['password']);
-        }
-
-        if ($checkpassword === true) {
-            return true;
-        } else {
-            return 'Пароль неправильный.'; die();
         }
     }
 

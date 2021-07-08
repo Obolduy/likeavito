@@ -9,6 +9,8 @@ class RegistrationController
 {   
     public static function registration()
     {
+        $user = new User();
+        
         if ($_SERVER['REQUEST_METHOD'] == 'GET') {
             $cities = (new Model)->getAll('cities');
 
@@ -21,16 +23,15 @@ class RegistrationController
             $name = strip_tags($_POST['name']);
             $surname = strip_tags($_POST['surname']);
             $city_id = $_POST['city_id'];
-            $photo = $_FILES['photo']['name'];
+            $photo = $_FILES['photo']['name']; 
 
-            $check = User::registrationCheck($login, $email, $password, $confirmPassword);
+            $check = $user->registrationCheck($login, $email, $password, $confirmPassword);
 
             if (is_bool($check)) {
                 $_SESSION['userauth'] = true;
 
                 $cryptpassword = password_hash($password, PASSWORD_DEFAULT);
 
-                $user = new User();                
                 $user->addUser($login, $cryptpassword, $email, $city_id);
                 $user_info = $user->getOne('users', $email, 'email');
 

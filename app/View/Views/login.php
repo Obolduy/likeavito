@@ -1,3 +1,11 @@
+<?php
+if ($_SESSION['login_err_msg']) {
+    echo $_SESSION['login_err_msg'];
+
+    unset($_SESSION['login_err_msg']);
+}
+?>
+<br>
 <form method="POST">
     <div>Логин: <input type="text" name="login"></div>
     <div>Пароль: <input type="password" name="password"></div>

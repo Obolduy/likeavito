@@ -7,18 +7,18 @@ class LoginController
 {   
     public static function login(): void
     {
+        $user = new User();
+
         if ($_SERVER['REQUEST_METHOD'] == 'GET') {
             new View('login', ['title' => 'Вход на сайт']);
         } else {
             $login = strip_tags($_POST['login']);
             $password = strip_tags($_POST['password']);
 
-            $check = User::authCheck($login, $password);
+            $check = $user->authCheck($login, $password);
 
-            if ($check == true) {
+            if ($check === true) {
                 $_SESSION['userauth'] = true;
-
-                $user = new User();
                 $user_info = $user->getOne('users', $login, 'login');
 
                 foreach ($user_info as $elem) {
@@ -32,6 +32,10 @@ class LoginController
                 }
                 
                 header('Location: /');
+            } else {
+                $_SESSION['login_err_msg'] = $check;
+
+                header('Location: /login');
             }
         }
     }
