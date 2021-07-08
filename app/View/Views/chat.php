@@ -1,6 +1,6 @@
 <div id="chat__main"></div>
 <form method="POST" id="form">
-	<input type="text" name="text" id="text" placeholder="Введите сообщение">
+	<input type="text" name="text" id="text" placeholder="Введите сообщение" required>
 	<input type="submit" name="submit" value="Отправить сообщение">
 </form>
 <script type="text/javascript">

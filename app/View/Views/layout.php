@@ -12,6 +12,7 @@
                 <?php if ($_SESSION['userauth']): ?>
                 <div class="user"><a href="/user"><?= $_SESSION['user']['login']; ?></a></div>
                 <div class="logout"><a href="/logout">Выйти</a></div>
+                <div class="addlot__link"><a href="/addlot">Добавить лот</a></div>
                 <?php else: ?>
                 <div class="login"><a href="/login">Войти</a></div>
                 <div class="registration"><a href="/registration">Зарегистрироваться</a></div>

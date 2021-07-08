@@ -16,14 +16,14 @@ class ShowUserController
 
     public static function showUsersLots(): void
     {
-        $lots = (new Lots)->getAll('lots', $_SESSION['user']['id'], 'owner_id');
+        $lots = (new Lots)->getOne('lots', $_SESSION['user']['id'], 'owner_id');
 
         new View('showuserslots', ['lots' => $lots, 'title' => "Ваши товары"]);
     }
 
     public static function showUsersComments(): void
     {
-        $comments = (new Comments)->getAll('comments', $_SESSION['user']['id'], 'user_id');
+        $comments = (new Comments)->getOne('comments', $_SESSION['user']['id'], 'user_id');
 
         new View('showuserscomments', ['comments' => $comments, 'title' => "Ваши комментарии"]);
     }
