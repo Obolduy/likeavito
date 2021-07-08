@@ -1,3 +1,12 @@
+<?php
+if ($_SESSION['reg_err_msg']) {
+    foreach ($_SESSION['reg_err_msg'] as $elem) {
+        echo $elem . '<br>';
+    }
+    unset($_SESSION['reg_err_msg']);
+}
+?>
+<br>
 <form enctype="multipart/form-data" method="POST">
     <div>Введите логин: <input type="text" name="login" required></div>
     <div>Введите email: <input type="text" name="email" required></div>
