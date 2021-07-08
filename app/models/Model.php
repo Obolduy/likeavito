@@ -104,4 +104,39 @@ class Model
         
         return $this->show($query);
     }
+
+    /**
+	 * Rename pictures and move it to image or user directory, returns string \w name or array \w names.
+	 * @param string directory path
+     * @param array $_FILES['input_name']
+	 * @return array|string
+	 */
+
+    public function insertPicture(string $dir, array $pictures)
+    {
+        if (!is_dir($dir)) {
+            mkdir($dir);
+        }
+
+        $ext = '';
+        if (str_contains($dir, 'lots')) {
+            $names_array = [];
+
+            for ($i = 0; $i < count($pictures['name']); $i++) {
+                preg_match_all('#\.[A-Za-z]{3,4}$#', $pictures['name'][$i], $ext);
+                $photo = md5($pictures['name'][$i]) . $ext[0][0];
+                move_uploaded_file($pictures['tmp_name'][$i], "$dir/$photo");
+
+                $names_array[] = $photo;
+            }
+
+            return $names_array; 
+        }
+
+        preg_match_all('#\.[A-Za-z]{3,4}$#', $pictures['name'], $ext);
+        $photo = md5($pictures['name']) . $ext[0][0];
+        move_uploaded_file($pictures['tmp_name'], "$dir/$photo");
+
+        return $photo;
+    }
 }

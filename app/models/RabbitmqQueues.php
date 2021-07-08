@@ -5,9 +5,9 @@ use PhpAmqpLib\Message\AMQPMessage;
 
 abstract class RabbitmqQueues
 {
-    public $channel;
     public $queue;
     private $connection;
+    private $channel;
 
     public function __construct()
     {

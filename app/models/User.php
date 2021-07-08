@@ -192,42 +192,47 @@ class User extends Model
      * @param string email
      * @param string non-hashed password
      * @param string non-hashed confirmed password
-	 * @return bool
+	 * @return array|bool
 	 */
 
     public static function registrationCheck(string $login, string $email, string $password, string $confirmPassword)
     {
-        $emptyCheck = 0;
-        $correctCheck = 0;
-
         $base = new Model();
 
+        $errorArray = [];
         if (!empty($login) and !empty($password)) {
-            $emptyCheck = $base->getOne('users', $login, 'login');
+            $loginCheck = $base->getOne('users', $login, 'login');
+            $emailCheck = $base->getOne('users', $email, 'email');
 
-            if (!empty($emptyCheck)) {
-                echo 'Данный логин занят';
-            } else {
-                $emptyCheck = 1;
+            if (!empty($loginCheck)) {
+                $errorArray[] = 'Данный логин занят';
+            }
+
+            if (!empty($emailCheck)) {
+                $errorArray[] = 'Данный Email занят';
             }
             
             if (!preg_match('#^[A-Za-z0-9]+$#', $login) or !preg_match('#^[A-Za-z0-9]+$#', $password)) {
-                echo 'Пароль и логин могут содержать только латинские буквы и цифры';
-            } else if (!preg_match('#^[A-Za-z0-9_-]+@.+\..{2,4}$#', $email)) {
-                echo 'Проверьте правильность ввода Вашего Email';
-            } else if (strlen($login) < 6 or strlen($login) > 32) {
-                echo 'Логин должен состоять из 6-32 символов';
-            } else if ($password != $confirmPassword) {
-                echo 'Пароли не совпадают';
-            } else {
-                $correctCheck = 1;
+                $errorArray[] = 'Пароль и логин могут содержать только латинские буквы и цифры';
             }
-        }
 
-        if ($emptyCheck === 1 and $correctCheck === 1) {
-            return true;
-        } else {
-            return false;
+            if (!preg_match('#^[A-Za-z0-9_-]+@.+\..{2,4}$#', $email)) {
+                $errorArray[] = 'Проверьте правильность ввода Вашего Email';
+            }
+
+            if (strlen($login) < 6 or strlen($login) > 32) {
+                $errorArray[] = 'Логин должен состоять из 6-32 символов';
+            }
+
+            if ($password != $confirmPassword) {
+                $errorArray[] = 'Пароли не совпадают';
+            }
+
+            if (!empty($errorArray)) {
+                return $errorArray;
+            } else {
+                return true;
+            }
         }
     }
 
@@ -245,7 +250,7 @@ class User extends Model
         try {
             $check = $base->getOne('users', $login, 'login');
         } catch (\Exception $e) {
-            echo 'Пользователя с таким именем не существует.'; die();
+            return 'Пользователя с таким именем не существует.'; die();
         }
 
         foreach ($check as $elem) {
@@ -255,7 +260,7 @@ class User extends Model
         if ($checkpassword === true) {
             return true;
         } else {
-            echo 'Пароль неправильный.'; die();
+            return 'Пароль неправильный.'; die();
         }
     }
 
@@ -279,20 +284,20 @@ class User extends Model
 
             foreach($emptyCheck as $elem) {
                 if (!empty($emptyCheck) AND $elem['login'] != $current_login) {
-                    echo 'Данный логин занят';
+                    return 'Данный логин занят';
                 }
             }
             
             $emptyCheck = 1;
             
             if (!preg_match('#^[A-Za-z0-9]+$#', $login) or !preg_match('#^[A-Za-z0-9]+$#', $password)) {
-                echo 'Пароль и логин могут содержать только латинские буквы и цифры';
+                return 'Пароль и логин могут содержать только латинские буквы и цифры';
             } else if (!preg_match('#^[A-Za-z0-9_-]+@.+\..{2,4}$#', $email)) {
-                echo 'Проверьте правильность Вашего email';
+                return 'Проверьте правильность Вашего email';
             } else if (strlen($login) < 6 or strlen($login) > 32) {
-                echo 'Логин должен состоять из 6-32 символов';
+                return 'Логин должен состоять из 6-32 символов';
             } else if ($password != $confirmPassword) {
-                echo 'Пароли не совпадают';
+                return 'Пароли не совпадают';
             } else {
                 $correctCheck = 1;
             }

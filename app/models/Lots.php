@@ -27,29 +27,16 @@ class Lots extends Model
     }
 
     /**
-	 * Adding lot`s pictures (if they are exists) and creating directory if it`s needs.
-	 * @param array hashed names of pictures
+	 * Adding pictures to lots table
+	 * @param string hash name of picture
      * @param int lot id
 	 * @return void
 	 */
 
-    public function addLotPictures(array $picture, int $id): void
+    public function addLotPictures(string $picture, int $id): void
     {
-        if (!is_dir("img/lots/$id")) {
-            mkdir("img/lots/$id");
-        }
-
-        $dir = "img/lots/$id";
-        $ext = '';
-
-        for ($i = 0; $i < count($picture['name']); $i++) {
-            preg_match_all('#\.[A-Za-z]{3,4}$#', $picture['name'][$i], $ext);
-            $name = md5($picture['name'][$i]) . $ext[0][0];
-            move_uploaded_file($picture['tmp_name'][$i], "$dir/$name");
-
-            $query = $this->db->prepare("INSERT INTO lots_pictures SET lot_id = ?, picture = ?");
-            $query->execute([$id, $name]);
-        }
+        $query = $this->db->prepare("INSERT INTO lots_pictures SET lot_id = ?, picture = ?");
+        $query->execute([$id, $picture]);
     }
 
     /**

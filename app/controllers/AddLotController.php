@@ -16,16 +16,15 @@ class AddLotController
 
             new View('addlot', ['categories' => $categories, 'title' => 'Добавление товара']);
         } else {
-            if (!is_numeric($_POST['price'])) {
-                header("Location: /addlot");
-            }
-
             $title = strip_tags($_POST['title']);
             $price = strip_tags($_POST['price']);
             $description = strip_tags($_POST['description'], '<p></p><br/><br><i><b><s><u><strong>');
-            $photo = $_FILES['photos']['name'];
             $category_id = strip_tags($_POST['category_id']);
             $owner_id = $_SESSION['user']['id'];
+
+            if (!self::checkLotData($title, $price)) {
+                header('Location: /addlot'); die();
+            }
 
             $base->addLot($title, $price, $description, $category_id, $owner_id);
 
@@ -35,18 +34,11 @@ class AddLotController
                 $id = $elem['id'];
             }
 
-            if ($photo) {
-                mkdir("img/lots/$id");
+            if ($_FILES['photos']['name'][0]) {
+                $photos_names = $base->insertPicture("img/lots/$id", $_FILES['photos']);
 
-                $dir = "img/lots/$id";
-                $ext = '';
-
-                for ($i = 0; $i <= count($_FILES['photos']); $i++) {
-                    preg_match_all('#\.[A-Za-z]{3,4}$#', $_FILES['photos']['name'][$i], $ext);
-                    $name = md5($_FILES['photos']['name'][$i]) . $ext[0][0];
-                    move_uploaded_file($_FILES['photos']['tmp_name'][$i], "$dir/$name");
-
-                    $base->addLotPictures($name, $id);
+                foreach ($photos_names as $photo_name) {
+                    $base->addLotPictures($photo_name, $id);
                 }
             }
 
@@ -63,5 +55,26 @@ class AddLotController
 
             header("Location: /category/$category_id/$id");
         }
+    }
+
+    public static function checkLotData(string $title, $price): bool
+    {
+        $error = [];
+
+        if (is_numeric($title)) {
+            $error[] = 'Название должно быть записано текстом';
+        }
+
+        if (!is_numeric($price) || $price == 0) {
+            $error[] = 'Цена должна быть записана корректным числом';
+        }
+
+        if ($error) {
+            $_SESSION['addlot_err_msg'] = $error;
+
+            return false;
+        } else {
+            return true;
+        } 
     }
 }

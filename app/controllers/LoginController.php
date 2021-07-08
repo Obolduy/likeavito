@@ -19,10 +19,9 @@ class LoginController
                 $_SESSION['userauth'] = true;
 
                 $user = new User();
-
                 $user_info = $user->getOne('users', $login, 'login');
 
-                foreach($user_info as $elem) {
+                foreach ($user_info as $elem) {
                     $user->setData($elem['id']);
 
                     $_SESSION['user'] = $user->data;

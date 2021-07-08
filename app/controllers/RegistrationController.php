@@ -25,42 +25,35 @@ class RegistrationController
 
             $check = User::registrationCheck($login, $email, $password, $confirmPassword);
 
-            if ($check == true) {
+            if (is_bool($check)) {
                 $_SESSION['userauth'] = true;
 
-                $user = new User();
-
                 $cryptpassword = password_hash($password, PASSWORD_DEFAULT);
-                
-                $user->addUser($login, $cryptpassword, $email, $city_id);
 
+                $user = new User();                
+                $user->addUser($login, $cryptpassword, $email, $city_id);
                 $user_info = $user->getOne('users', $email, 'email');
 
                 foreach ($user_info as $elem) {
                     if ($photo) {
                         $user_id = $elem['id'];
-                        mkdir("img/users/$user_id");
-
-                        $dir = "img/users/$user_id";
-                        $ext = '';
-
-                        preg_match_all('#\.[A-Za-z]{3,4}$#', $_FILES['photo']['name'], $ext);
-                        $photo = md5($_FILES['photo']['name']) . $ext[0][0];
-
-                        move_uploaded_file($_FILES['photo']['tmp_name'], "$dir/$photo");
+                        $photo = $user->insertPicture("img/users/$user_id", $_FILES['photo']);
 
                         $user->addUserInfo($name, $surname, $elem['id'], $photo);
                     } else {
                         $user->addUserInfo($name, $surname, $elem['id']);
                     }
                     $user->setData($elem['id']);
-                    
+
                     $_SESSION['user'] = $user->data;
                 }
-                
                 self::prepareRegistrationEmail($email);
 
                 header('Location: /');
+            } else {
+                $_SESSION['reg_err_msg'] = $check;
+
+                header('Location: /registration');
             }
         }
     }
