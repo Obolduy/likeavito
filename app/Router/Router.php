@@ -9,10 +9,18 @@ class Router
     {
         $check = false;
 
+        $noGetUri = $_SERVER['REQUEST_URI'];
+
+        if (preg_match('#\?(.+)=(.+)#', $noGetUri, $getMatches)) {
+            $noGetUri = preg_replace("#\?(.+)=(.+)#", '', $noGetUri);
+
+            $_GET[$getMatches[1]] = $getMatches[2];
+        }
+
         foreach ($routes as $elem) {
             $pregexp = '#^' . preg_replace('#/\{([^/]+)\}#', '/(?<$1>[^/]+)', $elem->uri) . '/?$#';
 
-            if ($elem->uri === $_SERVER['REQUEST_URI']) {
+            if ($elem->uri === $noGetUri) {
                 if ($elem->middleware !== null) {
                     foreach ($elem->middleware as $middlewares) {
                         $middlewareClass = "App\Middlewares\\$middlewares";
@@ -26,7 +34,7 @@ class Router
                 }
             }
 
-            if (preg_match($pregexp, $_SERVER['REQUEST_URI'], $params)) {
+            if (preg_match($pregexp, $noGetUri, $params)) {
                 foreach ($params as $key => $element) {
                     if (!is_int($key)) {
                         $param[] = $element;
