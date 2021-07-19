@@ -9,6 +9,10 @@ class LoginController
     {
         $user = new User();
 
+        if (!$_SESSION['http_referer']) {
+            $_SESSION['http_referer'] = $_SERVER['HTTP_REFERER'];
+        }
+
         if ($_SERVER['REQUEST_METHOD'] == 'GET') {
             new View('login', ['title' => 'Вход на сайт']);
         } else {
@@ -30,8 +34,10 @@ class LoginController
                 if ($_POST['remember_me'] == 1) {
                     $user->setRememberToken($user->data['id']);
                 }
+
+                header("Location:" . $_SESSION['http_referer']);
                 
-                header('Location: /');
+                unset($_SESSION['http_referer']);
             } else {
                 $_SESSION['login_err_msg'] = $check;
 

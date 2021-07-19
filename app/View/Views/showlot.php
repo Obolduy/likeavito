@@ -1,6 +1,6 @@
 <div class="lot">
     <?php foreach($pictures as $elem): ?>
-    <div><img src="http://likeavito/img/lots/<?= $elem['lot_id'] ?>/<?= $elem['picture'] ?>" alt="Картинки"></div>
+    <div><a href="http://likeavito/img/lots/<?= $elem['lot_id'] ?>/<?= $elem['picture'] ?>" target="_blank"><img height=50% width=40% src="http://likeavito/img/lots/<?= $elem['lot_id'] ?>/<?= $elem['picture'] ?>" alt="Картинки"></a></div>
     <?php endforeach; ?>
     <?php foreach($lot as $elem): ?>
     <div class="title"><?= $elem['title'] ?></div>
