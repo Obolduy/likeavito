@@ -24,6 +24,22 @@ define("EMAIL_ACCOUNT_DELETE_MESSAGE_START", '<html>
 <body>
   <p>Для завершения регистрации перейдите по этой ссылке: http://likeavito/user/delete/');
 
+define("EMAIL_CHANGE_EMAIL_MESSAGE_START", '<html>
+<head>
+  <title>Смена пароля</title>
+</head>
+<body>
+  <p>Здравствуйте! С Вашего акакаунта на сайте http://likeavito/ поступил запрос на изменение Email. Если этот запрос делали не Вы,
+  тогда просто проигнорируйте это письмо. Для подтверждения смены Email перейдите по ссылке: http://likeavito/user/change_email/');
+
+define("EMAIL_CHANGE_PASSWORD_MESSAGE_START", '<html>
+<head>
+  <title>Смена пароля</title>
+</head>
+<body>
+  <p>Здравствуйте! С Вашего акакаунта на сайте http://likeavito/ поступил запрос на изменение пароля. Если этот запрос делали не Вы,
+  тогда просто проигнорируйте это письмо. Для подтверждения смены пароля перейдите по ссылке: http://likeavito/user/change_password/');
+
 define("EMAIL_MESSAGE_END", '
 </p>
 </body>
