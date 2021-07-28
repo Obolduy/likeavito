@@ -6,7 +6,8 @@ use App\Controllers\{
     ShowOtherUserController, AdminLoginController, AdminPanelController, AdminChangeUserController, AdminChangeLotController,
     AdminChangeCommentController, AdminDeleteUserController, AdminDeleteLotController, AdminDeleteCommentController,
     ResetPasswordController, ApiGetUserController, ApiGetLotController, ApiChangeLotController, ApiAuthUserController,
-    ApiDeleteLotController, ChangeCommentController, DeleteCommentController, ChatController, RedirectController};
+    ApiDeleteLotController, ChangeCommentController, DeleteCommentController, ChatController, RedirectController,
+    ChangeEmailController, ChangePasswordController};
 
 return [
     new Route('/api/login', [ApiAuthUserController::class, 'apiLoginUser']),
@@ -36,6 +37,8 @@ return [
     new Route('/user/showlots', [ShowUserController::class, 'showUsersLots'], ['authmiddleware']),
     new Route('/user/showcomments', [ShowUserController::class, 'showUsersComments'], ['authmiddleware']),
     new Route('/user/change', [ChangeUserController::class, 'changeInformation'], ['authmiddleware', 'emailcheckmiddleware']),
+    new Route('/user/change_email/{link}', [ChangeEmailController::class, 'changeEmailController'], ['authmiddleware']),
+    new Route('/user/change_password/{link}', [ChangePasswordController::class, 'changePasswordController'], ['authmiddleware']),
     new Route('/user/delete', [DeleteUserController::class, 'deleterequest'], ['authmiddleware', 'emailcheckmiddleware']),
     new Route('/user/delete/{token}', [DeleteUserController::class, 'deleteuser'], ['authmiddleware', 'emailcheckmiddleware']),
     new Route('/user/resetpassword', [ResetPasswordController::class, 'resetRequest'], ['noauthmiddleware']),
