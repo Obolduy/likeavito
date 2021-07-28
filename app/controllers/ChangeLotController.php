@@ -16,9 +16,9 @@ class ChangeLotController
             new View('changelot', ['lot' => $lot, 'categories' => $categories, 'title' => 'Изменить товар']);
         } else {
             if (!is_numeric(strip_tags($_POST['price']))) {
-                echo 'Цена должна быть записана числом';
+                $_SESSION['lot_err_msg'] = 'Цена должна быть записана числом';
                 
-                new View('changelot', ['lot' => $lot, 'title' => 'Изменить товар']);
+                header("Location: /managelot/$lot_id/change");
             }
 
             if ($_FILES['photos']['name']) {

@@ -148,7 +148,7 @@ class User extends Model
 
         $user_lots = $this->getOne('lots', $user_id, 'owner_id');
 
-        foreach($user_lots as $elem) {
+        foreach ($user_lots as $elem) {
             $this->delete('lots_pictures', $elem['id'], 'lot_id');
 
             if (is_dir("/img/lots/{$elem['id']}")) {
@@ -161,6 +161,62 @@ class User extends Model
         if (is_dir("/img/users/$user_id")) {
             rmdir("/img/users/$user_id");
         }
+    }
+
+    public function sendChangePasswordEmail(string $email, string $password): void
+    {
+        $link = md5($password . time());
+
+        $_SESSION['changepassword_link'] = $link;
+
+        mail("<$email>", 'Подтвердите смену пароля', EMAIL_CHANGE_PASSWORD_MESSAGE_START . $link . EMAIL_MESSAGE_END,
+            implode("\r\n", EMAIL_HEADERS));
+    }
+
+    public function sendChangeEmail(string $email): void
+    {
+        $link = md5($email . time());
+
+        $_SESSION['changeemail_link'] = $link;
+
+        mail("<$email>", 'Подтвердите смену Email', EMAIL_CHANGE_EMAIL_MESSAGE_START . $link . EMAIL_MESSAGE_END,
+            implode("\r\n", EMAIL_HEADERS));
+    }
+
+    public function changeEmail(string $link)
+    {
+        if ($new_email = $this->getOne('emails_changes', $link, 'link')) {
+            $this->update("UPDATE users SET updated_at = now(), email = ? WHERE id = ?",
+                [$new_email[0]['new_email'], $_SESSION['user']['id']]);
+
+            $this->setData($_SESSION['user']['id']);
+        } else {
+            return false;
+        }
+    }
+
+    public function changePassword(string $link)
+    {
+        if ($new_password = $this->getOne('passwords_changes', $link, 'link')) {
+            $this->update("UPDATE users SET updated_at = now(), password = ? WHERE id = ?",
+            [$new_password[0]['password'], $_SESSION['user']['id']]);
+
+            $this->setData($_SESSION['user']['id']);
+        } else {
+            return false;
+        }
+    }
+
+    public function addPasswordToChangeTable(string $email, string $password): void
+    {
+        $query = $this->db->prepare('INSERT INTO passwords_changes SET email = ?, password = ?, link = ?, request_time = now()');
+        $query->execute([$email, $password, $_SESSION['changepassword_link']]);
+    }
+
+    public function addEmailToChangeTable(string $new_email, string $current_email): void
+    {
+        $query = $this->db->prepare('INSERT INTO emails_changes SET new_email = ?, current_email = ?, link = ?, request_time = now()');
+        $query->execute([$new_email, $current_email, $_SESSION['changeemail_link']]);
     }
 
      /**
@@ -225,43 +281,41 @@ class User extends Model
     {
         $errorArray = [];
 
-        if (!empty($login) and !empty($password)) {
-            $loginCheck = $this->getOne('users', $login, 'login');
-            $emailCheck = $this->getOne('users', $email, 'email');
+        $loginCheck = $this->getOne('users', $login, 'login');
+        $emailCheck = $this->getOne('users', $email, 'email');
 
-            if (!empty($loginCheck)) {
-                $errorArray[] = 'Данный логин занят';
-            }
+        if (!empty($loginCheck)) {
+            $errorArray[] = 'Данный логин занят';
+        }
 
-            if (!empty($emailCheck)) {
-                $errorArray[] = 'Данный Email занят';
-            }
-            
-            if (!preg_match('#^[A-Za-z0-9]+$#', $login) or !preg_match('#^[A-Za-z0-9]+$#', $password)) {
-                $errorArray[] = 'Пароль и логин могут содержать только латинские буквы и цифры';
-            }
+        if (!empty($emailCheck)) {
+            $errorArray[] = 'Данный Email занят';
+        }
+        
+        if (!preg_match('#^[A-Za-z0-9]+$#', $login) or !preg_match('#^[A-Za-z0-9]+$#', $password)) {
+            $errorArray[] = 'Пароль и логин могут содержать только латинские буквы и цифры';
+        }
 
-            if (!preg_match('#^[A-Za-z0-9_-]+@.+\..{2,4}$#', $email)) {
-                $errorArray[] = 'Проверьте правильность ввода Вашего Email';
-            }
+        if (!preg_match('#^[A-Za-z0-9_-]+@.+\..{2,4}$#', $email)) {
+            $errorArray[] = 'Проверьте правильность ввода Вашего Email';
+        }
 
-            if ($email == $login) {
-                $errorArray[] = 'Логин не может совпадать с паролем';
-            }
+        if ($email == $login) {
+            $errorArray[] = 'Логин не может совпадать с паролем';
+        }
 
-            if (strlen($login) < 6 or strlen($login) > 32) {
-                $errorArray[] = 'Логин должен состоять из 6-32 символов';
-            }
+        if (strlen($login) < 6 or strlen($login) > 32) {
+            $errorArray[] = 'Логин должен состоять из 6-32 символов';
+        }
 
-            if ($password != $confirmPassword) {
-                $errorArray[] = 'Пароли не совпадают';
-            }
+        if ($password != $confirmPassword) {
+            $errorArray[] = 'Пароли не совпадают';
+        }
 
-            if (!empty($errorArray)) {
-                return $errorArray;
-            } else {
-                return true;
-            }
+        if (!empty($errorArray)) {
+            return $errorArray;
+        } else {
+            return true;
         }
     }
 
@@ -272,41 +326,43 @@ class User extends Model
      * @param string non-hashed password confirm
      * @param string current user login (before changing)
      * @param string email
-	 * @return boolean
+	 * @return array|boolean
 	 */
 
-    public static function changeCheck(string $login, $password, $confirmPassword, string $current_login, string $email): bool
+    public function changeCheck(string $login, $password, $confirmPassword, string $current_login, string $email)
     {
-        $emptyCheck = 0;
-        $correctCheck = 0;
+        $errorArray = [];
 
-        if (!empty($login) and !empty($password)) {
-            $emptyCheck = (new Model)->getOne('users', $login, 'login');
+        $emptyCheck = $this->getOne('users', $login, 'login');
 
-            foreach($emptyCheck as $elem) {
-                if (!empty($emptyCheck) AND $elem['login'] != $current_login) {
-                    return 'Данный логин занят';
-                }
-            }
-            
-            $emptyCheck = 1;
-            
-            if (!preg_match('#^[A-Za-z0-9]+$#', $login) or !preg_match('#^[A-Za-z0-9]+$#', $password)) {
-                return 'Пароль и логин могут содержать только латинские буквы и цифры';
-            } else if (!preg_match('#^[A-Za-z0-9_-]+@.+\..{2,4}$#', $email)) {
-                return 'Проверьте правильность Вашего email';
-            } else if (strlen($login) < 6 or strlen($login) > 32) {
-                return 'Логин должен состоять из 6-32 символов';
-            } else if ($password != $confirmPassword) {
-                return 'Пароли не совпадают';
-            } else {
-                $correctCheck = 1;
-            }
+        if ($emptyCheck != null && $emptyCheck[0]['login'] != $login) {
+            $errorArray[] = 'Данный логин занят';
         }
-        if ($emptyCheck === 1 and $correctCheck === 1) {
-            return true;
+
+        if ($emptyCheck != null && $emptyCheck[0]['email'] != $email) {
+            $errorArray[] = 'Данный email занят';
+        }
+        
+        if (!preg_match('#^[A-Za-z0-9]+$#', $login) or !preg_match('#^[A-Za-z0-9]+$#', $password)) {
+            $errorArray[] = 'Пароль и логин могут содержать только латинские буквы и цифры';
+        } 
+        
+        if (!preg_match('#^[A-Za-z0-9_-]+@.+\..{2,4}$#', $email)) {
+            $errorArray[] = 'Проверьте правильность Вашего email';
+        }
+        
+        if (strlen($login) < 6 or strlen($login) > 32) {
+            $errorArray[] = 'Логин должен состоять из 6-32 символов';
+        }
+        
+        if ($password != $confirmPassword) {
+            $errorArray[] = 'Пароли не совпадают';
+        }
+
+        if (!empty($errorArray)) {
+            return $errorArray;
         } else {
-            return false;
+            return true;
         }
     }
 }
