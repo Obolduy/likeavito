@@ -4,7 +4,7 @@ document.body.addEventListener("click", function (e) {
 
         if (!check) {
             e.preventDefault();
-            window.location.href=`redirect?link=${e.target}`;
+            window.location.href=`/redirect?link=${e.target}`;
         }
     }
 });
