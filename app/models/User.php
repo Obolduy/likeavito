@@ -1,5 +1,6 @@
 <?php
 namespace App\Models;
+use App\Models\Database;
 
 class User extends Model
 {
@@ -12,7 +13,7 @@ class User extends Model
 
     public function setData(int $id): void
     {
-        $info = $this->getFullUserInfo($id);
+        $info = (new Database)->getFullUserInfo($id);
 
         foreach ($info as $elem) {
             $this->data = ['id' => $elem['id'], 'login' => $elem['login'],
