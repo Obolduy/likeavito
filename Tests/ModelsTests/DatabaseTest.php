@@ -42,10 +42,10 @@ class DatabaseTest extends TestCase
     public function updateProvider()
     {
         return [
-            ['UPDATE users SET login = ?, city_id = ? WHERE id = ?', ['newlogin1', 1, 21], 21],
-            ['UPDATE users SET login = ?, city_id = ? WHERE id = ?', ['newlogin2', 4, 22], 22],
-            ['UPDATE users SET login = ?, city_id = ? WHERE id = ?', ['newlogin3', 6, 23], 23],
-            ['UPDATE users SET login = ?, city_id = ? WHERE id = ?', ['newlogin4', 5, 24], 24]
+            ['users', ['login' => 'newlogin0001', 'city_id' => 1], ['id' => 21], 21],
+            ['users', ['login' => 'newlogin0002', 'city_id' => 2], ['id' => 22], 22],
+            ['users', ['login' => 'newlogin0003', 'city_id' => 3], ['id' => 23], 23],
+            ['users', ['login' => 'newlogin0004', 'city_id' => 4], ['id' => 24], 24]
         ];
     }
 
@@ -100,14 +100,13 @@ class DatabaseTest extends TestCase
 
     /**
      * @dataProvider updateProvider
-     * Добавить лоты и комменты в проверку
      */
 
-    public function testUpdate(string $query, array $data, $expected) 
+    public function testUpdate(string $table, array $data, array $where, $expected) 
     {
-        $this->database->update($query, $data);
+        $this->database->update($table, $data, $where);
 
-        $info = $this->database->getOne('users', $data[0], 'login');
+        $info = $this->database->getOne('users', $data['login'], 'login');
 
         foreach ($info as $elem) {
             $this->assertEquals($expected, $elem['id']);

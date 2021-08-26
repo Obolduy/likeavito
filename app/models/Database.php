@@ -3,8 +3,8 @@ namespace App\Models;
 
 class Database
 {
-    private $dbConnection;
     public $joinData;
+    private $dbConnection;
     
     public function __construct($host = 'localhost', $dbName = 'marketplace', $login = 'root', $password = 'root')
     {
@@ -69,15 +69,18 @@ class Database
 
     public function delete(string $table, $chosen, string $column = 'id'): void
     {
-        $this->result = $this->dbConnection->prepare("DELETE FROM $table WHERE $column = ?");
-        $this->result->execute([$chosen]);
+        $query = $this->dbConnection->prepare("DELETE FROM $table WHERE $column = ?");
+        $query->execute([$chosen]);
     }
 
-    public function update(string $query, array $data): void
+    public function update(string $table, array $data, array $where): void
     {
         $queryValues = $this->prepareQueryValues($data);
 
-        $query = $this->dbConnection->prepare("UPDATE $table SET $queryValues");
+        $whereField = key($where);
+        $data[$whereField] = current($where);
+
+        $query = $this->dbConnection->prepare("UPDATE $table SET $queryValues, updated_at = now() WHERE $whereField = ?");
         $query->execute(array_values($data));
     }
 
@@ -110,7 +113,7 @@ class Database
             $joinString .= "$param JOIN {$tablesArray[$i]} ON {$joinArray[$i]} ";
         }
 
-        $selectString = implode(',',$selectArray);
+        $selectString = implode(',', $selectArray);
         $whereString = implode($whereArray);
 
         $query = $this->dbConnection->query("SELECT $selectString FROM $mainTable $joinString WHERE $whereString");
@@ -128,8 +131,16 @@ class Database
     public function prepareJoin(array $selectQuery, array $tables, array $whereQuery, array $joinOn)
     {
         $this->joinData = ['select' => $selectQuery, 'tables' => $tables, 'where' => $whereQuery, 'joinOn' => $joinOn];
-
         return $this;
+    }
+
+    public function rawQuery(string $query, array $prepareData = NULL)
+    {
+        if ($prepareData) {
+            return $this->prepareQuery($query, $prepareData);
+        }
+        
+        return $this->simpleQuery($query);
     }
 
     public function getTableCount(string $table, $what, string $column = 'id'): array
@@ -156,6 +167,12 @@ class Database
         return $data;
     }
 
+    /**
+	 * Takes the associative array and return SQL string like key=?
+	 * @param array associative array where key is DB`s field and value is the DB value
+	 * @return string like key=?
+	 */
+
     private function prepareQueryValues(array $queryArray): string
     {
         $queryValues = '';
@@ -168,5 +185,19 @@ class Database
         array_pop($queryValuesArray);
 
         return implode($queryValuesArray);
+    }
+
+    private function prepareQuery(string $queryString, array $data)
+    {
+        $query = $this->dbConnection->prepare("$queryString");
+        $query->execute($data);
+        
+        return true;
+    }
+
+    private function simpleQuery(string $queryString)
+    {
+        $query = $this->dbConnection->query("$queryString");
+        return $this->show($query);
     }
 }
