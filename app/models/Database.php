@@ -16,7 +16,14 @@ class Database
         }
     }
 
-    public function insert(string $table, array $data)
+    /**
+	 * Takes table`s name and associative array \w placeholders and inserts it into the table
+	 * @param string table name
+     * @param array data with placeholders and values
+	 * @return void
+	 */
+
+    public function insert(string $table, array $data): void
     {
         $queryValues = $this->prepareQueryValues($data);
 

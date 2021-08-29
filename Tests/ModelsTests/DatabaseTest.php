@@ -11,6 +11,17 @@ class DatabaseTest extends TestCase
         $this->database = new Database();
     }
 
+    public function insertProvider()
+    {
+        return [
+            ['users',
+                ['login' => 'justNewTestLogin', 'email' => 'justNewTest@email.com', 'city_id' => 4, 'status_id' => 1,
+                    'ban_status' => 0, 'active' => 0, 'password' => 'trgkferk'], ['login', 'justNewTestLogin', 103]],
+            ['surnames', ['surname' => 'justtestsurname', 'user_id' => 99], ['surname', 'justtestsurname', 106]],
+            ['names', ['name' => 'justtestname', 'user_id' => 99], ['name', 'justtestname', 109]]
+        ];
+    }
+
     public function getOneProvider()
     {
         return [
@@ -55,6 +66,21 @@ class DatabaseTest extends TestCase
             ['users', 15, 'id', 1],
             ['comments', 8, 'lot_id', 2],
         ];
+    }
+
+    /**
+     * @dataProvider insertProvider
+     */
+
+    public function testInsert(string $table, array $data, array $expected) 
+    {
+        $this->database->insert($table, $data);
+
+        $info = $this->database->getOne($table, $expected[1], $expected[0]);
+
+        foreach ($info as $elem) {
+            $this->assertEquals($expected[2], $elem['id']);
+        }
     }
 
      /**
