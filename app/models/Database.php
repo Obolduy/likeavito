@@ -92,6 +92,20 @@ class Database
     }
 
     /**
+	 * ['users.id', 'names.name', 'cities.city'], ['users', 'names', 'cities'], ['users.id', '=', '69'], [['users.id', 'names.user_id'], ['users.city_id', 'cities.id']]
+	 * @param array array with selected params like ['users.id', 'names.name', 'cities.city']
+     * @param array selected tables like ['users', 'names', 'cities']
+     * @param array 'where' like in laravel like ['users.id', '=', '69']
+     * @param array array with arrays to join on like [['users.id', 'names.user_id'], ['users.city_id', 'cities.id']]
+	 */
+
+    public function prepareJoin(array $selectQuery, array $tables, array $whereQuery, array $joinOn)
+    {
+        $this->joinData = ['select' => $selectQuery, 'tables' => $tables, 'where' => $whereQuery, 'joinOn' => $joinOn];
+        return $this;
+    }
+    
+    /**
      * Join tables. Type of join are chosing via $param. Default it is null.
 	 * @param string param \w type of join
 	 * @return array
@@ -123,22 +137,7 @@ class Database
         $selectString = implode(',', $selectArray);
         $whereString = implode($whereArray);
 
-        $query = $this->dbConnection->query("SELECT $selectString FROM $mainTable $joinString WHERE $whereString");
-        return $this->show($query);
-    }
-
-    /**
-	 * ['users.id', 'names.name', 'cities.city'], ['users', 'names', 'cities'], ['users.id', '=', '69'], [['users.id', 'names.user_id'], ['users.city_id', 'cities.id']]
-	 * @param array array with selected params 
-     * @param array selected tables
-     * @param array 'where' like in laravel
-     * @param array array with arrays to join on
-	 */
-
-    public function prepareJoin(array $selectQuery, array $tables, array $whereQuery, array $joinOn)
-    {
-        $this->joinData = ['select' => $selectQuery, 'tables' => $tables, 'where' => $whereQuery, 'joinOn' => $joinOn];
-        return $this;
+        return $this->simpleQuery("SELECT $selectString FROM $mainTable $joinString WHERE $whereString");
     }
 
     public function rawQuery(string $query, array $prepareData = NULL)

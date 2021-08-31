@@ -60,6 +60,28 @@ class DatabaseTest extends TestCase
         ];
     }
 
+    public function prepareJoinProvider()
+    {
+        return [
+            [['users.id', 'names.name', 'cities.city'], ['users', 'names', 'cities'],
+                ['users.id', '=', '69'], [['users.id', 'names.user_id'], ['users.city_id', 'cities.id']]],
+            [['users.id', 'users.login', 'comments.description', 'comments.add_time'], ['users', 'comments'],
+                ['comments.lot_id', '=', '2'], [['users.id', 'comments.user_id']]]
+        ];
+    }
+
+    public function joinProvider()
+    {
+        return [
+            [['users.id', 'names.name', 'cities.city'], ['users', 'names', 'cities'],
+            ['users.id', '=', '69'], [['users.id', 'names.user_id'], ['users.city_id', 'cities.id']],
+                NULL, [69, 'dgdgdgd', 'Петербург']],
+            [['users.id', 'users.login', 'comments.description', 'comments.add_time'], ['users', 'comments'],
+            ['comments.lot_id', '=', '2'], [['users.id', 'comments.user_id']],
+                'RIGHT', []]
+        ];
+    }
+
     public function getTableCountProvider()
     {
         return [
@@ -136,6 +158,39 @@ class DatabaseTest extends TestCase
 
         foreach ($info as $elem) {
             $this->assertEquals($expected, $elem['id']);
+        }
+    }
+
+    /**
+     * @dataProvider prepareJoinProvider
+     */
+
+    public function testPrepareJoin(array $selectQuery, array $tables, array $whereQuery, array $joinOn) 
+    {
+        $this->database->prepareJoin($selectQuery, $tables, $whereQuery, $joinOn);
+
+        $this->assertEquals($selectQuery, $this->database->joinData['select']);
+        $this->assertEquals($tables, $this->database->joinData['tables']);
+        $this->assertEquals($whereQuery, $this->database->joinData['where']);
+        $this->assertEquals($joinOn, $this->database->joinData['joinOn']);
+    }
+
+    /**
+     * @dataProvider joinProvider
+     */
+
+    public function testJoin(array $selectQuery, array $tables, array $whereQuery, array $joinOn, $param, $expected) 
+    {
+        $data = $this->database->prepareJoin($selectQuery, $tables, $whereQuery, $joinOn)->join($param);
+
+        foreach ($data as $elem) {
+            if ($param == NULL) {
+                $this->assertEquals($expected[1][0], $elem['id']);
+                $this->assertEquals($expected[1][1], $elem['name']);
+                $this->assertEquals($expected[1][2], $elem['city']);
+            } else {
+                $this->assertNotNull($elem[3]);
+            }
         }
     }
 
