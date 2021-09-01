@@ -82,6 +82,14 @@ class DatabaseTest extends TestCase
         ];
     }
 
+    public function rawQueryProvider()
+    {
+        return [
+            ['SELECT * FROM users', NULL, 'expected'],
+            ['UPDATE users SET login = ? WHERE login = ?', ['wrwrewrsfd', 'AbsoluteNewLogin455'], 7],
+        ];
+    }
+
     public function getTableCountProvider()
     {
         return [
@@ -190,6 +198,30 @@ class DatabaseTest extends TestCase
                 $this->assertEquals($expected[1][2], $elem['city']);
             } else {
                 $this->assertNotNull($elem[3]);
+            }
+        }
+    }
+
+    /**
+     * @dataProvider rawQueryProvider
+     */
+
+    public function testRawQuery($query, $prepareData, $expected) 
+    {
+        if ($prepareData == NULL) {
+            $data = $this->database->rawQuery($query, $prepareData);
+
+            $this->assertNotNull($data);
+        } else {
+            $this->database->rawQuery($query, $prepareData);
+            $data = $this->database->getOne('users', $prepareData[1], 'login');
+        }
+
+        foreach ($data as $elem) {
+            if ($expected == 'expected') {
+                $this->assertNotNull($data);
+            } else {
+                $this->assertEquals($expected, $elem['id']);
             }
         }
     }

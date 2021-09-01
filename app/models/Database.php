@@ -140,6 +140,13 @@ class Database
         return $this->simpleQuery("SELECT $selectString FROM $mainTable $joinString WHERE $whereString");
     }
 
+    /**
+	 * Non-fiction query. If it hasn`t placeholders, returns show() method.
+	 * @param array query string
+     * @param array placeholders
+	 * @return array
+	 */
+
     public function rawQuery(string $query, array $prepareData = NULL)
     {
         if ($prepareData) {
@@ -149,6 +156,7 @@ class Database
         return $this->simpleQuery($query);
     }
 
+    // Потенциально это к удалению и замене на rawQuery
     public function getTableCount(string $table, $what, string $column = 'id'): array
     {
         $query = $this->dbConnection->query("SELECT COUNT(*) FROM $table WHERE $column = \"$what\"");
