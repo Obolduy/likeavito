@@ -94,7 +94,6 @@ class UserValidation
 	 * @param string new login
      * @param string new non-hashed password
      * @param string non-hashed password confirm
-     * @param string current user login (before changing)
      * @param string email
 	 * @return array|boolean
 	 */
