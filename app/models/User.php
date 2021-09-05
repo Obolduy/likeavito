@@ -4,7 +4,7 @@ use App\Models\Interfaces\iDatabase;
 
 class User
 {
-    public $db;
+    private $db;
 
     public function __construct(iDatabase $db)
     {
