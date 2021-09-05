@@ -6,7 +6,7 @@ class Picture
     public $picturesNames = [];
 
     /**
-	 * Upload picture to the server
+	 * Upload picture to the server, returns array with names of uploaded files
 	 * @param string directory path (from 'img/')
      * @param array $_FILES['input_name']
 	 * @return array

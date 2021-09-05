@@ -4,10 +4,10 @@ use App\Models\Interfaces\iDatabase;
 
 class MySQLDB implements iDatabase
 {
+    public $dbConnection;
     private $query;
-    private $dbConnection;
     
-    public function __construct($host = 'localhost', $dbName = 'marketplace', $login = 'root', $password = 'root')
+    public function __construct($host = 'localhost', $dbName = 'marketplace', $login = 'root', $password = 11111111)
     {
         $this->dbConnection = new \PDO(
             "mysql:host=$host;dbname=$dbName", $login, $password,
@@ -20,7 +20,7 @@ class MySQLDB implements iDatabase
     }
 
     /**
-	 * Non-fiction query. If it hasn`t placeholders, returns show() method.
+	 * SQL query into MySQL DB
 	 * @param array query string
      * @param array placeholders
 	 * @return \PDOStatement
@@ -35,6 +35,13 @@ class MySQLDB implements iDatabase
         return $this->simpleQuery($queryString);
     }
 
+    /**
+	 * SQL prepared query
+	 * @param array query string
+     * @param array array with placeholders
+	 * @return \PDOStatement
+	 */
+
     private function preparedQuery(string $queryString, array $data): \PDOStatement
     {
         $this->query = $this->dbConnection->prepare("$queryString");
@@ -42,6 +49,12 @@ class MySQLDB implements iDatabase
         
         return $this->query;
     }
+
+    /**
+	 * Simple SQL query
+	 * @param array query string
+	 * @return \PDOStatement
+	 */
 
     private function simpleQuery(string $queryString): \PDOStatement
     {
