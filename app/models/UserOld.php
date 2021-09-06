@@ -4,13 +4,6 @@ use App\Models\Database;
 
 class UserOld extends Model
 {
-    public function verifycationEmail(): void
-    {
-        $this->update("UPDATE users SET updated_at = now(), active = ? WHERE id = ?", [1, $_SESSION['user']['id']]);
-
-        $this->setData($_SESSION['user']['id']);
-    }
-
     public function setRememberToken(int $id): void
     {
         $remember_token = md5(rand() . time());
@@ -32,18 +25,6 @@ class UserOld extends Model
         $this->delete('password_reset', $token, 'token');
     }
 
-    public function changeEmail(string $link)
-    {
-        if ($new_email = $this->getOne('emails_changes', $link, 'link')) {
-            $this->update("UPDATE users SET updated_at = now(), email = ? WHERE id = ?",
-                [$new_email[0]['new_email'], $_SESSION['user']['id']]);
-
-            $this->setData($_SESSION['user']['id']);
-        } else {
-            return false;
-        }
-    }
-
     public function changePassword(string $link)
     {
         if ($new_password = $this->getOne('passwords_changes', $link, 'link')) {
@@ -60,11 +41,5 @@ class UserOld extends Model
     {
         $query = $this->db->prepare('INSERT INTO passwords_changes SET email = ?, password = ?, link = ?, request_time = now()');
         $query->execute([$email, $password, $_SESSION['changepassword_link']]);
-    }
-
-    public function addEmailToChangeTable(string $new_email, string $current_email): void
-    {
-        $query = $this->db->prepare('INSERT INTO emails_changes SET new_email = ?, current_email = ?, link = ?, request_time = now()');
-        $query->execute([$new_email, $current_email, $_SESSION['changeemail_link']]);
     }
 }
