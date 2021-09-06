@@ -8,10 +8,10 @@ class AuthUser
     public $data = [];
     private $db;
 
-    public function __construct(iDatabase $db)
+    public function __construct(iDatabase $db = null)
     {
-        $this->db = $db;
-        $this->id = $_SESSION['userauth'];
+        $this->db = $db ?? DEFAULT_DB_CONNECTION;
+        $this->id = $_SESSION['user_id'];
 
         foreach ($this->getUserInfo() as $elem) {
             $this->data = ['id' => $elem['id'], 'login' => $elem['login'],

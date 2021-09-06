@@ -7,9 +7,9 @@ class UserValidation
     private $db;
     private $errorArray = [];
 
-    public function __construct(iDatabase $db)
+    public function __construct(iDatabase $db = NULL)
     {
-        $this->db = $db;
+        $this->db = $db ?? DEFAULT_DB_CONNECTION;
     }
 
     /**

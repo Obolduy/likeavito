@@ -1,4 +1,16 @@
 <?php
+use App\Models\MySQLDB;
+
+/*
+  DB config
+*/
+
+define("DEFAULT_DB_CONNECTION", new MySQLDB());
+
+/*
+  Emails config
+*/
+
 define("SITE_EMAIL", "test-example-mail@kurlyk.su");
 define("EMAIL_HEADERS", ['MIME-Version: ' => 1.0, 'Content-type: ' => 'text/html; charset=iso-8859-1',
                          'From' => SITE_EMAIL, 'Reply-To' => SITE_EMAIL]);
