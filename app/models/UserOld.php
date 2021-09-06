@@ -4,15 +4,6 @@ use App\Models\Database;
 
 class UserOld extends Model
 {
-    public function setRememberToken(int $id): void
-    {
-        $remember_token = md5(rand() . time());
-
-        $this->update("UPDATE users SET remember_token = ? WHERE id = ?", [$remember_token, $id]);
-
-        setcookie('remember_token', $remember_token, time()+2678400);
-    }
-
     public function setPasswordResetToken(string $email, string $link): void
     {
         $query = $this->db->prepare("INSERT INTO password_reset SET email = ?, token = ?");
