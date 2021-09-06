@@ -23,7 +23,6 @@ class RegistrationController
             $name = strip_tags($_POST['name']);
             $surname = strip_tags($_POST['surname']);
             $city_id = $_POST['city_id'];
-            $photo = $_FILES['photo']['name']; 
 
             $check = $user->registrationCheck($login, $email, $password, $confirmPassword);
 
@@ -36,7 +35,7 @@ class RegistrationController
                 $user_info = $user->getOne('users', $email, 'email');
 
                 foreach ($user_info as $elem) {
-                    if ($photo) {
+                    if ($_FILES['photo']) {
                         $user_id = $elem['id'];
                         $photo = $user->insertPicture("img/users/$user_id", $_FILES['photo']);
 
@@ -61,7 +60,7 @@ class RegistrationController
 
     /**
 	 * Checking does user has non-confirmated account.
-     * If he is, it updates DB (active status and update time) and return emailconfirm view.
+     * If he does, it updates DB (active status and update time) and return emailconfirm view.
      * @param string generated hash token
 	 * @return void
 	 */
