@@ -1,6 +1,5 @@
 <?php
 namespace App\Models;
-use App\Models\Interfaces\iDatabase;
 use App\Models\UserManipulate;
 use App\Models\User;
 use App\Models\Picture;
@@ -16,7 +15,7 @@ class UserRegistration
     private $avatarFile;
     private $avatarName;
 
-    public function __construct(string $login, string $password, string $email, int $city_id, string $name, string $surname, array $avatarFile = null, iDatabase $db = null)
+    public function __construct(string $login, string $password, string $email, int $city_id, string $name, string $surname, array $avatarFile = null)
     {
         $this->login = $login;
         $this->password = $password;
