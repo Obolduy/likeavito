@@ -49,4 +49,10 @@ class Lot
                     /////////////
         }
     }
+
+    public function getPageWithLots(int $categoryId, int $border1, int $border2 = 5): array
+    {
+        return $this->db->dbQuery("SELECT * FROM lots WHERE category_id = ? LIMIT ?, ?",
+                [$categoryId, $border1, $border2])->fetchAll();
+    }
 }

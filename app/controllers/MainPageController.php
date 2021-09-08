@@ -1,5 +1,7 @@
 <?php
 namespace App\Controllers;
+use App\Models\MySQLDB;
+use App\Models\Lot;
 use App\Models\Pagination;
 use App\View\View;
 use Predis\Autoloader;
@@ -25,14 +27,13 @@ class MainPageController
             $_GET['page'] = 1;
         }
 
-        $lot = new Lots();
-
-        $category = $lot->getOne('lots_category', $category_id);
-        $lots = $lot->getOne('lots', $category_id, 'category_id', [(($_GET['page'] * 5) - 5), 5]);
+        $category = (new MySQLDB)->dbQuery("SELECT * FROM lots_category WHERE id = ?", [$category_id])
+            ->fetchAll();
         
+        $lots = (new Lot)->getPageWithLots($category_id, (($_GET['page'] * 5) - 5));
         $pagination = new Pagination($category_id);
-        $page_count = $pagination->pagination();
-        
-        new View('showcategory', ['lots' => $lots, 'page_count' => $page_count, 'title' => $category[0]['category']]);
+        $pageCount = $pagination->pagination();
+
+        new View('showcategory', ['lots' => $lots, 'page_count' => $pageCount, 'title' => $category[0]['category']]);
     }
 }
