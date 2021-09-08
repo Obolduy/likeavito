@@ -1,18 +1,21 @@
 <?php
 namespace App\Controllers;
+use App\Models\AuthUser;
+use App\Models\EmailVerify;
+use App\Models\UserRegistration;
+use App\Models\UserValidation;
+use App\Models\MySQLDB;
 use App\Models\SendRegistrationEmail;
-use App\Models\User;
-use App\Models\Model;
 use App\View\View;
 
 class RegistrationController
 {   
     public static function registration()
     {
-        $user = new User();
+        $db = new MySQLDB();
         
         if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-            $cities = (new Model)->getAll('cities');
+            $cities = $db->dbQuery("SELECT * FROM cities")->fetchAll();
 
             new View('registration', ['cities' => $cities, 'title' => 'Зарегистрироваться']);
         } else {
@@ -22,36 +25,24 @@ class RegistrationController
             $confirmPassword = strip_tags($_POST['confirmPassword']);
             $name = strip_tags($_POST['name']);
             $surname = strip_tags($_POST['surname']);
-            $city_id = $_POST['city_id'];
+            $cityId = $_POST['city_id'];
 
-            $check = $user->registrationCheck($login, $email, $password, $confirmPassword);
+            $checkUser = (new UserValidation)->registrationCheck($login, $email, $password, $confirmPassword);
 
-            if (is_bool($check)) {
+            if (is_bool($checkUser)) {
+                $cryptPassword = password_hash($password, PASSWORD_DEFAULT);
+
+                $registration = new UserRegistration($login, $cryptPassword, $email, $cityId, $name, $surname, $_FILES['photo']);
+                $registration->registration();
+
                 $_SESSION['userauth'] = true;
+                $_SESSION['user'] = (new AuthUser);
 
-                $cryptpassword = password_hash($password, PASSWORD_DEFAULT);
-
-                $user->addUser($login, $cryptpassword, $email, $city_id);
-                $user_info = $user->getOne('users', $email, 'email');
-
-                foreach ($user_info as $elem) {
-                    if ($_FILES['photo']) {
-                        $user_id = $elem['id'];
-                        $photo = $user->insertPicture("img/users/$user_id", $_FILES['photo']);
-
-                        $user->addUserInfo($name, $surname, $elem['id'], $photo);
-                    } else {
-                        $user->addUserInfo($name, $surname, $elem['id']);
-                    }
-                    $user->setData($elem['id']);
-
-                    $_SESSION['user'] = $user->data;
-                }
                 self::prepareRegistrationEmail($email);
 
                 header('Location: /');
             } else {
-                $_SESSION['reg_err_msg'] = $check;
+                $_SESSION['reg_err_msg'] = $checkUser;
 
                 header('Location: /registration');
             }
@@ -68,7 +59,7 @@ class RegistrationController
     public static function verifyEmail(string $token): void
     {
         if ($_SESSION['verifylink'] == $token && $_SESSION['user']['active'] == 0) {
-            ( new User )->verifycationEmail();
+            new EmailVerify();
 
             $_SESSION['verifylink'] = null;
 
