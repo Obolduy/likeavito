@@ -1,14 +1,13 @@
 <?php
 namespace App\Controllers;
-use App\Models\User;
+use App\Models\UserLogin;
+use App\Models\UserValidation;
 use App\View\View;
 
 class LoginController
 {   
     public static function login(): void
     {
-        $user = new User();
-
         if (!$_SESSION['http_referer']) {
             $_SESSION['http_referer'] = $_SERVER['HTTP_REFERER'];
         }
@@ -19,21 +18,11 @@ class LoginController
             $login = strip_tags($_POST['login']);
             $password = strip_tags($_POST['password']);
 
-            $check = $user->authCheck($login, $password);
+            $check = (new UserValidation)->authCheck($login, $password);
 
             if ($check === true) {
-                $_SESSION['userauth'] = true;
-                $user_info = $user->getOne('users', $login, 'login');
-
-                foreach ($user_info as $elem) {
-                    $user->setData($elem['id']);
-
-                    $_SESSION['user'] = $user->data;
-                }
-                
-                if ($_POST['remember_me'] == 1) {
-                    $user->setRememberToken($user->data['id']);
-                }
+                $login = new UserLogin($login);
+                $login->login($_POST['remember_me']);
 
                 header("Location:" . $_SESSION['http_referer']);
                 
