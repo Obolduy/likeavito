@@ -1,6 +1,6 @@
 <?php
 namespace App\Controllers;
-use App\Models\Lots;
+use App\Models\Pagination;
 use App\View\View;
 use Predis\Autoloader;
 use Predis\Client;
@@ -29,16 +29,10 @@ class MainPageController
 
         $category = $lot->getOne('lots_category', $category_id);
         $lots = $lot->getOne('lots', $category_id, 'category_id', [(($_GET['page'] * 5) - 5), 5]);
-        $count = $lot->getTableCount('lots', $category_id, 'category_id');
-
-        if ($count[0][0] % 5 != 0) {
-            while ($count[0][0] % 5 != 0) {
-                $count[0][0]++;
-            }
-
-            $page_count = $count[0][0] / 5;
-        }
-
+        
+        $pagination = new Pagination($category_id);
+        $page_count = $pagination->pagination();
+        
         new View('showcategory', ['lots' => $lots, 'page_count' => $page_count, 'title' => $category[0]['category']]);
     }
 }
