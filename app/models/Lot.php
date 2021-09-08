@@ -1,11 +1,14 @@
 <?php
 namespace App\Models;
+use App\Models\Interfaces\iDatabase;
 
-class Lots extends Model
+class Lot
 {
-    public function __construct()
+    private $db;
+
+    public function __construct(iDatabase $db = null)
     {
-        $this->db = self::connection();
+        $this->db = $db ?? DEFAULT_DB_CONNECTION;
     }
 
     /**
@@ -21,22 +24,9 @@ class Lots extends Model
 
     public function addLot(string $title, int $price, string $description, int $category_id, int $owner_id): void
     {
-        $query = $this->db->prepare("INSERT INTO lots SET owner_id = ?, category_id = ?, title = ?, price = ?, 
-            description = ?, add_time = NOW(), update_time = NOW()");
-        $query->execute([$owner_id, $category_id, $title, $price, $description]);
-    }
-
-    /**
-	 * Adding pictures to lots table
-	 * @param string hash name of picture
-     * @param int lot id
-	 * @return void
-	 */
-
-    public function addLotPictures(string $picture, int $id): void
-    {
-        $query = $this->db->prepare("INSERT INTO lots_pictures SET lot_id = ?, picture = ?");
-        $query->execute([$id, $picture]);
+        $this->db->dbQuery("INSERT INTO lots SET owner_id = ?, category_id = ?, title = ?, price = ?, 
+            description = ?, add_time = NOW(), update_time = NOW()",
+                [$owner_id, $category_id, $title, $price, $description]);
     }
 
     /**
@@ -48,15 +38,15 @@ class Lots extends Model
     public function getFullLotInfo(int $lot_id = null)
     {
         if ($lot_id !== null) {
-            $query = $this->db->query("SELECT l.*, u.login, c.category FROM lots AS l
+            return $this->db->dbQuery("SELECT l.*, u.login, c.category FROM lots AS l
                 LEFT JOIN users AS u ON u.id = l.owner_id
                     LEFT JOIN lots_category AS c ON l.category_id = c.id WHERE l.id = $lot_id");
         } else {
-            $query = $this->db->query("SELECT l.*, u.login, c.category FROM lots AS l
+            return $this->db->dbQuery("SELECT l.*, u.login, c.category FROM lots AS l
                 LEFT JOIN users AS u ON u.id = l.owner_id
                     LEFT JOIN lots_category AS c ON l.category_id = c.id");
+
+                    /////////////
         }
-             
-        return $this->show($query);
     }
 }
