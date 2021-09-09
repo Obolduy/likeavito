@@ -2,7 +2,7 @@
 namespace App\Models;
 use App\Models\Interfaces\iDatabase;
 
-class User
+class GetUser
 {
     private $db;
 

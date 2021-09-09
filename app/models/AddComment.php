@@ -1,18 +1,21 @@
 <?php
 namespace App\Models;
 
-class Comments extends Model
+use App\Models\Interfaces\iDatabase;
+
+class AddComment
 {
-    public function __construct()
+    private $db;
+
+    public function __construct(iDatabase $db = null)
     {
-        $this->db = self::connection();
+        $this->db = $db ?? DEFAULT_DB_CONNECTION;
     }
 
-    public function newComment(int $lot_id, int $user_id, string $description): void
+    public function addComment(int $lot_id, int $user_id, string $description): void
     {
-        $query = $this->db->prepare("INSERT INTO comments SET user_id = ?, lot_id = ?,
-            description = ?, add_time = NOW(), update_time = NOW()");
-        $query->execute([$user_id, $lot_id, $description]);
+        $this->db->dbQuery("INSERT INTO comments SET user_id = ?, lot_id = ?,
+            description = ?, add_time = NOW(), update_time = NOW()", [$user_id, $lot_id, $description]);
     }
 
     /**
