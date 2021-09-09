@@ -1,6 +1,10 @@
 <?php
 namespace App\Controllers;
-use App\Models\Lots;
+
+use App\Models\MySQLDB;
+use App\Models\LotAdd;
+use App\Models\LotValidate;
+use App\Models\Picture;
 use App\View\View;
 use Predis\Autoloader;
 use Predis\Client;
@@ -9,40 +13,35 @@ class AddLotController
 {   
     public static function newLot(): void
     {
-        $base = new Lots();
+        $db = new MySQLDB();
 
         if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-            $categories = $base->getAll('lots_category');
+            $categories = $db->dbQuery("SELECT * FROM lots_category")->fetchAll();
 
             new View('addlot', ['categories' => $categories, 'title' => 'Добавление товара']);
         } else {
             $title = strip_tags($_POST['title']);
             $price = strip_tags($_POST['price']);
             $description = strip_tags($_POST['description'], '<p></p><br/><br><i><b><s><u><strong>');
-            $category_id = strip_tags($_POST['category_id']);
-            $owner_id = $_SESSION['user']['id'];
+            $categoryId = strip_tags($_POST['category_id']);
+            $ownerId = $_SESSION['user_id'];
 
-            if (!self::checkLotData($title, $price)) {
+            $checkData = (new LotValidate)->checkLotData($title, $price);
+
+            if ($checkData) {
+                $_SESSION['addlot_err_msg'] = $checkData;
+
                 header('Location: /addlot'); die();
             }
 
-            $base->addLot($title, $price, $description, $category_id, $owner_id);
+            new LotAdd($title, $price, $description, $categoryId, $ownerId);
 
-            $lot = $base->getOne('lots', $owner_id, 'owner_id');
+            $lotId = $db->dbQuery("SELECT id FROM lots WHERE owner_id = ? ORDER BY id DESC", [$ownerId])
+                ->fetchColumn();
 
-            foreach ($lot as $elem) {
-                $id = $elem['id'];
-            }
+            (new Picture)->uploadPicture("lots/$lotId", $_FILES['photos']);
 
-            if ($_FILES['photos']['name'][0]) {
-                $photos_names = $base->insertPicture("img/lots/$id", $_FILES['photos']);
-
-                foreach ($photos_names as $photo_name) {
-                    $base->addLotPictures($photo_name, $id);
-                }
-            }
-
-            $lots = $base->getAll('lots', [0, 5], true);
+            $lots = $db->dbQuery("SELECT * FROM lots ORDER BY id DESC LIMIT 0,5")->fetchAll();
             
             Autoloader::register();
             $cache = new Client();
@@ -53,28 +52,7 @@ class AddLotController
                 ]);
             }
 
-            header("Location: /category/$category_id/$id");
+            header("Location: /category/$categoryId/$lotId");
         }
-    }
-
-    public static function checkLotData(string $title, $price): bool
-    {
-        $error = [];
-
-        if (is_numeric($title)) {
-            $error[] = 'Название должно быть записано текстом';
-        }
-
-        if (!is_numeric($price) || $price == 0) {
-            $error[] = 'Цена должна быть записана корректным числом';
-        }
-
-        if ($error) {
-            $_SESSION['addlot_err_msg'] = $error;
-
-            return false;
-        } else {
-            return true;
-        } 
     }
 }
