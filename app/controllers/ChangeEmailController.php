@@ -5,12 +5,6 @@ use App\Models\EmailChanger;
 
 class ChangeEmailController
 {   
-    /**
-	 * Change user`s data by himself
-     * @param int user id
-	 * @return void
-	 */
-
     public static function changeEmailController(string $link): void
     {
         if ((new EmailChanger)->changeEmail($link)) {
