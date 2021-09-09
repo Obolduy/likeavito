@@ -1,7 +1,7 @@
 <?php
 namespace App\Controllers;
 
-use App\Models\AuthUser;
+use App\Models\UserAuth;
 use App\Models\EmailVerify;
 use App\Models\UserRegistration;
 use App\Models\UserValidation;
@@ -37,7 +37,7 @@ class RegistrationController
                 $registration->registration();
 
                 $_SESSION['userauth'] = true;
-                $_SESSION['user'] = (new AuthUser);
+                $_SESSION['user'] = (new UserAuth);
 
                 self::prepareRegistrationEmail($email);
 

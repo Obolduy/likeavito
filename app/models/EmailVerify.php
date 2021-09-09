@@ -1,7 +1,8 @@
 <?php
 namespace App\Models;
+
 use App\Models\Interfaces\iDatabase;
-use App\Models\AuthUser;
+use App\Models\UserAuth;
 
 class EmailVerify
 {
@@ -14,11 +15,11 @@ class EmailVerify
         $this->verifycationEmail();
     }
 
-    private function verifycationEmail(): AuthUser
+    private function verifycationEmail(): UserAuth
     {
         $this->db->dbQuery("UPDATE users SET updated_at = now(), active = ? WHERE id = ?",
             [1, $_SESSION['user']['id']]);
 
-        return new AuthUser();
+        return new UserAuth();
     }
 }

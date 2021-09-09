@@ -1,8 +1,9 @@
 <?php
 namespace App\Models;
+
 use App\Models\Interfaces\iDatabase;
-use App\Models\User;
-use App\Models\AuthUser;
+use App\Models\UserGet;
+use App\Models\UserAuth;
 
 class UserLogin
 {
@@ -17,7 +18,7 @@ class UserLogin
 
     public function login(int $rememberToken = 0): void
     {
-        $user = (new User)->getUserByKey(['login' => $this->login]);
+        $user = (new UserGet)->getUserByKey(['login' => $this->login]);
 
         foreach ($user as $elem) {
             $_SESSION['user_id'] = $elem['id'];
@@ -32,7 +33,7 @@ class UserLogin
             setcookie('remember_token', $remember_token, time()+2678400);
         }
 
-        $_SESSION['user'] = (new AuthUser)->data;
+        $_SESSION['user'] = (new UserAuth)->data;
         $_SESSION['userauth'] = true;
     }
 }

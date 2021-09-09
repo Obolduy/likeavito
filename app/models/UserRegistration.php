@@ -1,7 +1,8 @@
 <?php
 namespace App\Models;
+
 use App\Models\UserManipulate;
-use App\Models\User;
+use App\Models\UserGet;
 use App\Models\Picture;
 
 class UserRegistration
@@ -32,7 +33,7 @@ class UserRegistration
         $userManipulate = new UserManipulate();
         $userManipulate->addUser($this->login, $this->password, $this->email, $this->city_id);
 
-        $user = (new User)->getUserByKey(['login' => $this->login]);
+        $user = (new UserGet)->getUserByKey(['login' => $this->login]);
 
         if ($this->avatar) {
             $this->avatarName = (new Picture)->uploadPicture("users/{$user[0]['id']}",

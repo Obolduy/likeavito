@@ -1,8 +1,9 @@
 <?php
 namespace App\Models;
+
 use App\Models\Interfaces\iDatabase;
 
-class AuthUser
+class UserAuth
 {
     public $id;
     public $data = [];

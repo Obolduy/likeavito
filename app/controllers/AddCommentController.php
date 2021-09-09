@@ -1,8 +1,8 @@
 <?php
 namespace App\Controllers;
 
-use App\Models\AddComment;
-use App\Models\AuthUser;
+use App\Models\CommentAdd;
+use App\Models\UserAuth;
 
 class AddCommentController
 {   
@@ -10,7 +10,7 @@ class AddCommentController
     {
         $description = strip_tags($_POST['description'], '<p></p><br/><br><i><b><s><u><strong>');
 
-        (new AddComment)->addComment($lot_id, (new AuthUser)->data['id'], $description);
+        (new CommentAdd)->addComment($lot_id, (new UserAuth)->data['id'], $description);
         
         header("Location: /category/$category_id/$lot_id");
     }
