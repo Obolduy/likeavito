@@ -22,7 +22,7 @@ class EmailChanger
     {
         if ($new_email = $this->db->dbQuery("SELECT * FROM emails_changes WHERE link = ?", [$link])) {
             $this->db->dbQuery("UPDATE users SET updated_at = now(), email = ? WHERE id = ?",
-                [$new_email[0]['new_email'], $_SESSION['user']['id']]);
+                [$new_email[0]['new_email'], $_SESSION['user_id']]);
 
             return true;
         } else {
