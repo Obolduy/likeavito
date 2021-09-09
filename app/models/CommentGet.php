@@ -16,7 +16,7 @@ class CommentGet
 
     public function getComment()
     {
-        $this->db->query("SELECT c.*, u.login, u.avatar, u.id FROM comments AS c
+        $this->db->dbQuery("SELECT c.*, u.login, u.avatar, u.id FROM comments AS c
             LEFT JOIN users AS u ON u.id = c.user_id WHERE c.id = ?", [$this->commentId])->fetch();
     }
 }

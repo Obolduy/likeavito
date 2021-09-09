@@ -1,21 +1,41 @@
 <?php
 namespace App\Controllers;
-use App\Models\Comments;
+
+use App\Models\CommentGet;
+use App\Models\CommentChange;
+use App\Models\CommentValidate;
 use App\View\View;
 
 class ChangeCommentController
 {   
     public function changeComment(int $comment_id): void
     {
-        $comments = new Comments;
+        if (!$_SESSION['http_referer']) {
+            $_SESSION['http_referer'] = $_SERVER['HTTP_REFERER'];
+        }
 
         if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-            $comment = $comments->getOne('comments', $comment_id);
+            $comment = (new CommentGet($comment_id))->getComment();
 
-            new View('changecomment', ['title' => 'Изменить комментарий']);
+            new View('changecomment', ['title' => 'Изменить комментарий', 'comment' => $comment]);
         } else {
-            $comments->update("UPDATE comments SET description = ?, update_time = now() WHERE id = ?",
-                [strip_tags($_POST['description'], '<p></p><br/><br><i><b><s><u><strong>'), $comment_id]);
+            $text = strip_tags($_POST['description'], '<p></p><br/><br><i><b><s><u><strong>');
+
+            $validate = (new CommentValidate)->checkComment($text);
+
+            if (is_bool($validate)) {
+                new CommentChange($comment_id, $text);
+
+                header("Location:" . $_SESSION['http_referer']);
+                
+                unset($_SESSION['http_referer']);
+            } else {
+                $_SESSION['comment_error'] = $validate;
+
+                header("Location:" . $_SESSION['http_referer']);
+                
+                unset($_SESSION['http_referer']);
+            }
         }
     }
 }
