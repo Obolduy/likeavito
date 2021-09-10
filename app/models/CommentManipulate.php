@@ -3,7 +3,7 @@ namespace App\Models;
 
 use App\Models\Interfaces\iDatabase;
 
-class CommentAdd
+class CommentManipulate
 {
     private $db;
 
@@ -16,5 +16,16 @@ class CommentAdd
     {
         $this->db->dbQuery("INSERT INTO comments SET user_id = ?, lot_id = ?,
             description = ?, add_time = NOW(), update_time = NOW()", [$userId, $lotId, $description]);
+    }
+
+    public function changeComment(int $commentId, string $commentText): void
+    {
+        $this->db->dbQuery("UPDATE comments SET description = ? WHERE id = ?",
+            [$commentText, $commentId]);
+    }
+
+    public function deleteComment(int $commentId): void
+    {
+        $this->db->dbQuery("DELETE FROM comments WHERE id = ?", [$commentId]);
     }
 }

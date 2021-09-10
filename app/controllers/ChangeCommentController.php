@@ -2,7 +2,7 @@
 namespace App\Controllers;
 
 use App\Models\CommentGet;
-use App\Models\CommentChange;
+use App\Models\CommentManipulate;
 use App\Models\CommentValidate;
 use App\View\View;
 
@@ -24,7 +24,7 @@ class ChangeCommentController
             $validate = (new CommentValidate)->checkComment($text);
 
             if (is_bool($validate)) {
-                new CommentChange($comment_id, $text);
+                (new CommentManipulate())->changeComment($comment_id, $text);
 
                 header("Location:" . $_SESSION['http_referer']);
                 
