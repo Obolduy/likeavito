@@ -6,8 +6,8 @@ use App\Models\PasswordChange;
 class ChangePasswordController
 {   
     /**
-	 * Change user`s data by himself
-     * @param int user id
+	 * Change user`s password by himself
+     * @param string link-token
 	 * @return void
 	 */
 

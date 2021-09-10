@@ -35,7 +35,7 @@ class PasswordChange
         
         if ($new_password) {
             $this->db->dbQuery("UPDATE users SET updated_at = now(), password = ? WHERE id = ?",
-                [$new_password[0]['password'], $_SESSION['user']['id']]);
+                [$new_password[0]['password'], $_SESSION['user_id']]);
             return true;
         } else {
             return false;

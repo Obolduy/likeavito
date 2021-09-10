@@ -2,6 +2,10 @@
 namespace App\Models;
 
 use App\Models\Interfaces\iDatabase;
+use App\Models\SendChangePasswordEmail;
+use App\Models\SendChangeEmail;
+use App\Models\UserAuth;
+use App\Models\Picture;
 
 class UserManipulate
 {
@@ -91,5 +95,42 @@ class UserManipulate
         if (is_dir("/img/users/$user_id")) {
             rmdir("/img/users/$user_id");
         }
+    }
+
+    public function changeUser(int $userId, string $login, string $password, string $email, string $name, string $surname, int $cityId, array $photo = null)
+    {
+        if ($photo) {
+            (new Picture)->uploadPicture("users/$userId", $photo);
+        }
+
+        $currentEmail = (new UserAuth)->data['email'];
+
+        if ($_POST['password']) {
+            $email_data = json_encode(['email' => $currentEmail, 'password' => $password]);
+
+            $queue = new SendChangePasswordEmail();
+            $queue->createQueue('send_change_password_email');
+            $queue->sendMessage($email_data);
+            $queue->closeConnection();
+        }
+
+        if ($currentEmail != strip_tags($email)) {
+            $email_data = ['new_email' => strip_tags($email), 'current_email' => $currentEmail];
+            $email_json = json_encode($email_data);
+
+            $queue = new SendChangeEmail();
+            $queue->createQueue('send_change_email_email');
+            $queue->sendMessage($email_json);
+            $queue->closeConnection();
+        }
+
+        $this->db->dbconnection->beginTransaction();
+
+        $this->db->dbQuery("UPDATE users SET login = ?, city_id = ?, updated_at = now() WHERE id = ?",
+            [$login, $cityId, $userId]);
+        $this->db->dbQuery("UPDATE names SET name = ? WHERE user_id = ?", [$name, $cityId]);
+        $this->db->dbQuery("UPDATE surnames SET surname = ? WHERE user_id = ?", [$surname, $cityId]);
+
+        $this->db->dbconnection->commit();
     }
 }
