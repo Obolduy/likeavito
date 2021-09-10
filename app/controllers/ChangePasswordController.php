@@ -1,6 +1,7 @@
 <?php
 namespace App\Controllers;
-use App\Models\User;
+
+use App\Models\PasswordChange;
 
 class ChangePasswordController
 {   
@@ -12,7 +13,7 @@ class ChangePasswordController
 
     public static function changePasswordController(string $link): void
     {
-        if (!is_bool((new User)->changePassword($link))) {
+        if ((new PasswordChange())->changePassword($link)) {
             echo 'Ваш пароль успешно изменен <br> <a href="/user">Вернуться на Ваш профиль</a>';
         } else {
             header('Location: /');

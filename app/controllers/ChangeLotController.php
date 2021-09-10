@@ -25,6 +25,8 @@ class ChangeLotController
             (new LotChange($lot_id))->changeLot(strip_tags($_POST['title']), strip_tags($_POST['price']),
                     strip_tags($_POST['description'], '<p></p><br/><br><i><b><s><u><strong>'),
                         $_POST['category_id'], $_FILES['photos']);
+
+            header("Location: /category/{$_POST['category_id']}/$lot_id");
         }
     }
 }

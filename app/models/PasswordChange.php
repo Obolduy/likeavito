@@ -3,13 +3,13 @@ namespace App\Models;
 
 use App\Models\Interfaces\iDatabase;
 
-class ChangePassword
+class PasswordChange
 {
     private $email;
     private $password;
     private $db;
 
-    public function __construct(string $email, string $password = null, iDatabase $db = null)
+    public function __construct(string $email = null, string $password = null, iDatabase $db = null)
     {
         $this->db = $db ?? DEFAULT_DB_CONNECTION;
         $this->email = $email;
@@ -29,13 +29,14 @@ class ChangePassword
         $this->db->dbQuery('DELETE FROM password_reset WHERE token = ?', [$token]);
     }
 
-    public function changePassword(string $link)
+    public function changePassword(string $link): bool
     {
         $new_password = $this->db->dbQuery("SELECT * FROM passwords_changes WHERE link = ?", [$link]);
         
         if ($new_password) {
             $this->db->dbQuery("UPDATE users SET updated_at = now(), password = ? WHERE id = ?",
                 [$new_password[0]['password'], $_SESSION['user']['id']]);
+            return true;
         } else {
             return false;
         }
