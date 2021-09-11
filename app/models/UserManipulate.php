@@ -6,6 +6,7 @@ use App\Models\SendChangePasswordEmail;
 use App\Models\SendChangeEmail;
 use App\Models\UserAuth;
 use App\Models\Picture;
+use App\Models\LotManipulate;
 
 class UserManipulate
 {
@@ -78,22 +79,11 @@ class UserManipulate
 
         $this->db->dbconnection->commit();
 
-        // Вынести это в Lot
         $user_lots = $this->db->dbQuery("SELECT id FROM lots WHERE owner_id = ?", [$user_id])
-            ->fetchColumn();
+            ->fetch();
 
         foreach ($user_lots as $elem) {
-            $this->db->dbQuery("DELETE FROM lots_pictures WHERE lot_id = ?", [$elem]);
-
-            if (is_dir("/img/lots/$elem")) {
-                rmdir("/img/lots/$elem");
-            }
-        }
-
-        $this->db->dbQuery("DELETE FROM lots WHERE owner_id = ?", [$user_id]);
-
-        if (is_dir("/img/users/$user_id")) {
-            rmdir("/img/users/$user_id");
+            (new LotManipulate)->deleteLot($elem);
         }
     }
 
