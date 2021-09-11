@@ -5,12 +5,10 @@ use App\Models\Interfaces\iDatabase;
 
 class CommentGet
 {
-    private $commentId;
     private $db;
 
-    public function __construct($commentId = null, iDatabase $db = null)
+    public function __construct(iDatabase $db = null)
     {
-        $this->commentId = $commentId;
         $this->db = $db ?? DEFAULT_DB_CONNECTION;
     }
 
@@ -20,9 +18,15 @@ class CommentGet
             LEFT JOIN users AS u ON u.id = c.user_id WHERE c.lot_id = ?", [$lotId])->fetchAll();
     }
 
-    public function getOneComment()
+    public function getCommentById(int $commentId)
     {
         $this->db->dbQuery("SELECT c.*, u.login, u.avatar, u.id FROM comments AS c
-            LEFT JOIN users AS u ON u.id = c.user_id WHERE c.id = ?", [$this->commentId])->fetch();
+            LEFT JOIN users AS u ON u.id = c.user_id WHERE c.id = ?", [$commentId])->fetch();
+    }
+
+    public function getCommentsByUserId(int $userId)
+    {
+        $this->db->dbQuery("SELECT c.description, c.add_time, c.update_time, l.id, l.category_id, FROM comments AS c
+            LEFT JOIN lots AS l ON l.id = c.lot_id WHERE c.user_id = ?", [$userId])->fetchAll();
     }
 }
