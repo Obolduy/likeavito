@@ -1,5 +1,6 @@
 <?php
 namespace App\Controllers;
+
 use App\Models\Lots;
 use App\Models\Comments;
 use App\View\View;

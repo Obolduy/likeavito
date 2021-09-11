@@ -1,5 +1,6 @@
 <?php
 namespace App\Controllers;
+
 use App\Models\MySQLDB;
 use App\Models\LotGet;
 use App\Models\Pagination;
