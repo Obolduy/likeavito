@@ -1,6 +1,9 @@
 <?php
 namespace App\Controllers;
-use App\Models\User;
+
+use App\Models\EmailSender;
+use App\Models\UserAuth;
+use App\Models\UserManipulate;
 use App\View\View;
 
 class DeleteUserController
@@ -11,9 +14,7 @@ class DeleteUserController
             new View('deleteuser', ['title' => 'Удалить пользователя']);
         } else {
             if (password_verify($_POST['password'], $_SESSION['user']['password'])) {
-                $user = new User();
-                
-                $user->sendDeleteMail($_SESSION['user']['email']);
+                (new EmailSender((new UserAuth)->data['email']))->sendDeleteMail();
             } else {
                 echo 'Неправильный пароль!';
             }
@@ -23,7 +24,7 @@ class DeleteUserController
     public static function deleteUser(string $token): void
     {
         if ($token == $_SESSION['deletelink']) {
-            (new User)->deleteUser($_SESSION['user']['id']);
+            (new UserManipulate)->deleteUser($_SESSION['user_id']);
 
             $_SESSION['user'] = null;
             $_SESSION['deletelink'] = null;
