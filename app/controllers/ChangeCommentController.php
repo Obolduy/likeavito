@@ -15,7 +15,7 @@ class ChangeCommentController
         }
 
         if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-            $comment = (new CommentGet($comment_id))->getComment();
+            $comment = (new CommentGet($comment_id))->getOneComment();
 
             new View('changecomment', ['title' => 'Изменить комментарий', 'comment' => $comment]);
         } else {

@@ -1,22 +1,17 @@
 <?php
 namespace App\Controllers;
 
-use App\Models\Lots;
-use App\Models\Comments;
+use App\Models\LotGet;
+use App\Models\CommentGet;
 use App\View\View;
 
 class ShowLotController
 {   
     public static function showLot(int $category_id, int $lot_id): void
     {
-        if ($value == null) {
-            $lots = new Lots;
-            $lot = $lots->getFullLotInfo($lot_id);
-            $pictures = $lots->getOne('lots_pictures', $lot_id, 'lot_id');
+        $lot = (new LotGet)->getFullLotInfo($lot_id);
+        $comments = (new CommentGet)->getLotComments($lot_id);
 
-            $comments = ( new Comments )->getOne('comments', $lot_id, 'lot_id');
-        }
-
-        new View('showlot', ['lot' => $lot, 'pictures' => $pictures, 'comments' => $comments, 'title' => $lot[0]['title']]);
+        new View('showlot', ['lot' => $lot, 'comments' => $comments, 'title' => $lot['LotInfo']['title']]);
     }
 }
