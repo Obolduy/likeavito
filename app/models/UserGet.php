@@ -17,4 +17,10 @@ class UserGet
         return $this->db->dbQuery("SELECT * FROM users WHERE ? = ?",
             [array_keys($data), array_values($data)])->fetch();
     }
+
+    public function getOtherUser(int $id): array
+    {
+        return $this->db->dbQuery("SELECT login, avatar, registration_time FROM users WHERE id = ?",
+            [$id])->fetch();
+    }
 }
