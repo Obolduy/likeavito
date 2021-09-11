@@ -1,6 +1,6 @@
 <?php
 namespace App\Controllers;
-use App\Models\User;
+
 use App\View\View;
 
 class AdminLoginController
