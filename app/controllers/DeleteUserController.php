@@ -13,8 +13,10 @@ class DeleteUserController
         if ($_SERVER['REQUEST_METHOD'] == 'GET') {
             new View('deleteuser', ['title' => 'Удалить пользователя']);
         } else {
-            if (password_verify($_POST['password'], $_SESSION['user']['password'])) {
-                (new EmailSender((new UserAuth)->data['email']))->sendDeleteMail();
+            $user = new UserAuth();
+
+            if (password_verify($_POST['password'], $user->data['password'])) {
+                (new EmailSender($user->data['email']))->sendDeleteMail();
             } else {
                 echo 'Неправильный пароль!';
             }
@@ -26,7 +28,7 @@ class DeleteUserController
         if ($token == $_SESSION['deletelink']) {
             (new UserManipulate)->deleteUser($_SESSION['user_id']);
 
-            $_SESSION['user'] = null;
+            $_SESSION['user_id'] = null;
             $_SESSION['deletelink'] = null;
         }
 

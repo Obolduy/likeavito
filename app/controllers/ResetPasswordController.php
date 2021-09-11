@@ -2,7 +2,8 @@
 namespace App\Controllers;
 
 use App\Models\SendResetEmail;
-use App\Models\User;
+use App\Models\PasswordChange;
+use App\Models\PasswordValidation;
 use App\View\View;
 
 class ResetPasswordController
@@ -23,11 +24,11 @@ class ResetPasswordController
 
     public static function passwordResetForm(string $token): void
     {
-        $user = new User();
-        $password_reset = $user->getOne('password_reset', $token, 'token');
+        $password_reset = new PasswordChange();
+        $password_reset->getEmailByToken($token);
 
         if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-            if ($password_reset) {
+            if ($password_reset->email) {
                 new View('resetpasswordform', ['title' => 'Восстановление пароля']);
             } else {
                 header('Location: /');
@@ -36,19 +37,18 @@ class ResetPasswordController
             $password = strip_tags($_POST['password']);
             $confirmPassword = strip_tags($_POST['confirmPassword']);
 
-            if (!preg_match('#^[A-Za-z0-9]+$#', $password)) {
-                echo 'Пароль может содержать только латинские буквы и цифры';
-            } else if ($password != $confirmPassword) {
-                echo 'Пароли не совпадают';
-            }
-            
-            $cryptPassword = password_hash($password, PASSWORD_DEFAULT);
+            $check = (new PasswordValidation)->checkPassword($password, $confirmPassword);
 
-            foreach ($password_reset as $elem) {
-                $user->resetPassword($cryptPassword, $token, $elem['email']);
+            if ($check) {
+                $password_reset->password = password_hash($password, PASSWORD_DEFAULT);
+                $password_reset->resetPassword($token);
+                
+                header('Location: /login');
+            } else {
+                $_SESSION['change_pass_err_msg'] = $check;
+
+                header("Location: /user/resetpassword/$token");
             }
-            
-            header('Location: /login');
         }
     }
 }
