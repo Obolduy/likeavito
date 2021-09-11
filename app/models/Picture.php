@@ -29,6 +29,15 @@ class Picture
         return $this->picturesNames; 
     }
 
+    public function deletePicturesByPath(string $path): void
+    {
+        if (is_dir($_SERVER['DOCUMENT_ROOT'] . "img/$path")) {
+            rmdir($_SERVER['DOCUMENT_ROOT'] . "img/$path");
+        } else {
+            unlink($_SERVER['DOCUMENT_ROOT'] . "img/$path");
+        }
+    }
+
      /**
 	 * Rename picture by md5-hashing and return new name.
 	 * @param string user`s name of picture
