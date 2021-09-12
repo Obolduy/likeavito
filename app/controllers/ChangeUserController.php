@@ -3,7 +3,7 @@ namespace App\Controllers;
 
 use App\Models\UserAuth;
 use App\Models\UserValidation;
-use App\Models\MySQLDB;
+use App\Models\Cities;
 use App\Models\UserManipulate;
 use App\View\View;
 
@@ -17,11 +17,9 @@ class ChangeUserController
 
     public static function changeInformation(): void
     {
-        $base = new MySQLDB();
-
         if ($_SERVER['REQUEST_METHOD'] == 'GET') {
             $user = new UserAuth();
-            $cities = $base->dbQuery("SELECT * FROM cities")->fetchAll();
+            $cities = (new Cities)->getAllCities();
 
             new View('changeuser', ['user' => $user, 'cities' => $cities, 'title' => 'Изменить данные']);
         } else {
@@ -35,7 +33,7 @@ class ChangeUserController
                     $cryptpassword, strip_tags($_POST['email']), strip_tags($_POST['name']),
                         strip_tags($_POST['surname']), $_POST['city_id'], $_FILES['photo']);
             } else {
-                $_SESSION['lot_err_msg'] = $check;
+                $_SESSION['usr_err_msg'] = $check;
 
                 header('Location: /user/change');
             }
