@@ -15,26 +15,35 @@ class Pagination
     private $count;
     private $db;
 
-    public function __construct(string $tableName, string $columnName, string $property, int $border1, int $border2 = 5, iDatabase $db = null)
+    public function __construct(string $tableName, int $border1, int $border2 = 5, iDatabase $db = null)
     {
         $this->tableName = $tableName;
-        $this->columnName = $columnName;
-        $this->property = $property;
         $this->border1 = $border1;
         $this->border2 = $border2;
         $this->db = $db ?? DEFAULT_DB_CONNECTION;
-
-        $this->pagination();
     }
 
-    private function pagination()
+    public function pagination(string $columnName = null, string $property = null)
     {
-        $this->table = $this->getTable();
+        if ($columnName !== null && $property !== null) {
+            $this->columnName = $columnName;
+            $this->property = $property;
+            $this->table = $this->getTable();
+        } else {
+            $this->table = $this->getWholeTable();
+        }
         $this->pageCount = $this->getPageCount();
     }
 
+    private function getWholeTable(): array
+    {   
+        return $this->db->dbQuery("SELECT * FROM ? LIMIT ?, ?",
+                [$this->tableName, $this->border1, $this->border2])
+                    ->fetchAll();
+    }
+
     private function getTable(): array
-    {
+    {   
         return $this->db->dbQuery("SELECT * FROM ? WHERE ? = ? LIMIT ?, ?",
                 [$this->tableName, $this->columnName, $this->property, $this->border1, $this->border2])
                     ->fetchAll();
