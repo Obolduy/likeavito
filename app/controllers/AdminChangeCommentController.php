@@ -1,5 +1,6 @@
 <?php
 namespace App\Controllers;
+
 use App\Models\Pagination;
 use App\Models\CommentGet;
 use App\Models\CommentManipulate;
@@ -22,7 +23,7 @@ class AdminChangeCommentController
             new View('adminchangecomment', ['comment' => $comment, 'title' => 'Изменить комментарий']);
         } else {
             (new CommentManipulate)->changeComment($comment_id,
-                strip_tags($_POST['description'], '<p></p><br/><br><i><b><s><u><strong>'));
+                strip_tags($_POST['description'], '<p></p><br/><br><i><b><s><u><strong>'), $_POST['display']);
         }
     }
 }
