@@ -12,14 +12,9 @@ class AdminManageUsers
         $this->db = $db ?? DEFAULT_DB_CONNECTION;
     }
 
-    public function banUser(int $userId): void
+    public function userBanManage(int $userId, int $banStatus): void
     {
-        $this->db->dbQuery("UPDATE users SET ban_status = 1 WHERE id = ?", [$userId]);
-    }
-
-    public function unbanUser(int $userId): void
-    {
-        $this->db->dbQuery("UPDATE users SET ban_status = 0 WHERE id = ?", [$userId]);
+        $this->db->dbQuery("UPDATE users SET ban_status = ? WHERE id = ?", [$banStatus, $userId]);
     }
 
     public function makeUserAnAdmin(int $userId): void
