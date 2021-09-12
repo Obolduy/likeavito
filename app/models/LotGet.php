@@ -29,10 +29,4 @@ class LotGet
         return $this->db->dbQuery("SELECT l.*, c.category FROM lots AS l
             LEFT JOIN lots_category AS c ON l.category_id = c.id WHERE l.user_id = ?", [$userId])->fetchAll();
     }
-
-    public function getPageWithLots(int $categoryId, int $border1, int $border2 = 5): array
-    {
-        return $this->db->dbQuery("SELECT * FROM lots WHERE category_id = ? LIMIT ?, ?",
-                [$categoryId, $border1, $border2])->fetchAll();
-    }
 }
