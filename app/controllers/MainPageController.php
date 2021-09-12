@@ -30,7 +30,9 @@ class MainPageController
 
         $category = (new MySQLDB)->dbQuery("SELECT * FROM lots_category WHERE id = ?", [$category_id])
             ->fetchAll();
-        $pagination = new Pagination('lots', 'category_id', $category_id, (($_GET['page'] * 5) - 5));
+            
+        $pagination = new Pagination('lots', (($_GET['page'] * 5) - 5));
+        $pagination->pagination('category_id', $category_id);
 
         new View('showcategory', ['lots' => $pagination->table, 'page_count' => $pagination->pageCount, 'title' => $category[0]['category']]);
     }
