@@ -18,10 +18,10 @@ class CommentManipulate
             description = ?, add_time = NOW(), update_time = NOW()", [$userId, $lotId, $description]);
     }
 
-    public function changeComment(int $commentId, string $commentText): void
+    public function changeComment(int $commentId, int $display, string $commentText): void
     {
-        $this->db->dbQuery("UPDATE comments SET description = ? WHERE id = ?",
-            [$commentText, $commentId]);
+        $this->db->dbQuery("UPDATE comments SET description = ?, display = ? WHERE id = ?",
+            [$commentText, $display, $commentId]);
     }
 
     public function deleteComment(int $commentId): void
