@@ -1,16 +1,13 @@
 <?php
 namespace App\Controllers;
-use App\Models\Comments;
-use App\View\View;
+
+use App\Models\CommentManipulate;
 
 class AdminDeleteCommentController
 {   
     public static function adminDeleteComment(int $comment_id): void
     {
-        $comment = new Comments;
-
-        $comment->delete('comments', $comment_id);
-
-        header('Location: /');
+        (new CommentManipulate)->deleteComment($comment_id);
+        header('Location:' . $_SERVER['HTTP_REFERER']);
     }
 }
