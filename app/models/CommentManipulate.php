@@ -1,17 +1,8 @@
 <?php
 namespace App\Models;
 
-use App\Models\Database;
-
-class CommentManipulate
+class CommentManipulate extends Model
 {
-    private $db;
-
-    public function __construct()
-    {
-        $this->db = new Database();
-    }
-
     public function addComment(int $lotId, int $userId, string $description): void
     {
         $this->db->dbQuery("INSERT INTO comments SET user_id = ?, lot_id = ?,

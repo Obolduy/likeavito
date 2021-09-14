@@ -1,18 +1,8 @@
 <?php
 namespace App\Models;
 
-use App\Models\Database;
-
-class UserValidation
+class UserValidation extends Model
 {
-    private $db;
-    private $errorArray = [];
-
-    public function __construct()
-    {
-        $this->db = new Database();
-    }
-
     /**
 	 * Validate login and password
 	 * @param string login

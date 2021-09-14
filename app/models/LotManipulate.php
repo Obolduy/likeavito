@@ -1,18 +1,16 @@
 <?php
 namespace App\Models;
 
-use App\Models\Database;
 use App\Models\Picture;
 
-class LotManipulate
+class LotManipulate extends Model
 {
-    private $db;
     private $picture;
 
     public function __construct()
     {
+        parent::__construct();
         $this->picture = new Picture();
-        $this->db = new Database();
     }
 
     public function addLot(string $title, int $price, string $description, int $categoryId, int $ownerId): void

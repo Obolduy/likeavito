@@ -1,17 +1,8 @@
 <?php
 namespace App\Models;
 
-use App\Models\Database;
-
-class LotGet
+class LotGet extends Model
 {
-    private $db;
-
-    public function __construct()
-    {
-        $this->db = new Database();
-    }
-
     public function getFullLotInfo(int $lotId): array
     {
         $lotInfo = $this->db->dbQuery("SELECT l.*, u.login, u.avatar, c.category FROM lots AS l

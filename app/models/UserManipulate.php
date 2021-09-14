@@ -1,22 +1,14 @@
 <?php
 namespace App\Models;
 
-use App\Models\Database;
 use App\Models\SendChangePasswordEmail;
 use App\Models\SendChangeEmail;
 use App\Models\UserAuth;
 use App\Models\Picture;
 use App\Models\LotManipulate;
 
-class UserManipulate
+class UserManipulate extends Model
 {
-    private $db;
-
-    public function __construct()
-    {
-        $this->db = new Database();
-    }
-
     /**
 	 * Adding new user into db
 	 * @param string login

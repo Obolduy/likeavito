@@ -1,17 +1,8 @@
 <?php
 namespace App\Models;
 
-use App\Models\Database;
-
-class AdminManageUsers
+class AdminManageUsers extends Model
 {
-    private $db;
-
-    public function __construct()
-    {
-        $this->db = new Database();
-    }
-
     public function userBanManage(int $userId, int $banStatus): void
     {
         $this->db->dbQuery("UPDATE users SET ban_status = ? WHERE id = ?", [$banStatus, $userId]);

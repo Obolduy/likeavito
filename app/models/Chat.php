@@ -3,11 +3,6 @@ namespace App\Models;
 
 class Chat extends Model
 {
-    public function __construct()
-    {
-        $this->db = self::connection();
-    }
-
     /**
 	 * Deleting chat table and entry in chats_list table.
 	 * @param string chat`s name w\no "chat"
@@ -16,10 +11,8 @@ class Chat extends Model
 
     public function deleteChat(string $chat_name): void
     {
-        $this->db->query("DROP TABLE chat_$chat_name");
-
-        $query = $this->db->prepare("DELETE FROM chats_list WHERE chat = ?");
-        $query->execute(["chat_$chat_name"]);
+        $this->db->dbQuery("DROP TABLE ?", ["chat_$chat_name"]);
+        $this->db->dbQuery("DELETE FROM chats_list WHERE chat = ?", ["chat_$chat_name"]);
     }
 
     /**
@@ -30,9 +23,8 @@ class Chat extends Model
 
     public function refresh(string $chat_name): array
     {
-        $query = $this->db->query("SELECT c.*, u.login FROM $chat_name AS c LEFT JOIN users AS u ON c.user_id=u.id");
-
-        return $this->show($query);
+        return $this->db->dbQuery("SELECT c.*, u.login FROM ? AS c LEFT JOIN users AS u ON c.user_id=u.id", [$chat_name])
+            ->fetchAll();
     }
     
     /**
@@ -71,8 +63,7 @@ class Chat extends Model
 
     public function sendMessage(string $text, string $chat_name, int $user_id): void
     {
-        $query = $this->db->prepare("INSERT INTO $chat_name SET message = ?, user_id = ?");
-        $query->execute([$text, $user_id]);
+        $this->db->dbQuery("INSERT INTO $chat_name SET message = ?, user_id = ?", [$text, $user_id]);
     }
     
     /**
@@ -84,16 +75,15 @@ class Chat extends Model
 
     private function createChat(int $user1_id, int $user2_id): void
     {
-        $chat_name = md5($user1_id . '_' . $user2_id);
-
-        $this->db->query("CREATE TABLE chat_$chat_name(
+        $chatName = md5($user1_id . '_' . $user2_id);
+        $this->db->dbQuery("CREATE TABLE ?(
             id INT(64) AUTO_INCREMENT PRIMARY KEY,
             message TEXT(1000) NOT NULL,
             user_id INT(64) NOT NULL,
             date DATETIME NOT NULL DEFAULT NOW()
-        )");
+        )", ["chat_$chatName"]);
 
-        $query = $this->db->prepare("INSERT INTO chats_list SET chat = ?, user1_id = ?, user2_id = ?");
-        $query->execute(["chat_$chat_name", $user1_id, $user2_id]);
+        $this->db->dbQuery("INSERT INTO chats_list SET chat = ?, user1_id = ?, user2_id = ?", 
+            ["chat_$chatName", $user1_id, $user2_id]);
     }
 }

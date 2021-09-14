@@ -1,17 +1,8 @@
 <?php
 namespace App\Models;
 
-use App\Models\Database;
-
-class UserGet
+class UserGet extends Model
 {
-    private $db;
-
-    public function __construct()
-    {
-        $this->db = new Database();
-    }
-
     public function getAllUsers() 
     {
         return $this->db->dbQuery("SELECT u.id, u.login, u.email, u.avatar, n.name,

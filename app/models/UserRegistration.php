@@ -5,7 +5,7 @@ use App\Models\UserManipulate;
 use App\Models\UserGet;
 use App\Models\Picture;
 
-class UserRegistration
+class UserRegistration extends Model
 {
     private $login;
     private $password;

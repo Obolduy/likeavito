@@ -1,7 +1,7 @@
 <?php
 namespace App\Models;
 
-class EmailSender
+class EmailSender extends Model
 {
     private $email;
 

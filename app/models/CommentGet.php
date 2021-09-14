@@ -1,17 +1,8 @@
 <?php
 namespace App\Models;
 
-use App\Models\Database;
-
-class CommentGet
+class CommentGet extends Model
 {
-    private $db;
-
-    public function __construct()
-    {
-        $this->db = new Database();
-    }
-
     public function getLotComments(int $lotId)
     {
         $this->db->dbQuery("SELECT c.id, c.description, c.add_time, u.login, u.avatar, u.id FROM comments AS c

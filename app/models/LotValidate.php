@@ -1,7 +1,7 @@
 <?php
 namespace App\Models;
 
-class LotValidate
+class LotValidate extends Model
 {
     private $errorArray = [];
 

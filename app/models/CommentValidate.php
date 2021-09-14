@@ -1,7 +1,7 @@
 <?php
 namespace App\Models;
 
-class CommentValidate
+class CommentValidate extends Model
 {
     private $errorArray = [];
 

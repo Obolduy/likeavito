@@ -1,17 +1,8 @@
 <?php
 namespace App\Models;
 
-use App\Models\Database;
-
-class AdminManageLots
+class AdminManageLots extends Model
 {
-    private $db;
-
-    public function __construct()
-    {
-        $this->db = new Database();
-    }
-
     public function hideLot(int $lotId): void
     {
         $this->db->dbQuery("UPDATE lots SET display = 0 WHERE id = ?", [$lotId]);

@@ -1,16 +1,13 @@
 <?php
 namespace App\Models;
 
-use App\Models\Database;
 use App\Models\UserAuth;
 
-class EmailVerify
+class EmailVerify extends Model
 {
-    private $db;
-
     public function __construct()
     {
-        $this->db = new Database();
+        parent::__construct();
 
         $this->verifycationEmail();
     }

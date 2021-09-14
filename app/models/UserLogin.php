@@ -1,19 +1,17 @@
 <?php
 namespace App\Models;
 
-use App\Models\Database;
 use App\Models\UserGet;
 use App\Models\UserAuth;
 
-class UserLogin
+class UserLogin extends Model
 {
     private $login;
-    private $db;
 
     public function __construct(string $login)
     {
+        parent::__construct();
         $this->login = $login;
-        $this->db = new Database();
     }
 
     public function login(int $rememberToken = 0): void

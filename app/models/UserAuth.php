@@ -1,17 +1,14 @@
 <?php
 namespace App\Models;
 
-use App\Models\Database;
-
-class UserAuth
+class UserAuth extends Model
 {
     public $id;
     public $data = [];
-    private $db;
 
     public function __construct()
     {
-        $this->db = new Database();
+        parent::__construct();
         $this->id = $_SESSION['user_id'];
 
         foreach ($this->getUserInfo() as $elem) {

@@ -1,17 +1,8 @@
 <?php
 namespace App\Models;
 
-use App\Models\Database;
-
-class Categories
+class Categories extends Model
 {
-    private $db;
-
-    public function __construct()
-    {
-        $this->db = new Database();
-    }
-
     public function addCategory(int $categoryName): void
     {
         $this->db->dbQuery("INSERT INTO lots_category SET category = ?", [$categoryName]);

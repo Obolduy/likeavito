@@ -1,9 +1,7 @@
 <?php
 namespace App\Models;
 
-use App\Models\Database;
-
-class Pagination
+class Pagination extends Model
 {
     public $table;
     public $pageCount;
@@ -13,14 +11,13 @@ class Pagination
     private $border1;
     private $border2;
     private $count;
-    private $db;
 
     public function __construct(string $tableName, int $border1, int $border2 = 5)
     {
+        parent::__construct();
         $this->tableName = $tableName;
         $this->border1 = $border1;
         $this->border2 = $border2;
-        $this->db = new Database();
     }
 
     public function pagination(string $columnName = null, string $property = null)

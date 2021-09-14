@@ -1,7 +1,7 @@
 <?php
 namespace App\Models;
 
-class Picture
+class Picture extends Model
 {    
     public $picturesNames = [];
 

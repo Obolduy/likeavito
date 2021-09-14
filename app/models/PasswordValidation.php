@@ -1,7 +1,7 @@
 <?php
 namespace App\Models;
 
-class PasswordValidation
+class PasswordValidation extends Model
 {
     private $errorArray = [];
 

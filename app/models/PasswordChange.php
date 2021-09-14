@@ -1,17 +1,14 @@
 <?php
 namespace App\Models;
 
-use App\Models\Database;
-
-class PasswordChange
+class PasswordChange extends Model
 {
     public $email;
     public $password;
-    private $db;
 
     public function __construct(string $email = null, string $password = null)
     {
-        $this->db = new Database();
+        parent::__construct();
         $this->email = $email;
         $this->password = $password;
     }
