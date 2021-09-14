@@ -1,7 +1,7 @@
 <?php
 namespace App\Models;
 
-use App\Models\Interfaces\iDatabase;
+use App\Models\Database;
 use App\Models\UserGet;
 use App\Models\UserAuth;
 
@@ -10,10 +10,10 @@ class UserLogin
     private $login;
     private $db;
 
-    public function __construct(string $login, iDatabase $db = null)
+    public function __construct(string $login)
     {
         $this->login = $login;
-        $this->db = $db ?? DEFAULT_DB_CONNECTION;
+        $this->db = new Database();
     }
 
     public function login(int $rememberToken = 0): void

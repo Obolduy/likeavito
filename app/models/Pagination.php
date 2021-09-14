@@ -1,7 +1,7 @@
 <?php
 namespace App\Models;
 
-use App\Models\Interfaces\iDatabase;
+use App\Models\Database;
 
 class Pagination
 {
@@ -15,12 +15,12 @@ class Pagination
     private $count;
     private $db;
 
-    public function __construct(string $tableName, int $border1, int $border2 = 5, iDatabase $db = null)
+    public function __construct(string $tableName, int $border1, int $border2 = 5)
     {
         $this->tableName = $tableName;
         $this->border1 = $border1;
         $this->border2 = $border2;
-        $this->db = $db ?? DEFAULT_DB_CONNECTION;
+        $this->db = new Database();
     }
 
     public function pagination(string $columnName = null, string $property = null)
@@ -37,22 +37,20 @@ class Pagination
 
     private function getWholeTable(): array
     {   
-        return $this->db->dbQuery("SELECT * FROM ? LIMIT ?, ?",
-                [$this->tableName, $this->border1, $this->border2])
-                    ->fetchAll();
+        return $this->db->dbQuery("SELECT * FROM {$this->tableName} LIMIT {$this->border1}, {$this->border2}")
+                ->fetchAll();
     }
 
     private function getTable(): array
     {   
-        return $this->db->dbQuery("SELECT * FROM ? WHERE ? = ? LIMIT ?, ?",
-                [$this->tableName, $this->columnName, $this->property, $this->border1, $this->border2])
-                    ->fetchAll();
+        return $this->db->dbQuery("SELECT * FROM {$this->tableName} WHERE {$this->columnName} = ? LIMIT {$this->border1}, {$this->border2}",
+                [$this->property])->fetchAll();
     }
 
     private function getPageCount()
     {
-        $this->count = $this->db->dbQuery("SELECT COUNT(*) FROM ? WHERE ? = ?",
-            [$this->tableName, $this->columnName, $this->property])->fetchColumn();
+        $this->count = $this->db->dbQuery("SELECT COUNT(*) FROM {$this->tableName} WHERE {$this->columnName} = ?",
+            [$this->property])->fetchColumn();
         
         while ($this->count % 5 != 0) {
             $this->count++;

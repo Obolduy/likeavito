@@ -1,11 +1,9 @@
 <?php
-use App\Models\MySQLDB;
-
 /*
   DB config
 */
 
-define("DEFAULT_DB_CONNECTION", new MySQLDB());
+define("DEFAULT_DB_CONNECTION", "mysql");
 
 /*
   Emails config

@@ -1,15 +1,15 @@
 <?php
 namespace App\Models;
 
-use App\Models\Interfaces\iDatabase;
+use App\Models\Database;
 
 class CommentManipulate
 {
     private $db;
 
-    public function __construct(iDatabase $db = null)
+    public function __construct()
     {
-        $this->db = $db ?? DEFAULT_DB_CONNECTION;
+        $this->db = new Database();
     }
 
     public function addComment(int $lotId, int $userId, string $description): void

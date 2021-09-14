@@ -2,26 +2,20 @@
 namespace App\Models;
 
 use App\Models\Interfaces\iDatabase;
+use App\Models\DatabaseConnection;
 
-class MySQLDB implements iDatabase
+class Database implements iDatabase
 {
     public $dbConnection;
     private $query;
     
-    public function __construct($host = 'localhost', $dbName = 'marketplace', $login = 'root', $password = 11111111)
+    public function __construct($dbms = DEFAULT_DB_CONNECTION, $host = 'localhost', $dbName = 'marketplace', $login = 'root', $password = 1111)
     {
-        $this->dbConnection = new \PDO(
-            "mysql:host=$host;dbname=$dbName", $login, $password,
-            [
-                \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION,
-                \PDO::ATTR_DEFAULT_FETCH_MODE => \PDO::FETCH_ASSOC,
-                \PDO::ATTR_EMULATE_PREPARES   => false
-            ]
-        );
+        $this->dbConnection = (new DatabaseConnection)->connection($dbms, $host, $dbName, $login, $password);
     }
 
     /**
-	 * SQL query into MySQL DB
+	 * SQL query
 	 * @param array query string
      * @param array placeholders
 	 * @return \PDOStatement

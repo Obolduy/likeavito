@@ -1,16 +1,16 @@
 <?php
 namespace App\Models;
 
-use App\Models\Interfaces\iDatabase;
+use App\Models\Database;
 
 class UserValidation
 {
     private $db;
     private $errorArray = [];
 
-    public function __construct(iDatabase $db = NULL)
+    public function __construct()
     {
-        $this->db = $db ?? DEFAULT_DB_CONNECTION;
+        $this->db = new Database();
     }
 
     /**

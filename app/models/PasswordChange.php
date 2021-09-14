@@ -1,7 +1,7 @@
 <?php
 namespace App\Models;
 
-use App\Models\Interfaces\iDatabase;
+use App\Models\Database;
 
 class PasswordChange
 {
@@ -9,9 +9,9 @@ class PasswordChange
     public $password;
     private $db;
 
-    public function __construct(string $email = null, string $password = null, iDatabase $db = null)
+    public function __construct(string $email = null, string $password = null)
     {
-        $this->db = $db ?? DEFAULT_DB_CONNECTION;
+        $this->db = new Database();
         $this->email = $email;
         $this->password = $password;
     }

@@ -1,7 +1,6 @@
 <?php
 namespace App\Controllers;
 
-use App\Models\User;
 use App\Models\Chat;
 use App\View\View;
 
