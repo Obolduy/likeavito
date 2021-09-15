@@ -12,15 +12,13 @@ class UserValidation extends Model
 
     public function authCheck(string $login, string $password)
     {       
-        $check = $this->db->dbQuery("SELECT * FROM users WHERE login = ?", [$login])->fetch();
+        $user = $this->db->dbQuery("SELECT * FROM users WHERE login = ?", [$login])->fetch();
 
-        if (!$check) {
+        if (!$user) {
             return 'Пользователя с таким логином не существует';
         }
 
-        foreach ($check as $elem) {
-            $checkpassword = password_verify($password, $elem['password']);
-        }
+        $checkpassword = password_verify($password, $user['password']);
 
         if ($checkpassword !== true) {
             return 'Пароль неправильный';
