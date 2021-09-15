@@ -6,7 +6,7 @@ class Authmiddleware implements IMiddleware
 {    
     public function middleware($uri)
     {
-        if (!isset($_SESSION['user'])) {
+        if (!$_SESSION['user_id']) {
             header('Location: /login'); die();
         }
     }
