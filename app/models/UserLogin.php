@@ -2,7 +2,6 @@
 namespace App\Models;
 
 use App\Models\UserGet;
-use App\Models\UserAuth;
 
 class UserLogin extends Model
 {
@@ -14,24 +13,22 @@ class UserLogin extends Model
         $this->login = $login;
     }
 
-    public function login(int $rememberToken = 0): void
+    public function login(int $rememberToken = null): void
     {
         $user = (new UserGet)->getUserByKey(['login' => $this->login]);
 
-        foreach ($user as $elem) {
-            $_SESSION['user_id'] = $elem['id'];
-        }
+        $_SESSION['user_id'] = $user['id'];
 
-        if ($rememberToken == 1) {
+        if ($rememberToken) {
             $remember_token = md5(rand() . time());
 
             $this->db->dbQuery("UPDATE users SET remember_token = ? WHERE id = ?",
                 [$remember_token, $_SESSION['user_id']]);
 
             setcookie('remember_token', $remember_token, time()+2678400);
+            $_COOKIE['remember_token'] = $remember_token;
         }
 
-        $_SESSION['user'] = (new UserAuth)->data;
         $_SESSION['userauth'] = true;
     }
 }
