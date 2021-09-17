@@ -36,25 +36,17 @@ class UserManipulate extends Model
 
     public function addUserInfo(string $name, string $surname, int $user_id, string $photo = null): void
     {
-        $this->db->dbconnection->beginTransaction();
-
-        $this->db->dbQuery("INSERT INTO names SET name = ?, user_id = ?",[$name, $user_id]);
-        $this->db->dbQuery("INSERT INTO surnames SET surname = ?, user_id = ?",
-            [$surname, $user_id]);
-
-        $this->db->dbconnection->commit();
+        $this->db->transaction([["INSERT INTO names SET name = ?, user_id = ?", [$name, $user_id]],
+            ["INSERT INTO surnames SET surname = ?, user_id = ?", [$surname, $user_id]]]);
 
         $name_id = $this->db->dbQuery("SELECT id FROM names WHERE user_id = ?", [$user_id])
             ->fetchColumn();
         $surname_id = $this->db->dbQuery("SELECT id FROM surnames WHERE user_id = ?", [$user_id])
             ->fetchColumn();
         
-        $this->db->dbconnection->beginTransaction();
+        $this->db->transaction([["UPDATE users SET name_id = ? WHERE id = ?", [$name_id, $user_id]],
+            ["UPDATE users SET surname_id = ? WHERE id = ?", [$surname_id, $user_id]]]);
 
-        $this->db->dbQuery("UPDATE users SET name_id = ? WHERE id = ?", [$name_id, $user_id]);
-        $this->db->dbQuery("UPDATE users SET surname_id = ? WHERE id = ?", [$surname_id, $user_id]);
-
-        $this->db->dbconnection->commit();
 
         if ($photo) {
             $this->db->dbQuery("UPDATE users SET avatar = ? WHERE id = ?", [$photo, $user_id]);
@@ -63,20 +55,16 @@ class UserManipulate extends Model
 
     public function deleteUser(int $user_id): void
     {   
-        $this->db->dbconnection->beginTransaction();
-
-        $this->db->dbQuery("DELETE FROM users WHERE id = ?", [$user_id]);
-        $this->db->dbQuery("DELETE FROM names WHERE user_id = ?", [$user_id]);
-        $this->db->dbQuery("DELETE FROM surnames WHERE user_id = ?", [$user_id]);
-
-        $this->db->dbconnection->commit();
+        $this->db->transaction([
+            ["DELETE FROM users WHERE id = ?", [$user_id]], 
+            ["DELETE FROM names WHERE user_id = ?", [$user_id]],
+            ["DELETE FROM surnames WHERE user_id = ?", [$user_id]]
+        ]);
 
         $user_lots = $this->db->dbQuery("SELECT id FROM lots WHERE owner_id = ?", [$user_id])
-            ->fetch();
+            ->fetchColumn();
 
-        foreach ($user_lots as $elem) {
-            (new LotManipulate)->deleteLot($elem);
-        }
+        (new LotManipulate)->deleteLot($user_lots);
     }
 
     public function changeUser(int $userId, string $login, string $password, string $email, string $name, string $surname, int $cityId, array $photo = null)
@@ -106,13 +94,10 @@ class UserManipulate extends Model
             $queue->closeConnection();
         }
 
-        $this->db->dbconnection->beginTransaction();
-
-        $this->db->dbQuery("UPDATE users SET login = ?, city_id = ?, updated_at = now() WHERE id = ?",
-            [$login, $cityId, $userId]);
-        $this->db->dbQuery("UPDATE names SET name = ? WHERE user_id = ?", [$name, $cityId]);
-        $this->db->dbQuery("UPDATE surnames SET surname = ? WHERE user_id = ?", [$surname, $cityId]);
-
-        $this->db->dbconnection->commit();
+        $this->db->transaction([
+            ["UPDATE users SET login = ?, city_id = ?, updated_at = now() WHERE id = ?", [$login, $cityId, $userId]],
+            ["UPDATE names SET name = ? WHERE user_id = ?", [$name, $cityId]],
+            ["UPDATE surnames SET surname = ? WHERE user_id = ?", [$surname, $cityId]]
+        ]);
     }
 }
