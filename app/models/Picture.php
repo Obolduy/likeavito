@@ -18,10 +18,18 @@ class Picture extends Model
             mkdir("img/$dir");
         }
 
-        for ($i = 0; $i < count($pictures['name']); $i++) {
-            $photo = $this->renameUploadedPicture($pictures['name'][$i]);
-
-            move_uploaded_file($pictures['tmp_name'][$i], "img/$dir/$photo");
+        if (is_array($pictures['name'])) {
+            for ($i = 0; $i < count($pictures['name']); $i++) {
+                $photo = $this->renameUploadedPicture($pictures['name'][$i]);
+    
+                move_uploaded_file($pictures['tmp_name'][$i], "img/$dir/$photo");
+    
+                $this->picturesNames[] = $photo;
+            }
+        } else {
+            $photo = $this->renameUploadedPicture($pictures['name']);
+    
+            move_uploaded_file($pictures['tmp_name'], "img/$dir/$photo");
 
             $this->picturesNames[] = $photo;
         }
