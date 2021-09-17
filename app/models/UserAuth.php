@@ -18,7 +18,8 @@ class UserAuth extends Model
             'email' => $user['email'], 'surname' => $user['surname'],
             'city_id' => $user['city_id'], 'status_id' => $user['status_id'],
             'ban_status' => $user['ban_status'], 'registration_time' => $user['registration_time'],
-            'updated_at' => $user['updated_at'], 'active' => $user['active']];
+            'updated_at' => $user['updated_at'], 'active' => $user['active'],
+            'city_name' => $user['city'], 'avatar' => $user['avatar']];
     }
 
     /**
