@@ -31,6 +31,24 @@ class Database implements iDatabase
     }
 
     /**
+	 * PDO transaction
+	 * @param array query, query[0] is a query string and query[1] is a prepare data array
+	 * @return void
+	 */
+
+    public function transaction(array $queries): void
+    {
+        $this->dbConnection->beginTransaction();
+
+        foreach ($queries as $query) {
+            $this->query = $this->dbConnection->prepare($query[0]);
+            $this->query->execute($query[1]);
+        }
+
+        $this->dbConnection->commit();
+    }
+
+    /**
 	 * SQL prepared query
 	 * @param array query string
      * @param array array with placeholders
