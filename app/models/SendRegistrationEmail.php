@@ -1,7 +1,7 @@
 <?php
 namespace App\Models;
 
-use App\Models\User;
+use App\Models\EmailSender;
 
 class SendRegistrationEmail extends RabbitmqQueues
 {
@@ -29,7 +29,7 @@ class SendRegistrationEmail extends RabbitmqQueues
         $callback = function ($message) {
             $array = json_decode($message->body);
         
-            (new User)->sendRegistrationEmail($array[0], $array[1]);
+            (new EmailSender($array[0]))->sendRegistrationEmail($array[1]);
         };
 
         return $callback;
