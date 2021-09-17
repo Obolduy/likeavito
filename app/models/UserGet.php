@@ -21,10 +21,10 @@ class UserGet extends Model
                         ON c.id = u.city_id WHERE u.id = ?", [$userId])->fetch();
     }
 
-    public function getUserByKey(array $data): array
+    public function getUserByLogin(string $login): array
     {
-        return $this->db->dbQuery("SELECT * FROM users WHERE ? = ?",
-            [array_keys($data), array_values($data)])->fetch();
+        return $this->db->dbQuery("SELECT * FROM users WHERE login = ?",
+            [$login])->fetch();
     }
 
     public function getOtherUser(int $id): array
