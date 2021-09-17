@@ -13,6 +13,11 @@ class Categories extends Model
         return $this->db->dbQuery("SELECT * FROM lots_category")->fetchAll();
     }
 
+    public function getCategory(int $categoryId): array
+    {
+        return $this->db->dbQuery("SELECT * FROM lots_category WHERE id = ?", [$categoryId])->fetch();
+    }
+
     public function changeCategory(int $categoryId, string $categoryName): void
     {
         $this->db->dbQuery("UPDATE lots_category SET category = ? WHERE id = ?", [$categoryName, $categoryId]);
