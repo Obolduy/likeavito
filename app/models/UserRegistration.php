@@ -33,15 +33,15 @@ class UserRegistration extends Model
         $userManipulate = new UserManipulate();
         $userManipulate->addUser($this->login, $this->password, $this->email, $this->city_id);
 
-        $user = (new UserGet)->getUserByKey(['login' => $this->login]);
+        $user = (new UserGet)->getUserByLogin($this->login);
 
-        if ($this->avatar) {
-            $this->avatarName = (new Picture)->uploadPicture("users/{$user[0]['id']}",
-                $this->avatarFile);
+        if ($this->avatarFile) {
+            $this->avatarName = (new Picture)->uploadPicture("users/{$user['id']}",
+                $this->avatarFile)[0];
         }
 
-        $userManipulate->addUserInfo($this->name, $this->surname, $user[0]['id'], $this->avatarName);
+        $userManipulate->addUserInfo($this->name, $this->surname, $user['id'], $this->avatarName);
 
-        $_SESSION['user_id'] = $user[0]['id'];
+        $_SESSION['user_id'] = $user['id'];
     }
 }
