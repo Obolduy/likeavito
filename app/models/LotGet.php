@@ -9,7 +9,7 @@ class LotGet extends Model
             LEFT JOIN users AS u ON u.id = l.owner_id
                 LEFT JOIN lots_category AS c ON l.category_id = c.id WHERE l.id = ?", [$lotId])->fetch();
 
-        $lotPictures = $this->db->dbQuery("SELECT id AS pic_id, picture FROM lots_pictures WHERE lot_id = ?",
+        $lotPictures = $this->db->dbQuery("SELECT id AS pic_id, picture, lot_id FROM lots_pictures WHERE lot_id = ?",
             [$lotId])->fetchAll();
 
         return ['LotInfo' => $lotInfo, 'LotPictures' => $lotPictures];

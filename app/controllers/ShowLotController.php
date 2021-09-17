@@ -12,6 +12,6 @@ class ShowLotController
         $lot = (new LotGet)->getFullLotInfo($lot_id);
         $comments = (new CommentGet)->getLotComments($lot_id);
 
-        new View('showlot', ['lot' => $lot, 'comments' => $comments, 'title' => $lot['LotInfo']['title']]);
+        new View('showlot', ['lot' => $lot['LotInfo'], 'pictures' => $lot['LotPictures'], 'comments' => $comments, 'title' => $lot['LotInfo']['title']]);
     }
 }
