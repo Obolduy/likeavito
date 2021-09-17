@@ -1,4 +1,6 @@
 <?php
+// ini_set('display_errors', 'off');
+
 use App\Router\Router;
 
 session_start();

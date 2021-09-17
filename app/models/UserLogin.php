@@ -15,7 +15,7 @@ class UserLogin extends Model
 
     public function login(int $rememberToken = null): void
     {
-        $user = (new UserGet)->getUserByKey(['login' => $this->login]);
+        $user = (new UserGet)->getUserByLogin($this->login);
 
         $_SESSION['user_id'] = $user['id'];
 
