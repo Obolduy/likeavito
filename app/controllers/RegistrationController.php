@@ -1,11 +1,10 @@
 <?php
 namespace App\Controllers;
 
-use App\Models\UserAuth;
 use App\Models\EmailVerify;
 use App\Models\UserRegistration;
 use App\Models\UserValidation;
-use App\Models\MySQLDB;
+use App\Models\Cities;
 use App\Models\SendRegistrationEmail;
 use App\View\View;
 
@@ -13,10 +12,8 @@ class RegistrationController
 {   
     public static function registration()
     {
-        $db = new MySQLDB();
-        
         if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-            $cities = $db->dbQuery("SELECT * FROM cities")->fetchAll();
+            $cities = (new Cities())->getAllCities();
 
             new View('registration', ['cities' => $cities, 'title' => 'Зарегистрироваться']);
         } else {
@@ -37,7 +34,6 @@ class RegistrationController
                 $registration->registration();
 
                 $_SESSION['userauth'] = true;
-                $_SESSION['user'] = (new UserAuth);
 
                 self::prepareRegistrationEmail($email);
 
