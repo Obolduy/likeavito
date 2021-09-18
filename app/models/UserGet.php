@@ -29,7 +29,8 @@ class UserGet extends Model
 
     public function getOtherUser(int $id): array
     {
-        return $this->db->dbQuery("SELECT login, avatar, registration_time FROM users WHERE id = ?",
-            [$id])->fetch();
+        return $this->db->dbQuery("SELECT u.id, u.login, u.avatar, u.registration_time, c.city, n.name, s.surname FROM users AS u
+            LEFT JOIN names AS n ON u.id = n.user_id LEFT JOIN surnames AS s ON u.id = s.user_id
+                LEFT JOIN cities AS c ON u.city_id = c.id WHERE u.id = ?", [$id])->fetch();
     }
 }
