@@ -4,6 +4,7 @@ namespace App\Models;
 use App\Models\UserManipulate;
 use App\Models\UserGet;
 use App\Models\Picture;
+use App\Models\SendRegistrationEmail;
 
 class UserRegistration extends Model
 {
@@ -18,6 +19,7 @@ class UserRegistration extends Model
 
     public function __construct(string $login, string $password, string $email, int $city_id, string $name, string $surname, array $avatarFile = null)
     {
+        parent::__construct();
         $this->login = $login;
         $this->password = $password;
         $this->email = $email;
@@ -41,7 +43,28 @@ class UserRegistration extends Model
         }
 
         $userManipulate->addUserInfo($this->name, $this->surname, $user['id'], $this->avatarName);
+        
+        $this->prepareRegistrationEmail($user['id']);
 
         $_SESSION['user_id'] = $user['id'];
+    }
+
+    /**
+	 * Adding into RabbitMQ`s queue user`s email and hashed confirm link
+     * @param string user id
+	 * @return void
+	 */
+
+    private function prepareRegistrationEmail(int $id): void
+    {
+        $link = md5($this->email . time());
+        $this->db->dbQuery('INSERT INTO registration_tokens user_id = ?, token = ?', [$id, $link]);
+
+        $email_data = json_encode([$this->email, $link]);
+
+        $queue = new SendRegistrationEmail();
+        $queue->createQueue('send_reg_email');
+        $queue->sendMessage($email_data);
+        $queue->closeConnection();
     }
 }

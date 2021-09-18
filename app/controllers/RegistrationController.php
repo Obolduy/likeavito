@@ -5,7 +5,7 @@ use App\Models\EmailVerify;
 use App\Models\UserRegistration;
 use App\Models\UserValidation;
 use App\Models\Cities;
-use App\Models\SendRegistrationEmail;
+use App\Models\UserAuth;
 use App\View\View;
 
 class RegistrationController
@@ -35,8 +35,6 @@ class RegistrationController
 
                 $_SESSION['userauth'] = true;
 
-                self::prepareRegistrationEmail($email);
-
                 header('Location: /');
             } else {
                 $_SESSION['reg_err_msg'] = $checkUser;
@@ -55,31 +53,10 @@ class RegistrationController
 
     public static function verifyEmail(string $token): void
     {
-        if ($_SESSION['verifylink'] == $token && $_SESSION['user']['active'] == 0) {
-            new EmailVerify();
-
-            $_SESSION['verifylink'] = null;
+        if (!(new UserAuth)->data['active']) {
+            new EmailVerify($token);
 
             include_once $_SERVER['DOCUMENT_ROOT'] . '/App/View/Views/emailconfirm.php';
         }
-    }
-
-    /**
-	 * Adding into RabbitMQ`s queue user`s email and hashed confirm link
-     * @param string email
-	 * @return void
-	 */
-
-    public static function prepareRegistrationEmail(string $email): void
-    {
-        $link = md5($email . time());
-        $_SESSION['verifylink'] = $link;
-
-        $email_data = json_encode([$email, $link]);
-
-        $queue = new SendRegistrationEmail();
-        $queue->createQueue('send_reg_email');
-        $queue->sendMessage($email_data);
-        $queue->closeConnection();
     }
 }

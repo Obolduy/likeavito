@@ -19,7 +19,8 @@ class UserAuth extends Model
 
         $user = $this->getUserInfo();
 
-        $this->data = ['id' => $user['id'], 'login' => $user['login'],
+        $this->data = 
+            ['id' => $user['id'], 'login' => $user['login'],
             'password' => $user['password'], 'name' => $user['name'],
             'email' => $user['email'], 'surname' => $user['surname'],
             'city_id' => $user['city_id'], 'status_id' => $user['status_id'],
