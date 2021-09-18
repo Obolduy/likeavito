@@ -1,12 +1,18 @@
 <?php
 // ini_set('display_errors', 'off');
 
+use App\Models\UserAuth;
 use App\Router\Router;
 
 session_start();
 require_once 'vendor/autoload.php';
 
 $routes = require 'App/routes.php';
+
+if ($_COOKIE['remember_token']) {
+    $_SESSION['userauth'] = true;
+    new UserAuth();
+}
 
 try {
     echo ( new Router )->checkRoute($routes);

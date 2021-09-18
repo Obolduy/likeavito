@@ -9,7 +9,13 @@ class UserAuth extends Model
     public function __construct()
     {
         parent::__construct();
-        $this->id = $_SESSION['user_id'];
+
+        if ($_SESSION['user_id']) {
+            $this->id = $_SESSION['user_id'];
+        } else if ($_COOKIE['remember_token']) {
+            $this->id = $this->getUserIdByToken($_COOKIE['remember_token']);
+            $_SESSION['user_id'] = $this->id;
+        }
 
         $user = $this->getUserInfo();
 
@@ -34,5 +40,10 @@ class UserAuth extends Model
                 FROM users AS u LEFT JOIN names AS n ON u.id = n.user_id
                     LEFT JOIN surnames AS s ON u.id = s.user_id LEFT JOIN cities AS c
                         ON c.id = u.city_id WHERE u.id = ?", [$this->id])->fetch();
+    }
+
+    private function getUserIdByToken(string $token): string
+    {
+        return $this->db->dbQuery("SELECT id FROM users WHERE remember_token = ?", [$token])->fetchColumn();
     }
 }
