@@ -36,22 +36,18 @@ class Chat extends Model
 
     public function showChat(int $user1_id, int $user2_id): array
     {
-        $chat = $this->db->query("SELECT * FROM chats_list WHERE (user1_id = $user1_id AND user2_id = $user2_id) OR
-            (user1_id = $user2_id AND user2_id = $user1_id)");
-        
-        $chat = $this->show($chat)[0];
+        $chat = $this->db->dbQuery("SELECT * FROM chats_list WHERE (user1_id = ? AND user2_id = ?) OR
+            (user1_id = ? AND user2_id = ?)", [$user1_id, $user2_id, $user2_id, $user1_id])->fetch();
 
-        if ($chat == null) {
+        if (!$chat) {
             $this->createChat($user1_id, $user2_id);
             $this->showChat($user1_id, $user2_id);
         }
 
-        $query = $this->db->query("SELECT c.*, u.login FROM {$chat['chat']} AS c 
-            LEFT JOIN users AS u ON c.user_id=u.id");
-
         $_SESSION["chat_with_$user2_id"] = $chat['chat'];
         
-        return $this->show($query);
+        return $this->db->dbQuery("SELECT c.*, u.login FROM ? AS c 
+            LEFT JOIN users AS u ON c.user_id=u.id", [$chat['chat']])->fetchAll();
     }
 
     /**
