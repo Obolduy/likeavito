@@ -11,230 +11,67 @@ class DatabaseTest extends TestCase
         $this->database = new Database();
     }
 
-    public function insertProvider()
+    public function dbQueryProvider()
     {
         return [
-            ['users',
-                ['login' => 'justNewTestLogin', 'email' => 'justNewTest@email.com', 'city_id' => 4, 'status_id' => 1,
-                    'ban_status' => 0, 'active' => 0, 'password' => 'trgkferk'], ['login', 'justNewTestLogin', 103]],
-            ['surnames', ['surname' => 'justtestsurname', 'user_id' => 99], ['surname', 'justtestsurname', 106]],
-            ['names', ['name' => 'justtestname', 'user_id' => 99], ['name', 'justtestname', 109]]
+            'select all' => ['SELECT * FROM users', null, null],
+            'select id' => ["SELECT id FROM users WHERE id = ?", [66], 66],
+            'delete' => ['DELETE FROM users WHERE login = ?', ['djfnjffjndj'], 'djfnjffjndj'],
+            'update' => ['UPDATE users SET login = ? WHERE id = 66', ['newtesttlogin'], 'newtesttlogin']
         ];
     }
 
-    public function getOneProvider()
+    // add more tests
+    public function transactionProvider()
     {
         return [
-            ['users', 15, 15],
-            ['lots', 'newAdd5', 30, 'title'],
-            ['users', 8, 8],
-            ['users', 9, 9]
-        ];
-    }
-
-    public function getAllProvider()
-    {
-        return [
-            ['users'],
-            ['lots']
-        ];
-    }
-
-    public function deleteProvider()
-    {
-        return [
-            ['users', 21],
-            ['users', 22],
-            ['users', 23],
-            ['users', 24]
-        ];
-    }
-
-    public function updateProvider()
-    {
-        return [
-            ['users', ['login' => 'newlogin0001', 'city_id' => 1], ['id' => 21], 21],
-            ['users', ['login' => 'newlogin0002', 'city_id' => 2], ['id' => 22], 22],
-            ['users', ['login' => 'newlogin0003', 'city_id' => 3], ['id' => 23], 23],
-            ['users', ['login' => 'newlogin0004', 'city_id' => 4], ['id' => 24], 24]
-        ];
-    }
-
-    public function prepareJoinProvider()
-    {
-        return [
-            [['users.id', 'names.name', 'cities.city'], ['users', 'names', 'cities'],
-                ['users.id', '=', '69'], [['users.id', 'names.user_id'], ['users.city_id', 'cities.id']]],
-            [['users.id', 'users.login', 'comments.description', 'comments.add_time'], ['users', 'comments'],
-                ['comments.lot_id', '=', '2'], [['users.id', 'comments.user_id']]]
-        ];
-    }
-
-    public function joinProvider()
-    {
-        return [
-            [['users.id', 'names.name', 'cities.city'], ['users', 'names', 'cities'],
-            ['users.id', '=', '69'], [['users.id', 'names.user_id'], ['users.city_id', 'cities.id']],
-                NULL, [69, 'dgdgdgd', 'Петербург']],
-            [['users.id', 'users.login', 'comments.description', 'comments.add_time'], ['users', 'comments'],
-            ['comments.lot_id', '=', '2'], [['users.id', 'comments.user_id']],
-                'RIGHT', []]
-        ];
-    }
-
-    public function rawQueryProvider()
-    {
-        return [
-            ['SELECT * FROM users', NULL, 'expected'],
-            ['UPDATE users SET login = ? WHERE login = ?', ['wrwrewrsfd', 'AbsoluteNewLogin455'], 7],
-        ];
-    }
-
-    public function getTableCountProvider()
-    {
-        return [
-            ['users', 15, 'id', 1],
-            ['comments', 8, 'lot_id', 2],
+            [[['UPDATE users SET email = ? WHERE id = ?', ['newemail@test.ru', 69]], ['UPDATE names SET name = ? WHERE user_id = ?', ['holynewname', 69]], ['UPDATE surnames SET surname = ? WHERE user_id = ?', ['neeewsurname', 69]]], ['email' => 'newemail@test.ru', 'name' => 'holynewname', 'surname' => 'neeewsurname']]
         ];
     }
 
     /**
-     * @dataProvider insertProvider
+     * @dataProvider dbQueryProvider
      */
 
-    public function testInsert(string $table, array $data, array $expected) 
+    public function testDbQuery(string $query, ?array $preparedData, $expected) 
     {
-        $this->database->insert($table, $data);
+        $test = $this->database->dbQuery($query, $preparedData);
 
-        $info = $this->database->getOne($table, $expected[1], $expected[0]);
-
-        foreach ($info as $elem) {
-            $this->assertEquals($expected[2], $elem['id']);
+        if ($expected == null) {
+            $this->assertNotNull($test->fetchAll());
         }
-    }
 
-     /**
-     * @dataProvider getOneProvider
-     */
-
-    public function testGetOne(string $table, $what, $expected, string $column = 'id') 
-    {
-        $info = $this->database->getOne($table, $what, $column);
-
-        foreach ($info as $elem) {
-            $this->assertEquals($expected, $elem['id']);
+        if (is_int($expected)) {
+            $this->assertEquals($expected, $test->fetchColumn());
         }
-    }
 
-    /**
-     * @dataProvider getAllProvider
-     */
+        if ($expected == 'djfnjffjndj') {
+            $this->assertFalse($this->database->dbQuery('SELECT login FROM users WHERE login = ?', ['djfnjffjndj'])->fetchColumn());
+        }
 
-    public function testGetAll(string $table) 
-    {
-        $info = $this->database->getAll($table);
-
-        foreach ($info as $elem) {
-            $this->assertNotNull($elem['id']);
+        if ($expected == 'newtesttlogin') {
+            $this->assertEquals(
+                $expected,
+                $this->database->dbQuery('SELECT login FROM users WHERE id = ?', [66])->fetchColumn()
+            );
         }
     }
 
     /**
-     * @dataProvider deleteProvider
+     * @dataProvider transactionProvider
      */
 
-    public function testDelete(string $table, $chosen) 
+    public function testTransaction(array $queries, array $expected)
     {
-        $this->database->delete($table, $data);
+        $this->database->transaction($queries);
 
-        $info = $this->database->getOne($table, $chosen);
-
-        foreach ($info as $elem) {
-            $this->assertNull($expected, $elem['id']);
-        }
-    }
-
-    /**
-     * @dataProvider updateProvider
-     */
-
-    public function testUpdate(string $table, array $data, array $where, $expected) 
-    {
-        $this->database->update($table, $data, $where);
-
-        $info = $this->database->getOne('users', $data['login'], 'login');
-
-        foreach ($info as $elem) {
-            $this->assertEquals($expected, $elem['id']);
-        }
-    }
-
-    /**
-     * @dataProvider prepareJoinProvider
-     */
-
-    public function testPrepareJoin(array $selectQuery, array $tables, array $whereQuery, array $joinOn) 
-    {
-        $this->database->prepareJoin($selectQuery, $tables, $whereQuery, $joinOn);
-
-        $this->assertEquals($selectQuery, $this->database->joinData['select']);
-        $this->assertEquals($tables, $this->database->joinData['tables']);
-        $this->assertEquals($whereQuery, $this->database->joinData['where']);
-        $this->assertEquals($joinOn, $this->database->joinData['joinOn']);
-    }
-
-    /**
-     * @dataProvider joinProvider
-     */
-
-    public function testJoin(array $selectQuery, array $tables, array $whereQuery, array $joinOn, $param, $expected) 
-    {
-        $data = $this->database->prepareJoin($selectQuery, $tables, $whereQuery, $joinOn)->join($param);
-
-        foreach ($data as $elem) {
-            if ($param == NULL) {
-                $this->assertEquals($expected[1][0], $elem['id']);
-                $this->assertEquals($expected[1][1], $elem['name']);
-                $this->assertEquals($expected[1][2], $elem['city']);
-            } else {
-                $this->assertNotNull($elem[3]);
-            }
-        }
-    }
-
-    /**
-     * @dataProvider rawQueryProvider
-     */
-
-    public function testRawQuery($query, $prepareData, $expected) 
-    {
-        if ($prepareData == NULL) {
-            $data = $this->database->rawQuery($query, $prepareData);
-
-            $this->assertNotNull($data);
-        } else {
-            $this->database->rawQuery($query, $prepareData);
-            $data = $this->database->getOne('users', $prepareData[1], 'login');
-        }
-
-        foreach ($data as $elem) {
-            if ($expected == 'expected') {
-                $this->assertNotNull($data);
-            } else {
-                $this->assertEquals($expected, $elem['id']);
-            }
-        }
-    }
-
-    /**
-     * @dataProvider getTableCountProvider
-     */
-
-    public function testGetTableCount($table, $what, $column, $expected) 
-    {
-        $data = $this->database->getTableCount($table, $what, $column);
+        $test = $this->database->dbQuery('SELECT u.email, n.name, s.surname FROM users AS u 
+            JOIN names AS n ON u.id = n.user_id JOIN surnames AS s ON u.id = s.user_id WHERE u.id = 69')
+                ->fetch();
         
-        $this->assertEquals($expected, $data[0][0]);
+        foreach ($test as $key => $value) {
+            $this->assertEquals($value, $expected[$key]);
+        }
     }
 
     protected function tearDown(): void
