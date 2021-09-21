@@ -17,7 +17,7 @@ class CommentGet extends Model
 
     public function getCommentsByUserId(int $userId)
     {
-        return $this->db->dbQuery("SELECT c.description, c.add_time, c.update_time, l.id, l.category_id, FROM comments AS c
+        return $this->db->dbQuery("SELECT c.description, c.add_time, c.update_time, l.id, l.category_id FROM comments AS c
             LEFT JOIN lots AS l ON l.id = c.lot_id WHERE c.user_id = ?", [$userId])->fetchAll();
     }
 }
