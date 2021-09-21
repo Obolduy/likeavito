@@ -3,7 +3,7 @@ namespace App\Models;
 
 class Categories extends Model
 {
-    public function addCategory(int $categoryName): void
+    public function addCategory(string $categoryName): void
     {
         $this->db->dbQuery("INSERT INTO lots_category SET category = ?", [$categoryName]);
     }
