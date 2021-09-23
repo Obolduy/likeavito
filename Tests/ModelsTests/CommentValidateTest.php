@@ -2,9 +2,6 @@
 use PHPUnit\Framework\TestCase;
 use App\Models\CommentValidate;
 
-use function PHPUnit\Framework\assertEmpty;
-use function PHPUnit\Framework\assertEquals;
-
 class CommentValidateTest extends TestCase
 {
     private $commentValidate;
