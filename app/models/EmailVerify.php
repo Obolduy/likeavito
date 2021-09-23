@@ -18,11 +18,14 @@ class EmailVerify extends Model
     private function verifycationEmail(): UserAuth
     {
         if ($this->checkToken()) {
-            $this->db->dbQuery("UPDATE users SET updated_at = now(), active = ? WHERE id = ?",
-            [1, $_SESSION['user_id']]);
-            $this->db->dbQuery("UPDATE registration_tokens SET activated = 1 WHERE token = ?", [$this->token]);
+            $this->db->dbQuery("UPDATE users SET updated_at = now(), active = 1 WHERE id = ?",
+                [$_SESSION['user_id']]);
+            $this->db->dbQuery("UPDATE registration_tokens SET activated = 1 WHERE token = ?",
+                [$this->token]);
 
             return new UserAuth();
+        } else {
+            return false;
         }
     }
 
