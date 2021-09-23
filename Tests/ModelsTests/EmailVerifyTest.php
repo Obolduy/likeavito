@@ -2,7 +2,6 @@
 use PHPUnit\Framework\TestCase;
 use App\Models\EmailVerify;
 use App\Models\Database;
-use App\Models\UserAuth;
 
 class EmailVerifyTest extends TestCase
 {

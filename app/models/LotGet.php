@@ -18,6 +18,6 @@ class LotGet extends Model
     public function getUserLots(int $userId): array
     {
         return $this->db->dbQuery("SELECT l.*, c.category FROM lots AS l
-            LEFT JOIN lots_category AS c ON l.category_id = c.id WHERE l.user_id = ?", [$userId])->fetchAll();
+            LEFT JOIN lots_category AS c ON l.category_id = c.id WHERE l.owner_id = ?", [$userId])->fetchAll();
     }
 }
