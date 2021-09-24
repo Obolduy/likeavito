@@ -9,7 +9,8 @@ class PaginationTest extends TestCase
     public function paginationProvider()
     {
         return [
-            ['lots', 1, 5, 'category_id', 2, ['pageCount' => 3, 'table' => 5]]
+            ['lots', 1, 5, 'category_id', 2, ['pageCount' => 3, 'table' => 5]],
+            ['lots', 1, null, null, null, ['pageCount' => 8, 'table' => 5]]
         ];
     }
 
@@ -22,10 +23,10 @@ class PaginationTest extends TestCase
         if ($border2 == null && $columnName == null && $property == null) {
             $this->pagination = new Pagination($tableName, $border1);
             $this->pagination->pagination();
+        } else {
+            $this->pagination = new Pagination($tableName, $border1, $border2);
+            $this->pagination->pagination($columnName, $property);
         }
-        $this->pagination = new Pagination($tableName, $border1, $border2);
-        $this->pagination->pagination($columnName, $property);
-
         $this->assertEquals($expected['pageCount'], $this->pagination->pageCount);
         $this->assertEquals($expected['table'], count($this->pagination->table));
     }
