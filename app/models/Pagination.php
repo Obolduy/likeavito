@@ -3,14 +3,8 @@ namespace App\Models;
 
 class Pagination extends Model
 {
-    public $table;
-    public $pageCount;
-    private $tableName;
-    private $columnName;
-    private $property;
-    private $border1;
-    private $border2;
-    private $count;
+    public $table, $pageCount;
+    private $tableName, $columnName, $property, $border1, $border2, $count;
 
     public function __construct(string $tableName, int $border1, int $border2 = 5)
     {
@@ -20,7 +14,7 @@ class Pagination extends Model
         $this->border2 = $border2;
     }
 
-    public function pagination(string $columnName = null, string $property = null)
+    public function pagination(?string $columnName = null, ?string $property = null)
     {
         if ($columnName !== null && $property !== null) {
             $this->columnName = $columnName;
@@ -46,9 +40,13 @@ class Pagination extends Model
 
     private function getPageCount()
     {
-        $this->count = $this->db->dbQuery("SELECT COUNT(*) FROM {$this->tableName} WHERE {$this->columnName} = ?",
-            [$this->property])->fetchColumn();
-        
+        if ($this->columnName != null) {
+            $this->count = $this->db->dbQuery("SELECT COUNT(*) FROM {$this->tableName} WHERE {$this->columnName} = ?",
+                [$this->property])->fetchColumn();
+        } else {
+            $this->count = $this->db->dbQuery("SELECT COUNT(*) FROM {$this->tableName}")->fetchColumn();
+        }
+
         while ($this->count % 5 != 0) {
             $this->count++;
         }
