@@ -37,13 +37,26 @@ class Picture extends Model
         return $this->picturesNames; 
     }
 
-    public function deletePicturesByPath(string $path): void
+    public function deletePicturesByPath(string $path): bool
     {
-        if (is_dir($_SERVER['DOCUMENT_ROOT'] . "img/$path")) {
-            rmdir($_SERVER['DOCUMENT_ROOT'] . "img/$path");
-        } else {
-            unlink($_SERVER['DOCUMENT_ROOT'] . "img/$path");
+        $fullPath = $_SERVER['DOCUMENT_ROOT'] . "img/$path";
+
+        if (is_dir($fullPath)) {
+            $dir = opendir($fullPath);
+
+            while (false !== ( $file = readdir($dir)) ) {
+                if ($file !== '.') {
+                    unlink("$fullPath/$file");
+                }
+            }
+
+            closedir($dir);
+            rmdir($fullPath);
+        } else if (is_file($fullPath)) {
+            unlink($fullPath);
         }
+
+        return true;
     }
 
      /**
