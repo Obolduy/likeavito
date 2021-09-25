@@ -3,8 +3,7 @@ namespace App\Models;
 
 class PasswordChange extends Model
 {
-    public $email;
-    public $password;
+    public $email, $password;
 
     public function __construct(string $email = null, string $password = null)
     {
@@ -34,11 +33,11 @@ class PasswordChange extends Model
 
     public function changePassword(string $link): bool
     {
-        $new_password = $this->db->dbQuery("SELECT * FROM passwords_changes WHERE link = ?", [$link]);
+        $newPassword = $this->db->dbQuery("SELECT * FROM passwords_changes WHERE link = ?", [$link])->fetch();
         
-        if ($new_password) {
+        if ($newPassword) {
             $this->db->dbQuery("UPDATE users SET updated_at = now(), password = ? WHERE id = ?",
-                [$new_password[0]['password'], $_SESSION['user_id']]);
+                [$newPassword['password'], $_SESSION['user_id']]);
             return true;
         } else {
             return false;
