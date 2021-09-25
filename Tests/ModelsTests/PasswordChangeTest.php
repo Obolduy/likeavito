@@ -95,7 +95,7 @@ class PasswordChangeTest extends TestCase
         $this->passwordChange = new PasswordChange($email, $password);
         $this->passwordChange->addPasswordToChangeTable();
 
-        $test = $this->db->dbQuery("SELECT * FROM passwords_changes WHERE link = ?", [$token])->fetch();
+        $test = $this->database->dbQuery("SELECT * FROM passwords_changes WHERE link = ?", [$token])->fetch();
         
         $this->assertEquals($password, $test['password']);
         $this->assertEquals($email, $test['email']);
