@@ -1,8 +1,7 @@
 <?php
 namespace App\Controllers;
 
-use App\Models\SendResetEmail;
-use App\Models\PasswordChange;
+use App\Models\PasswordReset;
 use App\Models\PasswordValidation;
 use App\View\View;
 
@@ -13,10 +12,11 @@ class ResetPasswordController
         if ($_SERVER['REQUEST_METHOD'] == 'GET') {
             new View('resetpassword', ['title' => 'Сброс пароля']);
         } else {
-            $queue = new SendResetEmail();
-            $queue->createQueue('send_reset_email');
-            $queue->sendMessage(strip_tags($_POST['email']));
-            $queue->closeConnection();
+            $email = strip_tags($_POST['email']);
+            $token = md5($email . time());
+
+            $passwordReset = new PasswordReset($email);
+            $passwordReset->passwordResetRequest($token);
             
             echo 'Запрос успешно отправлен!';
         }
@@ -24,11 +24,11 @@ class ResetPasswordController
 
     public static function passwordResetForm(string $token): void
     {
-        $password_reset = new PasswordChange();
-        $password_reset->getEmailByToken($token);
+        $passwordReset = new PasswordReset();
+        $passwordReset->getEmailByToken($token);
 
         if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-            if ($password_reset->email) {
+            if ($passwordReset->email) {
                 new View('resetpasswordform', ['title' => 'Восстановление пароля']);
             } else {
                 header('Location: /');
@@ -40,8 +40,8 @@ class ResetPasswordController
             $check = (new PasswordValidation)->checkPassword($password, $confirmPassword);
 
             if ($check) {
-                $password_reset->password = password_hash($password, PASSWORD_DEFAULT);
-                $password_reset->resetPassword($token);
+                $passwordReset->password = password_hash($password, PASSWORD_DEFAULT);
+                $passwordReset->resetPassword($token);
                 
                 header('Location: /login');
             } else {

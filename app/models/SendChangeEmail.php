@@ -1,7 +1,8 @@
 <?php
 namespace App\Models;
 
-use App\Models\User;
+use App\Models\EmailChanger;
+use App\Models\EmailSender;
 
 class SendChangeEmail extends RabbitmqQueues
 {
@@ -27,11 +28,13 @@ class SendChangeEmail extends RabbitmqQueues
     public function createCallback()
     {
         return function ($message) {
-            $email_array = json_decode($message->body, true);
+            $emailArray = json_decode($message->body, true);
 
-            $user = new User();
-            $user->sendChangeEmail($email_array['current_email']);
-            $user->addEmailToChangeTable($email_array['new_email'], $email_array['current_email']);
+            $emailChanger = new EmailChanger();
+            $emailSender = new EmailSender($emailArray['current_email']);
+
+            $emailSender->sendChangeEmail($emailArray['current_email']);
+            $emailChanger->addEmailToChangeTable($emailArray['new_email'], $emailArray['current_email']);
         };
     }
 }

@@ -40,6 +40,13 @@ class EmailSender extends Model
                 implode("\r\n", EMAIL_HEADERS));
     }
 
+    public function sendResetPasswordEmail(string $token): void
+    {
+        mail("<{$this->email}>", 'Подтвердите смену пароля',
+            EMAIL_RESET_PASSWORD_MESSAGE_START . $token . EMAIL_MESSAGE_END,
+                implode("\r\n", EMAIL_HEADERS));
+    }
+
     public function sendChangeEmail(): void
     {
         $_SESSION['changeemail_link'] = md5($this->email . time());

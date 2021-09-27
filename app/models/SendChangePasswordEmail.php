@@ -1,7 +1,8 @@
 <?php
 namespace App\Models;
 
-use App\Models\User;
+use App\Models\PasswordChange;
+use App\Models\EmailSender;
 
 class SendChangePasswordEmail extends RabbitmqQueues
 {
@@ -27,11 +28,13 @@ class SendChangePasswordEmail extends RabbitmqQueues
     public function createCallback()
     {
         $callback = function ($message) {  
-            $user_data = json_decode($message->body, true);
+            $userData = json_decode($message->body, true);
 
-            $user = new User();
-            $user->sendChangePasswordEmail($user_data['email'], $user_data['password']);
-            $user->addPasswordToChangeTable($user_data['email'], $user_data['password']);
+            $emailChanger = new PasswordChange($userData['email'], $userData['password']);
+            $emailSender = new EmailSender($userData['email']);
+
+            $emailSender->sendChangePasswordEmail($userData['password']);
+            $emailChanger->addPasswordToChangeTable();
         };
 
         return $callback;

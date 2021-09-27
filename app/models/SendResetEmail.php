@@ -1,7 +1,7 @@
 <?php
 namespace App\Models;
 
-use App\Models\User;
+use App\Models\EmailSender;
 
 class SendResetEmail extends RabbitmqQueues
 {
@@ -27,7 +27,9 @@ class SendResetEmail extends RabbitmqQueues
     public function createCallback()
     {
         $callback = function ($message) {       
-            (new User)->sendResetEmail($message->body);
+            $array = json_decode($message->body);
+
+            (new EmailSender($array[0]))->sendResetPasswordEmail($array[1]);
         };
 
         return $callback;
