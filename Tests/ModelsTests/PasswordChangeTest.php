@@ -12,27 +12,7 @@ class PasswordChangeTest extends TestCase
         $this->database = new Database();
     }
 
-    public function passwordResetTokenProvider()
-    {
-        return [
-            ['token123456789', 'newchange1@email.verify'],
-            ['token1234567890', 'newchange2@email.verify'],
-            ['token12345678901', 'newchange3@email.verify'],
-            ['token123456789012', 'newchange4@email.verify']
-        ];
-    }
-
-    public function resetPasswordProvider()
-    {
-        return [
-            ['$2y$10$THa8ortpIF15AyQQ1bInA.4eHK/7EjDRgLYrgSZa.hQXSrOJ3RsJ2', 'token123456789', 'newchange1@email.verify'],
-            ['$2y$10$n0O5bPTJW3Xr7C4E4HADhOe.29XyvMYG/6HiUQzIguuuI6rBr/wk.', 'token1234567890', 'newchange2@email.verify'],
-            ['$2y$10$pKZxrHu6Qz3RBie5l.cs3eHe5ZVe0sNoftwMYiHWIDwtoJkTBR.6K', 'token12345678901', 'newchange3@email.verify'],
-            ['$2y$10$b5jb3msKN9SW5slLzRxqrOAjHXVCqm956DVANAYzyjenORhuz4d5m', 'token123456789012', 'newchange4@email.verify']
-        ];
-    }
-
-    public function changePasswordProvider()
+    public function addPasswordToChangeTableProvider()
     {
         return [
             ['newchange1@email.verify', '$2y$10$THa8ortpIF15AyQQ1bInA.4eHK/7EjDRgLYrgSZa.hQXSrOJ3RsJ2', 'token123456789'],
@@ -42,50 +22,18 @@ class PasswordChangeTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider passwordResetTokenProvider
-     */
-
-    public function testSetPasswordResetToken($token, $email)
+    public function changePasswordProvider()
     {
-        $this->passwordChange = new PasswordChange($email);
-        $this->passwordChange->setPasswordResetToken($token);
-
-        $test = $this->database->dbQuery("SELECT * FROM password_reset WHERE token = ?", [$token])->fetch();
-        $this->assertEquals($email, $test['email']);
-        $this->assertEquals($token, $test['token']);
+        return [
+            ['token123456789', 66],
+            ['token1234567890', 67],
+            ['token12345678901', 68],
+            ['token123456789012', 69]
+        ];
     }
 
     /**
-     * @dataProvider passwordResetTokenProvider
-     */
-
-    public function testGetEmailByToken($token, $email)
-    {
-        $this->passwordChange = new PasswordChange();
-        $this->passwordChange->getEmailByToken($token);
-
-        $this->assertEquals($email, $this->passwordChange->email);
-    }
-
-    /**
-     * @dataProvider resetPasswordProvider
-     */
-
-    public function testResetPassword($email, $password, $token)
-    {
-        $this->passwordChange = new PasswordChange($email, $password);
-        $this->passwordChange->resetPassword($token);
-
-        $testReset = $this->database->dbQuery("SELECT * FROM password_reset WHERE token = ?", [$token])->fetch();
-        $testUser = $this->database->dbQuery("SELECT * FROM users WHERE password = ?", [$password])->fetch();
-
-        $this->assertFalse($testReset);
-        $this->assertIsArray($testUser);
-    }
-
-    /**
-     * @dataProvider changePasswordProvider
+     * @dataProvider addPasswordToChangeTableProvider
      */
 
     public function testAddPasswordToChangeTable($email, $password, $token)
@@ -112,8 +60,8 @@ class PasswordChangeTest extends TestCase
         $this->passwordChange = new PasswordChange();
         $test1 = $this->passwordChange->changePassword($token);
 
-        $password = $this->db->dbQuery("SELECT password FROM passwords_changes WHERE link = ?", [$token])->fetchColumn();
-        $user = $this->db->dbQuery("SELECT password FROM users WHERE id = ?", [$userId])->fetchColumn();
+        $password = $this->database->dbQuery("SELECT password FROM passwords_changes WHERE link = ?", [$token])->fetchColumn();
+        $user = $this->database->dbQuery("SELECT password FROM users WHERE id = ?", [$userId])->fetchColumn();
 
         $this->assertTrue($test1);
         $this->assertEquals($password, $user);
