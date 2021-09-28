@@ -15,7 +15,7 @@ class AdminManageUsers extends Model
 
     public function undoUserAsAnAdmin(int $userId): bool
     {
-        if ($userId != $_SESSION['user_id']) {
+        if ($userId != $_SESSION['user']['id']) {
             $this->db->dbQuery("UPDATE users SET status_id = 1 WHERE id = ?", [$userId]);
 
             return true;

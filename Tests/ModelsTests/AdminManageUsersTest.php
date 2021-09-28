@@ -64,7 +64,7 @@ class AdminManageUsersTest extends TestCase
 
     public function testUndoUserAsAnAdmin(int $userId, int $sessionId)
     {
-        $_SESSION['user_id'] = $sessionId;
+        $_SESSION['user']['id'] = $sessionId;
         
         $test = $this->adminManageUsers->undoUserAsAnAdmin($userId);
 

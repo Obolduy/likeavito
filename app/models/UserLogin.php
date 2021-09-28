@@ -17,13 +17,13 @@ class UserLogin extends Model
     {
         $user = (new UserGet)->getUserByLogin($this->login);
 
-        $_SESSION['user_id'] = $user['id'];
+        $_SESSION['user']['id'] = $user['id'];
 
         if ($rememberToken) {
             $remember_token = md5(rand() . time());
 
             $this->db->dbQuery("UPDATE users SET remember_token = ? WHERE id = ?",
-                [$remember_token, $_SESSION['user_id']]);
+                [$remember_token, $_SESSION['user']['id']]);
 
             setcookie('remember_token', $remember_token, time()+2678400);
             $_COOKIE['remember_token'] = $remember_token;

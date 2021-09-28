@@ -54,7 +54,7 @@ class EmailChangerTest extends TestCase
 
     public function testChangeEmail($sessionLink, $userId, $expected)
     {
-        $_SESSION['user_id'] = $userId;
+        $_SESSION['user']['id'] = $userId;
 
         $this->emailChanger->changeEmail($sessionLink);
 

@@ -8,16 +8,12 @@ use App\Models\SendRegistrationEmail;
 
 class UserRegistration extends Model
 {
-    private $login;
-    private $password;
-    private $email;
-    private $city_id;
-    private $name;
-    private $surname;
-    private $avatarFile;
-    private $avatarName;
+    private $login, $password, $email, $city_id, $name, $surname, $avatarFile, $avatarName;
 
-    public function __construct(string $login, string $password, string $email, int $city_id, string $name, string $surname, array $avatarFile = null)
+    public function __construct(
+        string $login, string $password, string $email, int $city_id, string $name, 
+        string $surname, array $avatarFile = null
+        )
     {
         parent::__construct();
         $this->login = $login;
@@ -46,7 +42,7 @@ class UserRegistration extends Model
         
         $this->prepareRegistrationEmail($user['id']);
 
-        $_SESSION['user_id'] = $user['id'];
+        $_SESSION['user']['id'] = $user['id'];
     }
 
     /**
@@ -57,7 +53,7 @@ class UserRegistration extends Model
 
     private function prepareRegistrationEmail(int $id): void
     {
-        $link = md5($this->email . time());
+        $link = $id . '/'. md5($this->email . time());
         $this->db->dbQuery('INSERT INTO registration_tokens SET user_id = ?, token = ?', [$id, $link]);
 
         $email_data = json_encode([$this->email, $link]);

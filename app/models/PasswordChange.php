@@ -18,7 +18,7 @@ class PasswordChange extends Model
         
         if ($newPassword) {
             $this->db->dbQuery("UPDATE users SET updated_at = now(), password = ? WHERE id = ?",
-                [$newPassword['password'], $_SESSION['user_id']]);
+                [$newPassword['password'], $_SESSION['user']['id']]);
             return true;
         } else {
             return false;

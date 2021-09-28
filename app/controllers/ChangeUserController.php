@@ -1,7 +1,7 @@
 <?php
 namespace App\Controllers;
 
-use App\Models\UserAuth;
+use App\Models\UserGet;
 use App\Models\UserValidation;
 use App\Models\Cities;
 use App\Models\UserManipulate;
@@ -18,7 +18,7 @@ class ChangeUserController
     public static function changeInformation(): void
     {
         if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-            $user = new UserAuth();
+            $user = (new UserGet)->getUser($_SESSION['user']['id']);
             $cities = (new Cities)->getAllCities();
 
             new View('changeuser', ['user' => $user, 'cities' => $cities, 'title' => 'Изменить данные']);
@@ -27,9 +27,9 @@ class ChangeUserController
                 strip_tags($_POST['confirmPassword']), strip_tags($_POST['email']));
 
             if ($check == true) {
-                $cryptpassword = password_hash(strip_tags($_POST['password']), PASSWORD_DEFAULT);
+                $cryptpassword = password_hash(strip_tags($_POST['password']), PASSWORD_DEFAULT) ?? null;
 
-                (new UserManipulate())->changeUser($_SESSION['user_id'], strip_tags($_POST['login']),
+                (new UserManipulate())->changeUser($_SESSION['user']['id'], strip_tags($_POST['login']),
                     $cryptpassword, strip_tags($_POST['email']), strip_tags($_POST['name']),
                         strip_tags($_POST['surname']), $_POST['city_id'], $_FILES['photo']);
             } else {

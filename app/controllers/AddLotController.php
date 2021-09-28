@@ -24,7 +24,7 @@ class AddLotController
             $price = strip_tags($_POST['price']);
             $description = strip_tags($_POST['description'], '<p></p><br/><br><i><b><s><u><strong>');
             $categoryId = strip_tags($_POST['category_id']);
-            $ownerId = $_SESSION['user_id'];
+            $ownerId = $_SESSION['user']['id'];
 
             $checkData = (new LotValidate)->checkLotData($title, $price);
 

@@ -22,7 +22,7 @@ return [
     new Route('/chat/refresh/{chat_name}', [ChatController::class, 'refreshchat'], ['authmiddleware']),
     new Route('/chat/sendmessage/{chat_name}', [ChatController::class, 'controllerSendMessage']),
     new Route('/registration', [RegistrationController::class, 'registration'], ['noauthmiddleware']),
-    new Route('/registration/{token}', [RegistrationController::class, 'verifyemail'], ['authmiddleware']),
+    new Route('/registration/{user_id}/{token}', [RegistrationController::class, 'verifyemail'], ['authmiddleware']),
     new Route('/login', [LoginController::class, 'login'], ['noauthmiddleware']),
     new Route('/logout', [LoginController::class, 'logout']),
     new Route('/category/{category_id}', [MainPageController::class, 'showcategory']),

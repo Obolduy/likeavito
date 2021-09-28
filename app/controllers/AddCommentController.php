@@ -2,7 +2,6 @@
 namespace App\Controllers;
 
 use App\Models\CommentManipulate;
-use App\Models\UserAuth;
 
 class AddCommentController
 {   
@@ -10,7 +9,7 @@ class AddCommentController
     {
         $description = strip_tags($_POST['description'], '<p></p><br/><br><i><b><s><u><strong>');
 
-        (new CommentManipulate)->addComment($lot_id, (new UserAuth)->data['id'], $description);
+        (new CommentManipulate)->addComment($lot_id, $_SESSION['user']['id'], $description);
         
         header("Location: /category/$category_id/$lot_id");
     }

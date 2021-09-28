@@ -1,8 +1,6 @@
 <?php
 namespace App\Models;
 
-use App\Models\UserAuth;
-
 class EmailVerify extends Model
 {
     private $token;
@@ -15,15 +13,15 @@ class EmailVerify extends Model
         $this->verifycationEmail();
     }
 
-    private function verifycationEmail(): UserAuth
+    private function verifycationEmail(): bool
     {
         if ($this->checkToken()) {
             $this->db->dbQuery("UPDATE users SET updated_at = now(), active = 1 WHERE id = ?",
-                [$_SESSION['user_id']]);
+                [$_SESSION['user']['id']]);
             $this->db->dbQuery("UPDATE registration_tokens SET activated = 1 WHERE token = ?",
                 [$this->token]);
 
-            return new UserAuth();
+            return true;
         } else {
             return false;
         }

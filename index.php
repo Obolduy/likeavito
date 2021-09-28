@@ -1,7 +1,7 @@
 <?php
 // ini_set('display_errors', 'off');
 
-use App\Models\UserAuth;
+use App\Models\UserGet;
 use App\Router\Router;
 
 session_start();
@@ -11,7 +11,15 @@ $routes = require 'App/routes.php';
 
 if ($_COOKIE['remember_token']) {
     $_SESSION['userauth'] = true;
-    new UserAuth();
+    $userId = (new UserGet)->getUserIdByToken($_COOKIE['remember_token']);
+
+    $_SESSION['user']['id'] = $userId;
+}
+
+if ($_SESSION['user']['id']) {
+    $user = (new UserGet)->getUser($_SESSION['user']['id']);
+
+    $_SESSION['user'] = ['id' => $user['id'], 'login' => $user['login'], 'email' => $user['email']];
 }
 
 try {

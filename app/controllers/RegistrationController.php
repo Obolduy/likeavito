@@ -5,7 +5,7 @@ use App\Models\EmailVerify;
 use App\Models\UserRegistration;
 use App\Models\UserValidation;
 use App\Models\Cities;
-use App\Models\UserAuth;
+use App\Models\UserGet;
 use App\View\View;
 
 class RegistrationController
@@ -51,9 +51,11 @@ class RegistrationController
 	 * @return void
 	 */
 
-    public static function verifyEmail(string $token): void
+    public static function verifyEmail(int $user_id, string $token): void
     {
-        if (!(new UserAuth)->data['active']) {
+        $userActive = (new UserGet)->getUser($user_id)['active'];
+
+        if (!$userActive) {
             new EmailVerify($token);
 
             include_once $_SERVER['DOCUMENT_ROOT'] . '/App/View/Views/emailconfirm.php';

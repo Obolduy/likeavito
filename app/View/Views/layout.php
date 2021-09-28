@@ -1,6 +1,3 @@
-<?php 
-use App\Models\UserAuth;
-?>
 <!DOCTYPE html>
 <html>
     <head>
@@ -13,7 +10,7 @@ use App\Models\UserAuth;
             <header>
                 <div class="main__title"><a href="/">Главная страница</a></div>
                 <?php if ($_SESSION['userauth']): ?>
-                <div class="user"><a href="/user"><?= (new UserAuth)->data['login'] ?></a></div>
+                <div class="user"><a href="/user"><?= $_SESSION['user']['login'] ?></a></div>
                 <div class="logout"><a href="/logout">Выйти</a></div>
                 <div class="addlot__link"><a href="/addlot">Добавить лот</a></div>
                 <?php else: ?>
