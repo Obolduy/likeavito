@@ -33,8 +33,8 @@ class UserGet extends Model
                 LEFT JOIN cities AS c ON u.city_id = c.id WHERE u.id = ?", [$id])->fetch();
     }
 
-    public function getUserIdByToken(string $token): string
+    public function getUserByToken(string $token): array
     {
-        return $this->db->dbQuery("SELECT id FROM users WHERE remember_token = ?", [$token])->fetchColumn();
+        return $this->db->dbQuery("SELECT * FROM users WHERE remember_token = ?", [$token])->fetch();
     }
 }

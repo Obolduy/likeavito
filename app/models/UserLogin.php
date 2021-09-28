@@ -13,22 +13,20 @@ class UserLogin extends Model
         $this->login = $login;
     }
 
-    public function login(int $rememberToken = null): void
+    public function login(int $rememberToken = null): array
     {
         $user = (new UserGet)->getUserByLogin($this->login);
-
-        $_SESSION['user']['id'] = $user['id'];
 
         if ($rememberToken) {
             $remember_token = md5(rand() . time());
 
             $this->db->dbQuery("UPDATE users SET remember_token = ? WHERE id = ?",
-                [$remember_token, $_SESSION['user']['id']]);
+                [$remember_token, $user['id']]);
 
-            setcookie('remember_token', $remember_token, time()+2678400);
+            setcookie('remember_token', $remember_token, time()+2678400); // set cookie for a month
             $_COOKIE['remember_token'] = $remember_token;
         }
 
-        $_SESSION['userauth'] = true;
+        return ['id' => $user['id'], 'login' => $user['login'], 'email' => $user['email']];
     }
 }
