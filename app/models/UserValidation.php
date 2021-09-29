@@ -3,6 +3,8 @@ namespace App\Models;
 
 class UserValidation extends Model
 {
+    private $errorArray = [];
+
     /**
 	 * Validate login and password
 	 * @param string login
@@ -15,16 +17,19 @@ class UserValidation extends Model
         $user = $this->db->dbQuery("SELECT * FROM users WHERE login = ?", [$login])->fetch();
 
         if (!$user) {
-            return 'Пользователя с таким логином не существует';
+            $this->errorArray[] = 'Пользователя с таким логином не существует';
+            return $this->errorArray;
         }
 
         $checkpassword = password_verify($password, $user['password']);
 
-        if ($checkpassword !== true) {
-            return 'Пароль неправильный';
+        if ($checkpassword != true) {
+            $this->errorArray[] = 'Пароль неправильный';
+            return $this->errorArray;
         }
 
         return true;
+
     }
 
     /**
