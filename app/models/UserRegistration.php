@@ -12,7 +12,7 @@ class UserRegistration extends Model
 
     public function __construct(
         string $login, string $password, string $email, int $city_id, string $name, 
-        string $surname, array $avatarFile = null
+        string $surname, ?array $avatarFile = null
         )
     {
         parent::__construct();
@@ -26,7 +26,7 @@ class UserRegistration extends Model
         $this->avatarName = null;
     }
 
-    public function registration()
+    public function registration(): array
     {
         $userManipulate = new UserManipulate();
         $userManipulate->addUser($this->login, $this->password, $this->email, $this->city_id);
@@ -42,7 +42,7 @@ class UserRegistration extends Model
         
         $this->prepareRegistrationEmail($user['id']);
 
-        $_SESSION['user']['id'] = $user['id'];
+        return ['id' => $user['id'], 'login' => $user['login'], 'email' => $user['email']];
     }
 
     /**

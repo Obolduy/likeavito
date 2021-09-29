@@ -31,7 +31,7 @@ class RegistrationController
                 $cryptPassword = password_hash($password, PASSWORD_DEFAULT);
 
                 $registration = new UserRegistration($login, $cryptPassword, $email, $cityId, $name, $surname, $_FILES['photo']);
-                $registration->registration();
+                $_SESSION['user'] = $registration->registration();
 
                 $_SESSION['userauth'] = true;
 
