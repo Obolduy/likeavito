@@ -1,10 +1,12 @@
 <?php
 namespace App\Controllers;
 
-use App\Models\MySQLDB;
-use App\Models\LotAdd;
+use App\Models\Categories;
+use App\Models\LotGet;
+use App\Models\LotManipulate;
 use App\Models\LotValidate;
 use App\Models\Picture;
+use App\Models\PictureDatabase;
 use App\View\View;
 use Predis\Autoloader;
 use Predis\Client;
@@ -13,10 +15,8 @@ class AddLotController
 {   
     public static function newLot(): void
     {
-        $db = new MySQLDB();
-
         if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-            $categories = $db->dbQuery("SELECT * FROM lots_category")->fetchAll();
+            $categories = (new Categories())->getAllCategories();
 
             new View('addlot', ['categories' => $categories, 'title' => 'Добавление товара']);
         } else {
@@ -28,20 +28,22 @@ class AddLotController
 
             $checkData = (new LotValidate)->checkLotData($title, $price);
 
-            if ($checkData) {
+            if (is_array($checkData)) {
                 $_SESSION['addlot_err_msg'] = $checkData;
 
                 header('Location: /addlot'); die();
             }
 
-            new LotAdd($title, $price, $description, $categoryId, $ownerId);
+            (new LotManipulate)->addLot($title, $price, $description, $categoryId, $ownerId);
+            $lotGet = new LotGet();
 
-            $lotId = $db->dbQuery("SELECT id FROM lots WHERE owner_id = ? ORDER BY id DESC", [$ownerId])
-                ->fetchColumn();
+            $lotId = $lotGet->getUserLots($ownerId);
+            $lotId = $lotId[count($lotId) - 1]['id'];
 
-            (new Picture)->uploadPicture("lots/$lotId", $_FILES['photos']);
-
-            $lots = $db->dbQuery("SELECT * FROM lots ORDER BY id DESC LIMIT 0,5")->fetchAll();
+            $pictures = (new Picture)->uploadPicture("lots/$lotId", $_FILES['photos']);
+            (new PictureDatabase)->addLotPicture($lotId, $pictures);
+            
+            $lots = $lotGet->getLotsForCache();
             
             Autoloader::register();
             $cache = new Client();

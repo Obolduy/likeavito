@@ -20,4 +20,9 @@ class LotGet extends Model
         return $this->db->dbQuery("SELECT l.*, c.category FROM lots AS l
             LEFT JOIN lots_category AS c ON l.category_id = c.id WHERE l.owner_id = ?", [$userId])->fetchAll();
     }
+
+    public function getLotsForCache(int $border = 5): array
+    {
+        return $this->db->dbQuery("SELECT * FROM lots ORDER BY id DESC LIMIT 0,$border")->fetchAll();
+    }
 }
