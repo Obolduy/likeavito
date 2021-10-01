@@ -15,10 +15,10 @@ class EmailSender extends Model
      * @param string hashed link
      */
     
-    public function sendRegistrationEmail(string $link): void
+    public function sendRegistrationEmail(string $link, int $userId): void
     {
         mail("<{$this->email}>", 'Закончите Вашу регистрацию',
-            EMAIL_REGISTRATION_MESSAGE_START . $link . EMAIL_MESSAGE_END,
+            EMAIL_REGISTRATION_MESSAGE_START . "$userId/$link" . EMAIL_MESSAGE_END,
                 implode("\r\n", EMAIL_HEADERS));
     }
 

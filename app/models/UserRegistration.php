@@ -53,10 +53,10 @@ class UserRegistration extends Model
 
     private function prepareRegistrationEmail(int $id): void
     {
-        $link = $id . '/'. md5($this->email . time());
+        $link = md5($this->email . time());
         $this->db->dbQuery('INSERT INTO registration_tokens SET user_id = ?, token = ?', [$id, $link]);
 
-        $email_data = json_encode([$this->email, $link]);
+        $email_data = json_encode([$this->email, $link, $id]);
 
         $queue = new SendRegistrationEmail();
         $queue->createQueue('send_reg_email');

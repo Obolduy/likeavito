@@ -15,9 +15,9 @@ class EmailVerify extends Model
 
     private function verifycationEmail(): bool
     {
-        if ($this->checkToken()) {
+        if ($userId = $this->checkToken()) {
             $this->db->dbQuery("UPDATE users SET updated_at = now(), active = 1 WHERE id = ?",
-                [$_SESSION['user']['id']]);
+                [$userId]);
             $this->db->dbQuery("UPDATE registration_tokens SET activated = 1 WHERE token = ?",
                 [$this->token]);
 
@@ -27,10 +27,11 @@ class EmailVerify extends Model
         }
     }
 
-    private function checkToken(): bool
+    private function checkToken()
     {
-        if ($this->db->dbQuery("SELECT token FROM registration_tokens WHERE token = ?", [$this->token])->fetchColumn()) {
-            return true;
+        $user = $this->db->dbQuery("SELECT user_id FROM registration_tokens WHERE token = ?", [$this->token])->fetchColumn();
+        if ($user) {
+            return $user;
         } else {
             return false;
         }

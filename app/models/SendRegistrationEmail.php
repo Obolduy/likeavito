@@ -29,7 +29,7 @@ class SendRegistrationEmail extends RabbitmqQueues
         $callback = function ($message) {
             $array = json_decode($message->body);
         
-            (new EmailSender($array[0]))->sendRegistrationEmail($array[1]);
+            (new EmailSender($array[0]))->sendRegistrationEmail($array[1], $array[2]);
         };
 
         return $callback;
