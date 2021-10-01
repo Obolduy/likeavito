@@ -6,7 +6,7 @@
     <div class="email">Email: <?php echo $user['email']; if ($user['active'] == 0) echo ' (Не подтвержден)';  ?></div>
     <div class="name">Имя: <?= $user['name'] ?></div>
     <div class="surname">Фамилия: <?= $user['surname'] ?></div>
-    <div class="city">Город: <?= $user['city_name'] ?></div>
+    <div class="city">Город: <?= $user['city'] ?></div>
     <div class="registration_time">Дата регистрации: <?= $user['registration_time'] ?></div>
     <div class="change_user_data"><a href="/user/change">Изменить данные</a></div>
     <div class="show_user_comments"><a href="/user/showcomments">Мои комментарии</a></div>

@@ -15,14 +15,14 @@
     <div><input type="submit" name="submit"></div>
 </form><br>
 <?php foreach ($comments as $comment): ?>
-<div class="description"><?= $comment['description'] ?></div>
-<div class="add_time">Добавлено: <?= $comment['add_time'] ?></div>
 <div class="comment_autor">
     <?php if ($comment['avatar']): ?>
     <img src="<?= "http://{$_SERVER['SERVER_NAME']}/img/users/{$comment['user_id']}/{$comment['avatar']}" ?>" alt="Аватар" height=5% width=5%>
     <?php endif; ?>
     <a href="<?= "/users/{$comment['user_id']}" ?>"><?= $comment['login'] ?></a>
 </div>
+<div class="description"><?= nl2br($comment['description']) ?></div>
+<div class="add_time">Добавлено: <?= $comment['add_time'] ?></div>
 <br>
 <?php endforeach; ?>
 </div>

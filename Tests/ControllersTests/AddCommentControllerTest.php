@@ -1,35 +1,42 @@
 <?php
 use PHPUnit\Framework\TestCase;
-use App\Models\Model;
-use App\Models\Lots;
+use App\Models\CommentGet;
 use App\Controllers\AddCommentController;
 
 class AddCommentControllerTest extends TestCase
 {
-    private $addCommentController;
-    private $model;
+    private $addCommentController, $commentGet;
 
     protected function setUp(): void 
     {
         $this->addCommentController = new AddCommentController();
-        $this->model = new Model();
+        $this->commentGet = new CommentGet();
     }
 
-    public function testaddComment() 
+    public function addCommentProvider()
     {
-        $_POST['description'] = 'Description test comment';
-        $_POST['lot_id'] = 1;
-        $_SESSION['user']['id'] = 20;
+        return [
+            ['NewComment1', 5, 54, 1, 50],
+            ['NewComment2', 1, 2, 70, 51],
+            ['NewComment3', 3, 50, 68, 52],
+            ['NewComment4', 6, 70, 1, 53]
+        ];
+    }
 
-        $this->addCommentController->addComment($_POST['lot_id']);
+    /**
+     * @dataProvider addCommentProvider
+     */
 
-        $data = $this->model->getOne('comments', 'Description test comment', 'description');
+    public function testAddComment($description, $categoryId, $lotId, $userid, $commentId) 
+    {
+        $_POST['description'] = $description;
+        $_SESSION['user']['id'] = $userid;
 
-        foreach($data as $elem) {
-            $result = $elem['id'];
-        }
+        $this->addCommentController->addComment($categoryId, $lotId);
 
-        $this->assertEquals(1, $result);
+        $data = $this->commentGet->getCommentById($commentId);
+
+        $this->assertIsArray($data);
     }
 
     protected function tearDown(): void
