@@ -16,7 +16,7 @@ class AddLotController
     public static function newLot(): void
     {
         if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-            $categories = (new Categories())->getAllCategories();
+            $categories = (new Categories)->getAllCategories();
 
             new View('addlot', ['categories' => $categories, 'title' => 'Добавление товара']);
         } else {
@@ -25,6 +25,7 @@ class AddLotController
             $description = strip_tags($_POST['description'], '<p></p><br/><br><i><b><s><u><strong>');
             $categoryId = strip_tags($_POST['category_id']);
             $ownerId = $_SESSION['user']['id'];
+            $photos = $_FILES['photos'] ?? null;
 
             $checkData = (new LotValidate)->checkLotData($title, $price);
 
@@ -40,8 +41,10 @@ class AddLotController
             $lotId = $lotGet->getUserLots($ownerId);
             $lotId = $lotId[count($lotId) - 1]['id'];
 
-            $pictures = (new Picture)->uploadPicture("lots/$lotId", $_FILES['photos']);
-            (new PictureDatabase)->addLotPicture($lotId, $pictures);
+            if ($photos) {
+                $pictures = (new Picture)->uploadPicture("lots/$lotId", $_FILES['photos']);
+                (new PictureDatabase)->addLotPicture($lotId, $pictures);
+            }
             
             $lots = $lotGet->getLotsForCache();
             
