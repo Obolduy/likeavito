@@ -22,7 +22,7 @@
     <a href="<?= "/users/{$comment['user_id']}" ?>"><?= $comment['login'] ?></a>
 </div>
 <div class="description"><?= nl2br($comment['description']) ?></div>
-<div class="add_time">Добавлено: <?= $comment['add_time'] ?></div>
+<div class="add_time">Добавлено: <?php echo $comment['add_time']; if ($_SESSION['user']['id'] == $comment['user_id']) echo "<a href=\"/changecomment/{$comment['id']}\"> Отредактировать</a>" ?></div>
 <br>
 <?php endforeach; ?>
 </div>
