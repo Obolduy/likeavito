@@ -8,14 +8,14 @@ use App\View\View;
 
 class ChangeCommentController
 {   
-    public function changeComment(int $comment_id): void
+    public static function changeComment(int $comment_id): void
     {
         if (!$_SESSION['http_referer']) {
             $_SESSION['http_referer'] = $_SERVER['HTTP_REFERER'];
         }
 
         if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-            $comment = (new CommentGet())->getCommentById($comment_id);
+            $comment = (new CommentGet)->getCommentById($comment_id);
 
             new View('changecomment', ['title' => 'Изменить комментарий', 'comment' => $comment]);
         } else {
@@ -24,7 +24,7 @@ class ChangeCommentController
             $validate = (new CommentValidate)->checkComment($text);
 
             if (is_bool($validate)) {
-                (new CommentManipulate())->changeComment($comment_id, 1, $text);
+                (new CommentManipulate)->changeComment($comment_id, 1, $text);
 
                 header("Location:" . $_SESSION['http_referer']);
                 

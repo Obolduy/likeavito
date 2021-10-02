@@ -42,7 +42,7 @@ class UserRegistration extends Model
         
         $this->prepareRegistrationEmail($user['id']);
 
-        return ['id' => $user['id'], 'login' => $user['login'], 'email' => $user['email']];
+        return ['id' => $user['id'], 'login' => $user['login'], 'email' => $user['email'], 'active' => $user['active']];
     }
 
     /**

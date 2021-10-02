@@ -27,6 +27,6 @@ class UserLogin extends Model
             $_COOKIE['remember_token'] = $remember_token;
         }
 
-        return ['id' => $user['id'], 'login' => $user['login'], 'email' => $user['email']];
+        return ['id' => $user['id'], 'login' => $user['login'], 'email' => $user['email'], 'active' => $user['active']];
     }
 }

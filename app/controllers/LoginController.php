@@ -42,7 +42,7 @@ class LoginController
     {
         $user = (new UserGet)->getUserByToken($rememberToken);
     
-        $_SESSION['user'] = ['id' => $user['id'], 'login' => $user['login'], 'email' => $user['email']];
+        $_SESSION['user'] = ['id' => $user['id'], 'login' => $user['login'], 'email' => $user['email'], 'active' => $user['active']];
         $_SESSION['userauth'] = true;
     }
 
