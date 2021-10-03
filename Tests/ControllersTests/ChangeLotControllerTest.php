@@ -1,29 +1,25 @@
 <?php
 use PHPUnit\Framework\TestCase;
-use App\Models\Model;
-use App\Models\Lots;
 use App\Controllers\ChangeLotController;
+use App\Models\Database;
 
 class ChangeLotControllerTest extends TestCase
 {
-    private $changeLotController;
-    private $model;
-    private $lot;
+    private $changeLotController, $database;
 
     protected function setUp(): void 
     {
         $this->changeLotController = new ChangeLotController();
-        $this->model = new Model();
-        $this->lot = new Lots();
+        $this->database = new Database();
     }
 
     public function changeLotProvider()
     {
         return [
-            ['NewTitle1', 'NewDesc1', 1500, 22, 'NewTitle1'],
-            ['NewTitle2', 'NewDesc2', 2000, 23, 'NewTitle2'],
-            ['NewTitle3', 'NewDesc3', 300, 24, 'NewTitle3'],
-            ['NewTitle4', 'NewDesc4', 450, 25, 'NewTitle4']
+            ['NewTitle1', 'NewDesc1', 1500, 22, 1, 'NewTitle1'],
+            ['NewTitle2', 'NewDesc2', 2000, 23, null, 'NewTitle2'],
+            ['NewTitle3', 'NewDesc3', 300, 24, null, 'NewTitle3'],
+            ['NewTitle4', 'NewDesc4', 450, 25, 1, 'NewTitle4']
         ];
     }
 
@@ -31,25 +27,23 @@ class ChangeLotControllerTest extends TestCase
      * @dataProvider changeLotProvider
      */
 
-    public function testChangeLot($title, $description, $price, $lot_id, $expected) 
+    public function testChangeLot($title, $description, $price, $lot_id, $display, $expected) 
     {
         $_POST['title'] = $title;
         $_POST['description'] = $description;
         $_POST['price'] = $price;
+        $_POST['display'] = $display;
 
         $this->changeLotController->changeLot($lot_id);
 
-        $data = $this->model->getOne('lots', $title, 'title');
+        $data = $this->database->dbQuery("SELECT * FROM lots WHERE title = ? ORDER BY id DESC", [$title])->fetch();
 
-        foreach($data as $elem) {
-            $this->assertEquals($expected, $elem['title']);
-        }
+        $this->assertIsArray($data);
     }
 
     protected function tearDown(): void
     {
         $this->changeLotController = NULL;
-        $this->model = NULL;
-        $this->lot = NULL;
+        $this->data = NULL;
     }
 }

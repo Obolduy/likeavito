@@ -20,7 +20,7 @@ class LotManipulate extends Model
                 [$ownerId, $categoryId, $title, $price, $description]);
     }
 
-    public function changeLot(int $lotId, string $title, int $price, string $description, int $categoryId, int $display, ?array $pictures)
+    public function changeLot(int $lotId, string $title, int $price, string $description, int $categoryId, int $display = 0, ?array $pictures)
     {
         if ($pictures) {
             $this->picture->uploadPicture("lots/$lotId", $pictures);

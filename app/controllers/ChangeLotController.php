@@ -17,7 +17,7 @@ class ChangeLotController
 
             new View('changelot', ['lot' => $lot, 'categories' => $categories, 'title' => 'Изменить товар']);
         } else {
-            $check = (new LotValidate)->checkLotData($_POST['title'], $_POST['price']);
+            $check = (new LotValidate)->checkLotData(strip_tags($_POST['title']), strip_tags($_POST['price']));
 
             if ($check !== true) {
                 $_SESSION['lot_err_msg'] = 'Цена должна быть записана числом';
@@ -26,7 +26,7 @@ class ChangeLotController
             } else {
                 (new LotManipulate)->changeLot($lot_id, strip_tags($_POST['title']), strip_tags($_POST['price']),
                     strip_tags($_POST['description'], '<p></p><br/><br><i><b><s><u><strong>'),
-                        $_POST['category_id'], $_FILES['photos']);
+                        $_POST['category_id'], $_POST['display'], $_FILES['photos']);
 
                 header("Location: /category/{$_POST['category_id']}/$lot_id");
             }
