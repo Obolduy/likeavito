@@ -39,7 +39,7 @@ class Picture extends Model
 
     public function deletePicturesByPath(string $path): bool
     {
-        $fullPath = $_SERVER['DOCUMENT_ROOT'] . "img/$path";
+        $fullPath = $_SERVER['DOCUMENT_ROOT'] . "/img/$path";
 
         if (is_dir($fullPath)) {
             $dir = opendir($fullPath);
