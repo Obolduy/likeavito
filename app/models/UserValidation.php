@@ -92,23 +92,34 @@ class UserValidation extends Model
 	 * @return array|boolean
 	 */
 
-    public function changeCheck(string $login, $password, $confirmPassword, string $email)
+    public function changeCheck(string $login, ?string $password, ?string $confirmPassword, string $email)
     {
-        $emptyCheck = $this->db->dbQuery("SELECT login, email FROM users WHERE login = ?", [$login])
-            ->fetchAll();
+        $emptyLoginCheck = $this->db->dbQuery("SELECT login FROM users WHERE login = ?", [$login])
+            ->fetchColumn();
 
-        foreach ($emptyCheck as $elem) {
-            if ($emptyCheck != null && $elem['login'] != $login) {
-                $this->errorArray[] = 'Данный логин занят';
-            }
-    
-            if ($emptyCheck != null && $elem['email'] != $email) {
-                $this->errorArray[] = 'Данный email занят';
-            }
+        $emptyEmailCheck = $this->db->dbQuery("SELECT email FROM users WHERE email = ?", [$email])
+            ->fetchColumn();
+
+        if ($emptyLoginCheck != null && $emptyLoginCheck != $login) {
+            $this->errorArray[] = 'Данный логин занят';
+        }
+
+        if ($emptyEmailCheck != null && $emptyEmailCheck != $email) {
+            $this->errorArray[] = 'Данный email занят';
         }
         
-        if (!preg_match('#^[A-Za-z0-9]+$#', $login) or !preg_match('#^[A-Za-z0-9]+$#', $password)) {
-            $this->errorArray[] = 'Пароль и логин могут содержать только латинские буквы и цифры';
+        if ($password && $confirmPassword) {
+            if (!preg_match('#^[A-Za-z0-9]+$#', $password)) {
+                $this->errorArray[] = 'Пароль может содержать только латинские буквы и цифры';
+            }
+
+            if ($password != $confirmPassword) {
+                $this->errorArray[] = 'Пароли не совпадают';
+            }
+        }
+
+        if (!preg_match('#^[A-Za-z0-9]+$#', $login)) {
+            $this->errorArray[] = 'Логин может содержать только латинские буквы и цифры';
         } 
         
         if (!preg_match('#^[A-Za-z0-9_-]+@.+\..{2,4}$#', $email)) {
@@ -117,10 +128,6 @@ class UserValidation extends Model
         
         if (strlen($login) < 6 or strlen($login) > 32) {
             $this->errorArray[] = 'Логин должен состоять из 6-32 символов';
-        }
-        
-        if ($password != $confirmPassword) {
-            $this->errorArray[] = 'Пароли не совпадают';
         }
 
         if (!empty($this->errorArray)) {

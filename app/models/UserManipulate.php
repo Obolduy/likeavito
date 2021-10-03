@@ -72,12 +72,8 @@ class UserManipulate extends Model
         }
     }
 
-    public function changeUser(int $userId, string $currentEmail, string $login, ?string $password, string $email, string $name, string $surname, int $cityId, array $photo = null)
+    public function changeUser(int $userId, string $currentEmail, string $login, ?string $password, string $email, string $name, string $surname, int $cityId, ?string $avatar)
     {
-        if ($photo) {
-            (new Picture)->uploadPicture("users/$userId", $photo);
-        }
-
         if ($password) {
             $email_data = json_encode(['email' => $currentEmail, 'password' => $password]);
 
@@ -97,6 +93,10 @@ class UserManipulate extends Model
             $queue->closeConnection();
         }
 
+        if ($avatar) {
+            $this->db->dbQuery("UPDATE users SET avatar = ? WHERE id = ?", [$avatar, $userId]);
+        }
+        
         $this->db->transaction([
             ["UPDATE users SET login = ?, city_id = ?, updated_at = now() WHERE id = ?", [$login, $cityId, $userId]],
             ["UPDATE names SET name = ? WHERE user_id = ?", [$name, $userId]],
