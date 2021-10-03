@@ -13,7 +13,7 @@ class ChangePasswordController
 
     public static function changePasswordController(string $link): void
     {
-        if ((new PasswordChange())->changePassword($link)) {
+        if ((new PasswordChange)->changePassword($link, $_SESSION['user']['id'])) {
             echo 'Ваш пароль успешно изменен <br> <a href="/user">Вернуться на Ваш профиль</a>';
         } else {
             header('Location: /');

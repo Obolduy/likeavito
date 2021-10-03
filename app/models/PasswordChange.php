@@ -12,13 +12,13 @@ class PasswordChange extends Model
         $this->password = $password;
     }
 
-    public function changePassword(string $link): bool
+    public function changePassword(string $link, int $userId): bool
     {
         $newPassword = $this->db->dbQuery("SELECT * FROM passwords_changes WHERE link = ?", [$link])->fetch();
         
         if ($newPassword) {
             $this->db->dbQuery("UPDATE users SET updated_at = now(), password = ? WHERE id = ?",
-                [$newPassword['password'], $_SESSION['user']['id']]);
+                [$newPassword['password'], $userId]);
             return true;
         } else {
             return false;
