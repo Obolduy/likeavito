@@ -7,7 +7,7 @@ class ChangeEmailController
 {   
     public static function changeEmailController(string $link): void
     {
-        if ((new EmailChanger)->changeEmail($link)) {
+        if ((new EmailChanger)->changeEmail($link, $_SESSION['user']['id'])) {
             echo 'Ваш Email успешно изменен <br> <a href="/user">Вернуться на Ваш профиль</a>';
         } else {
             header('Location: /');
