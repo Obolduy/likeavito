@@ -9,11 +9,11 @@ class EmailChanger extends Model
             [$newEmail, $currentEmail, $_SESSION['changeemail_link']]);
     }
 
-    public function changeEmail(string $link): bool
+    public function changeEmail(string $link, int $userId): bool
     {
         if ($newEmail = $this->db->dbQuery("SELECT * FROM emails_changes WHERE link = ?", [$link])->fetch()) {
             $this->db->dbQuery("UPDATE users SET updated_at = now(), email = ? WHERE id = ?",
-                [$newEmail['new_email'], $_SESSION['user']['id']]);
+                [$newEmail['new_email'], $userId]);
 
             return true;
         } else {
