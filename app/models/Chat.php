@@ -11,7 +11,7 @@ class Chat extends Model
 
     public function deleteChat(string $chat_name): void
     {
-        $this->db->dbQuery("DROP TABLE ?", ["chat_$chat_name"]);
+        $this->db->dbQuery("DROP TABLE chat_$chat_name");
         $this->db->dbQuery("DELETE FROM chats_list WHERE chat = ?", ["chat_$chat_name"]);
     }
 
@@ -23,7 +23,7 @@ class Chat extends Model
 
     public function refresh(string $chat_name): array
     {
-        return $this->db->dbQuery("SELECT c.*, u.login FROM ? AS c LEFT JOIN users AS u ON c.user_id=u.id", [$chat_name])
+        return $this->db->dbQuery("SELECT c.*, u.login FROM $chat_name AS c LEFT JOIN users AS u ON c.user_id=u.id")
             ->fetchAll();
     }
     
@@ -46,8 +46,8 @@ class Chat extends Model
 
         $_SESSION["chat_with_$user2_id"] = $chat['chat'];
         
-        return $this->db->dbQuery("SELECT c.*, u.login FROM ? AS c 
-            LEFT JOIN users AS u ON c.user_id=u.id", [$chat['chat']])->fetchAll();
+        return $this->db->dbQuery("SELECT c.*, u.login FROM {$chat['chat']} AS c 
+            LEFT JOIN users AS u ON c.user_id=u.id")->fetchAll();
     }
 
     /**
@@ -72,12 +72,12 @@ class Chat extends Model
     private function createChat(int $user1_id, int $user2_id): void
     {
         $chatName = md5($user1_id . '_' . $user2_id);
-        $this->db->dbQuery("CREATE TABLE ?(
+        $this->db->dbQuery("CREATE TABLE chat_$chatName (
             id INT(64) AUTO_INCREMENT PRIMARY KEY,
             message TEXT(1000) NOT NULL,
             user_id INT(64) NOT NULL,
             date DATETIME NOT NULL DEFAULT NOW()
-        )", ["chat_$chatName"]);
+        )");
 
         $this->db->dbQuery("INSERT INTO chats_list SET chat = ?, user1_id = ?, user2_id = ?", 
             ["chat_$chatName", $user1_id, $user2_id]);
