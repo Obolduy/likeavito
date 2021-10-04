@@ -28,9 +28,9 @@ class DeleteLotController
                 ]);
             }
 
-            header('Location: /'); die();
+            header('Location: /user/showlots'); die();
         }
 
-        header('Location: /user/showlots');
+        header('Location: /user/');
     }
 }

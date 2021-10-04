@@ -8,16 +8,13 @@ class DeleteCommentController
 {   
     public static function deleteComment(int $comment_id): void
     {
-        $checkUser = (new CommentGet)->getCommentsByUserId($_SESSION['user']['id']);
+        $comment = (new CommentGet)->getCommentById($comment_id);
 
-        foreach ($checkUser as $comment) {
-            if ($comment['user_id'] == $_SESSION['user']['id']) {
-                (new CommentManipulate)->deleteComment($comment_id);
+        if ($comment['user_id'] == $_SESSION['user']['id']) {
+            (new CommentManipulate)->deleteComment($comment_id);
 
-                header('Location: /'); die();
-            }
+            header('Location: /user/showcomments');
         }
-        
-        header('Location: /user');
+        header('Location: /'); die();
     }
 }
