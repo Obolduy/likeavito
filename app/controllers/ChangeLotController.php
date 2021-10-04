@@ -24,7 +24,7 @@ class ChangeLotController
         if ($_SERVER['REQUEST_METHOD'] == 'GET') {
             $categories = (new Categories)->getAllCategories();
 
-            new View('changelot', ['lot' => $lot['LotInfo'], 'categories' => $categories, 'title' => 'Изменить товар']);
+            new View('changelot', ['lot' => $lot['LotInfo'], 'pictures' => $lot['LotPictures'], 'categories' => $categories, 'title' => 'Изменить товар']);
         } else {
             $check = (new LotValidate)->checkLotData(strip_tags($_POST['title']), strip_tags($_POST['price']));
 
@@ -35,7 +35,7 @@ class ChangeLotController
             } else {
                 (new LotManipulate)->changeLot($lot_id, strip_tags($_POST['title']), strip_tags($_POST['price']),
                     strip_tags($_POST['description'], '<p></p><br/><br><i><b><s><u><strong>'),
-                        $_POST['category_id'], $_POST['display'], $_FILES['photos']);
+                        $_POST['category_id'], $_POST['display'], $_FILES['photos'], $_POST['photos_radio']);
 
                 $lots = $lotGet->getLotsForCache();
             

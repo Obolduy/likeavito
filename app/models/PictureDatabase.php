@@ -10,4 +10,21 @@ class PictureDatabase extends Model
                 [$lotId, $pictureName]);
         }
     }
+
+    public function updateLotPicture(string $lotId, array $pictures, ?string $radio): void
+    {
+        if ($radio == 'photos_add') {
+            foreach ($pictures as $pictureName) {
+                $this->db->dbQuery("INSERT INTO lots_pictures SET picture = ?, lot_id = ?",
+                    [$pictureName, $lotId]);
+            }
+        } else {
+            $this->db->dbQuery("DELETE FROM lots_pictures WHERE lot_id = ?", [$lotId]);
+
+            foreach ($pictures as $pictureName) {
+                $this->db->dbQuery("INSERT INTO lots_pictures SET picture = ?, lot_id = ?",
+                    [$pictureName, $lotId]);
+            }
+        }
+    }
 }

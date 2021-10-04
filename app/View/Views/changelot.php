@@ -15,6 +15,10 @@ if ($_SESSION['lot_err_msg']) {
         <?php endforeach; ?>
     </select></div>
     <div>Загрузите картинки (Необязательно): <input type="file" accept="image/*" name="photos[]" multiple></div>
+    <?php if ($pictures): ?>
+    <div><input name="photos_radio" type="radio" value="photos_add"> Добавить фото к существующим</div>
+    <div><input name="photos_radio" type="radio" value="photos_new"> Заменить фото</div>
+    <?php endif; ?>
     <div><input type="checkbox" name="display" value="1" checked> Отображать лот</div>
     <div><input type="submit" name="submit"></div>
 </form>

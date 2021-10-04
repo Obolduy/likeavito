@@ -2,6 +2,7 @@
 namespace App\Models;
 
 use App\Models\Picture;
+use App\Models\PictureDatabase;
 
 class LotManipulate extends Model
 {
@@ -20,10 +21,16 @@ class LotManipulate extends Model
                 [$ownerId, $categoryId, $title, $price, $description]);
     }
 
-    public function changeLot(int $lotId, string $title, int $price, string $description, int $categoryId, int $display = 0, ?array $pictures)
+    public function changeLot(int $lotId, string $title, int $price, string $description, int $categoryId, int $display = 0, ?array $pictures, ?string $radio)
     {
         if ($pictures) {
-            $this->picture->uploadPicture("lots/$lotId", $pictures);
+            if ($radio == 'photos_new') {
+                $picturesArray = $this->picture->deletePicturesByPath("lots/$lotId");
+            }
+
+            $picturesArray = $this->picture->uploadPicture("lots/$lotId", $pictures);
+
+            (new PictureDatabase)->updateLotPicture($lotId, $picturesArray, $radio);
         }
 
         $this->db->dbQuery("UPDATE lots SET title = ?, price = ?, description = ?, category_id = ?, display = ?, update_time = now() WHERE id = ?",
