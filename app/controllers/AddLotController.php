@@ -25,7 +25,10 @@ class AddLotController
             $description = strip_tags($_POST['description'], '<p></p><br/><br><i><b><s><u><strong>');
             $categoryId = strip_tags($_POST['category_id']);
             $ownerId = $_SESSION['user']['id'];
-            $photos = $_FILES['photos'] ?? null;
+
+            if ($_FILES['photos']['size'][0] != 0) {
+                $photos = $_FILES['photos'];
+            }
 
             $checkData = (new LotValidate)->checkLotData($title, $price);
 
