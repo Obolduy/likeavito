@@ -1,17 +1,16 @@
 <?php
 use PHPUnit\Framework\TestCase;
-use App\Models\User;
+use App\Models\UserGet;
 use App\Controllers\DeleteUserController;
 
 class DeleteUserControllerTest extends TestCase
 {
-    private $deleteUserController;
-    private $user;
+    private $deleteUserController, $userGet;
 
     protected function setUp(): void 
     {
         $this->deleteUserController = new DeleteUserController();
-        $this->user = new User();
+        $this->userGet = new UserGet();
     }
 
     public function deleteRequestProvider()
@@ -37,19 +36,15 @@ class DeleteUserControllerTest extends TestCase
 
         $test = $this->deleteUserController->deleteRequest();
 
-        $this->assertIsNotString($test);
+        $file = file('/Users/vladislav/projects/maillog.txt');
 
-        $dir = scandir('C:\\openserver\\userdata\\temp\\email');
-
-        $file = $dir[count($dir) - 1];
-        $file = file("C:\\openserver\\userdata\\temp\\email\\$file")[13];
-
-        preg_match('#http://likeavito/user/delete/.+#', $file, $link);
-        $this->assertEquals(trim($link[0]), "http://likeavito/user/delete/{$_SESSION['deletelink']}");
+        $lastString = $file[(count($file) - 1)];
+        $test = str_contains($lastString, $email);
+        $this->assertTrue($test);
+        $this->assertNotNull($_SESSION['deletelink']);
 
         $stack = ['token' => $_SESSION['deletelink'], 'id' => $user_id];
 
-        $this->testDeleteUser($stack);
         return $stack;
     }
 
@@ -63,7 +58,7 @@ class DeleteUserControllerTest extends TestCase
 
         $this->deleteUserController->deleteUser($stack['token']);
 
-        $test = $this->user->getOne('users', $stack['id']);
+        $test = $this->userGet->getUserById($stack['id']);
 
         $this->assertNull($test);
     }
@@ -71,6 +66,6 @@ class DeleteUserControllerTest extends TestCase
     protected function tearDown(): void
     {
         $this->deleteUserController = NULL;
-        $this->user = NULL;
+        $this->userGet = NULL;
     }
 }
