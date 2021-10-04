@@ -29,6 +29,10 @@ class ShowUserController
 
     public static function showOtherUser(int $user_id): void
     {
+        if ($user_id == $_SESSION['user']['id']) {
+            header('Location: /user'); die();
+        }
+
         $user = (new UserGet)->getOtherUser($user_id);
 
         new View('showotheruser', ['user' => $user, 'title' => "Просмотр пользователя {$user['login']}"]);

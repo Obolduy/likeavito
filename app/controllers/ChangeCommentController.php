@@ -14,9 +14,13 @@ class ChangeCommentController
             $_SESSION['http_referer'] = $_SERVER['HTTP_REFERER'];
         }
 
-        if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-            $comment = (new CommentGet)->getCommentById($comment_id);
+        $comment = (new CommentGet)->getCommentById($comment_id);
 
+        if ($comment['user_id'] != $_SESSION['user']['id']) {
+            header('Location: /'); die();
+        }
+
+        if ($_SERVER['REQUEST_METHOD'] == 'GET') {
             new View('changecomment', ['title' => 'Изменить комментарий', 'comment' => $comment]);
         } else {
             $text = strip_tags($_POST['description'], '<p></p><br/><br><i><b><s><u><strong>');

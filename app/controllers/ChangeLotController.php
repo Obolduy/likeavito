@@ -11,8 +11,13 @@ class ChangeLotController
 {   
     public static function changeLot(int $lot_id): void
     {
+        $lot = (new LotGet)->getFullLotInfo($lot_id);
+
+        if ($lot['LotInfo']['owner_id'] != $_SESSION['user']['id']) {
+            header('Location: /'); die();
+        }
+
         if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-            $lot = (new LotGet)->getFullLotInfo($lot_id);
             $categories = (new Categories)->getAllCategories();
 
             new View('changelot', ['lot' => $lot, 'categories' => $categories, 'title' => 'Изменить товар']);
