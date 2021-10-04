@@ -1,7 +1,5 @@
 <?php
 use PHPUnit\Framework\TestCase;
-use App\Models\Model;
-use App\Models\User;
 use App\Controllers\LoginController;
 
 class LoginControllerTest extends TestCase
@@ -17,15 +15,25 @@ class LoginControllerTest extends TestCase
      * Headers already sent by PHPUnit but everythings is ok.
      */
 
-    public function testLogIn() 
+    public function testLogin() 
     {
         $_POST['login'] = 'nxtewwwlogin';
         $_POST['password'] = '123456789';
 
-        LoginController::login();
+        $this->loginController->login();
 
         $this->assertEquals(true, $_SESSION['userauth']);
         $this->assertEquals(20, $_SESSION['user']['id']);
+    }
+
+    public function testLoginByRememberToken() 
+    {
+        $rememberToken = 'fu453sdn45m543k43nfsd';
+
+        $this->loginController->loginByRememberToken($rememberToken);
+
+        $this->assertEquals(true, $_SESSION['userauth']);
+        $this->assertEquals(67, $_SESSION['user']['id']);
     }
 
     protected function tearDown(): void
