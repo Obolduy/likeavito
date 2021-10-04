@@ -1,20 +1,16 @@
 <?php
 use PHPUnit\Framework\TestCase;
-use App\Models\Model;
-use App\Models\Lots;
+use App\Models\LotGet;
 use App\Controllers\DeleteLotController;
 
 class DeleteLotControllerTest extends TestCase
 {
-    private $deleteLotController;
-    private $model;
-    private $lot;
+    private $deleteLotController, $lotGet;
 
     protected function setUp(): void 
     {
         $this->deleteLotController = new DeleteLotController();
-        $this->model = new Model();
-        $this->lot = new Lots();
+        $this->lotGet = new LotGet();
     }
 
     public function deleteLotProvider()
@@ -31,27 +27,18 @@ class DeleteLotControllerTest extends TestCase
      * @dataProvider deleteLotProvider
      */
 
-    public function testDeleteLot($lot_id) 
+    public function testDeleteLot($lotId) 
     {
-        $this->deleteLotController->deleteLot($lot_id);
+        $this->deleteLotController->deleteLot($lotId);
 
-        $data = $this->model->getOne('lots', $lot_id);
+        $data = $this->lotGet->getFullLotInfo($lotId);
 
-        foreach ($data as $elem) {
-            $this->assertNull($elem);
-        }
-
-        $data = $this->model->getOne('lots_pictures', $lot_id, 'lot_id');
-
-        foreach ($data as $elem) {
-            $this->assertNull($elem);
-        }
+        $this->assertFalse($data);
     }
 
     protected function tearDown(): void
     {
-        $this->deleteLotController = NULL;
-        $this->model = NULL;
-        $this->lot = NULL;
+        $this->deleteLotController = null;
+        $this->lotGet = null;
     }
 }
