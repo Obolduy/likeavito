@@ -26,10 +26,10 @@ class Pagination extends Model
     {
         $this->count = count($this->db->dbQuery($this->query)->fetchAll());
 
-        while ($this->count % 5 != 0) {
+        while ($this->count % $this->border2 != 0) {
             $this->count++;
         }
 
-        return $this->count /= 5;
+        return $this->count /= $this->border2;
     }
 }
