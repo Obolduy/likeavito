@@ -10,9 +10,14 @@ class AdminChangeCommentController
 {   
     public static function adminShowCommentsTable(): void
     {
-        $comments = (new Pagination('comments', (($_GET['page'] * 10) - 10)))->pagination();
+        if (!isset($_GET['page']) || $_GET['page'] == 1) {
+            $_GET['page'] = 1;
+        }
 
-        new View('adminshowcomments', ['comments' => $comments, 'title' => 'Просмотр комментариев']);
+        $comments = new Pagination(($_GET['page'] * 10) - 10, 10);
+        $comments->pagination((new CommentGet)->getAllComments()->queryString);
+
+        new View('adminshowcomments', ['comments' => $comments->table, 'page_count' => $comments->pageCount, 'title' => 'Просмотр комментариев']);
     }
 
     public static function adminChangeComment(int $comment_id): void
@@ -22,8 +27,12 @@ class AdminChangeCommentController
 
             new View('adminchangecomment', ['comment' => $comment, 'title' => 'Изменить комментарий']);
         } else {
-            (new CommentManipulate)->changeComment($comment_id,
-                strip_tags($_POST['description'], '<p></p><br/><br><i><b><s><u><strong>'), $_POST['display']);
+            $display = $_POST['display'] ?? 0;
+
+            (new CommentManipulate)->changeComment($comment_id, $display,
+                strip_tags($_POST['description'], '<p></p><br/><br><i><b><s><u><strong>'));
+            
+            header("Location: /admin/change/comment/$comment_id");
         }
     }
 }

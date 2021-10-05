@@ -8,6 +8,7 @@ class AdminDeleteCommentController
     public static function adminDeleteComment(int $comment_id): void
     {
         (new CommentManipulate)->deleteComment($comment_id);
-        header('Location:' . $_SERVER['HTTP_REFERER']);
+        
+        header('Location: /admin/comments');
     }
 }

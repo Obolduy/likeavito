@@ -16,7 +16,7 @@ class AdminChangeLotController
             $_GET['page'] = 1;
         }
 
-        $lots = new Pagination(($_GET['page'] * 5) - 5, 10);
+        $lots = new Pagination(($_GET['page'] * 10) - 10, 10);
         $lots->pagination((new LotGet)->getAllLots()->queryString);
 
         new View('adminshowlots', ['lots' => $lots->table, 'page_count' => $lots->pageCount, 'title' => 'Просмотр товаров']);

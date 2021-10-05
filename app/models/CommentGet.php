@@ -9,6 +9,12 @@ class CommentGet extends Model
             LEFT JOIN users AS u ON u.id = c.user_id WHERE c.lot_id = ?", [$lotId])->fetchAll();
     }
 
+    public function getAllComments()
+    {
+        return $this->db->dbQuery("SELECT c.*, u.login, l.id AS lot_id, l.title FROM comments AS c
+            LEFT JOIN users AS u ON u.id = c.user_id LEFT JOIN lots AS l ON l.id = c.lot_id");
+    }
+
     public function getCommentById(int $commentId)
     {
         return $this->db->dbQuery("SELECT c.*, u.login, u.avatar FROM comments AS c
