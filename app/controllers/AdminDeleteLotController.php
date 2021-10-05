@@ -9,6 +9,6 @@ class AdminDeleteLotController
     {
         (new LotManipulate)->deleteLot($lot_id);
 
-        header('Location:' . $_SERVER['HTTP_REFERER']);
+        header('Location: /admin/lots');
     }
 }

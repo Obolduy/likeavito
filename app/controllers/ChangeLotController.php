@@ -33,9 +33,15 @@ class ChangeLotController
                 
                 header("Location: /managelot/$lot_id/change");
             } else {
+                if ($_FILES['photos']['size'][0] != 0) {
+                    $photos = $_FILES['photos'];
+                }
+
+                $display = $_POST['display'] ?? 0;
+
                 (new LotManipulate)->changeLot($lot_id, strip_tags($_POST['title']), strip_tags($_POST['price']),
                     strip_tags($_POST['description'], '<p></p><br/><br><i><b><s><u><strong>'),
-                        $_POST['category_id'], $_POST['display'], $_FILES['photos'], $_POST['photos_radio']);
+                        $_POST['category_id'], $display, $photos, $_POST['photos_radio']);
 
                 $lots = $lotGet->getLotsForCache();
             
