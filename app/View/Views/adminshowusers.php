@@ -1,3 +1,10 @@
+<?php
+if ($_SESSION['admin_user_status']) {
+    echo $_SESSION['admin_user_status'];
+
+    unset($_SESSION['admin_user_status']);
+}
+?>
 <div>
     <table>
         <tr>
