@@ -1,10 +1,8 @@
 <?php
 namespace App\Controllers;
 
-use App\Models\AdminManageLots;
 use App\Models\UserGet;
 use App\Models\UserValidation;
-use App\Models\UserManipulate;
 use App\Models\Cities;
 use App\Models\AdminManageUsers;
 use App\View\View;
@@ -22,28 +20,30 @@ class AdminChangeUserController
     {
         if ($_SERVER['REQUEST_METHOD'] == 'GET') {
             $cities = (new Cities)->getAllCities();
-            $user = (new UserGet)->getUserInfo($user_id);
+            $user = (new UserGet)->getUser($user_id);
 
             new View('adminchangeuser', ['user' => $user, 'cities' => $cities, 'title' => 'Изменение пользователя']);
-        } else {           
-            $check = (new UserValidation)->changeCheck(strip_tags($_POST['login']), strip_tags($_POST['password']),
-                strip_tags($_POST['confirmPassword']), strip_tags($_POST['email']));
+        } else {
+            $manage = new AdminManageUsers();
 
-            if ($check == true) {
-                $cryptpassword = password_hash(strip_tags($_POST['password']), PASSWORD_DEFAULT);
-
-                (new UserManipulate())->changeUser($user_id, strip_tags($_POST['login']),
-                    $cryptpassword, strip_tags($_POST['email']), strip_tags($_POST['name']),
-                        strip_tags($_POST['surname']), $_POST['city_id'], $_FILES['photo']);
-
-                (new AdminManageUsers)->userBanManage($user_id, $_POST['ban']);
-            } else {
-                $_SESSION['usr_err_msg'] = $check;
-
-                header('Location: /user/change');
+            if ($user_id != $_SESSION['user']['id']) {
+                $manage->userBanManage($user_id, trim(strip_tags($_POST['ban_status'])));
+                $manage->userAdminManage($user_id, trim(strip_tags($_POST['admin_status'])));
             }
+            
+            $check = (new UserValidation)->changeCheck(strip_tags($_POST['login']), null, null, strip_tags($_POST['email']));
 
-            header('Location: /user');
+            if (is_bool($check)) {
+                $manage->userChangeByAdmin($user_id, trim(strip_tags($_POST['login'])), trim(strip_tags($_POST['email'])), 
+                    trim(strip_tags($_POST['name'])),trim(strip_tags($_POST['surname'])), 
+                        trim(strip_tags($_POST['city_id'])));
+
+                header("Location: /admin/change/user/$user_id");
+            } else {
+                $_SESSION['user_err_msg'] = $check;
+
+                header("Location: /admin/change/user/$user_id");
+            }
         }
     }
 }

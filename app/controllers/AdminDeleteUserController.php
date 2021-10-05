@@ -6,8 +6,10 @@ class AdminDeleteUserController
 {   
     public static function adminDeleteUser(int $user_id): void
     {
-        (new UserManipulate)->deleteUser($user_id);
+        if ((new UserManipulate)->deleteUser($user_id)) {
+            $_SESSION['admin_user_status'] = 'Пользователь успешно удален!';
+        }
 
-        header('Location: /');
+        header('Location: /admin/users');
     }
 }
