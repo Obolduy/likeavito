@@ -25,4 +25,17 @@ class LotGet extends Model
     {
         return $this->db->dbQuery("SELECT * FROM lots ORDER BY id DESC LIMIT 0,$border")->fetchAll();
     }
+
+    public function getAllLots()
+    {
+        return $this->db->dbQuery("SELECT l.*, u.login, c.category FROM lots AS l
+            LEFT JOIN users AS u ON u.id = l.owner_id
+                LEFT JOIN lots_category AS c ON l.category_id = c.id");
+    }
+
+    public function getLotsByCategoryId(int $categoryId)
+    {
+        return $this->db->dbQuery("SELECT lots.*, lots_category.category FROM lots 
+            LEFT JOIN lots_category ON lots.category_id = lots_category.id WHERE category_id = $categoryId");
+    }
 }
