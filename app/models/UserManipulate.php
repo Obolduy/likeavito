@@ -56,7 +56,7 @@ class UserManipulate extends Model
         }
     }
 
-    public function deleteUser(int $userId): void
+    public function deleteUser(int $userId): bool
     {   
         $this->db->transaction([
             ["DELETE FROM users WHERE id = ?", [$userId]], 
@@ -70,6 +70,8 @@ class UserManipulate extends Model
         foreach ($userLots as $elem) {
             (new LotManipulate)->deleteLot($elem['id']);
         }
+
+        return true;
     }
 
     public function changeUser(int $userId, string $currentEmail, string $login, ?string $password, string $email, string $name, string $surname, int $cityId, ?string $avatar)
