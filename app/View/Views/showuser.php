@@ -2,6 +2,9 @@
     <?php if ($user['avatar'] != null): ?>
     <div><img src="<?= "http://{$_SERVER['SERVER_NAME']}/img/users/{$user['id']}/{$user['avatar']}" ?>" alt="Аватар" height=10% width=15%></div>
     <?php endif; ?>
+    <?php if ($user['ban_status'] == 1): ?>
+    <div class="ban_msg">Вы были забанены администрацией.</div>
+    <?php endif; ?>
     <div class="login">Логин: <?= $user['login'] ?></div>
     <div class="email">Email: <?php echo $user['email']; if ($user['active'] == 0) echo ' (Не подтвержден)';  ?></div>
     <div class="name">Имя: <?= $user['name'] ?></div>

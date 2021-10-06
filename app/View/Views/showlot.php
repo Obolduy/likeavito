@@ -11,7 +11,7 @@
 <div class="comments">
 <br>Отзывы на товар:
 <form method="POST" action="/category/<?= $lot['category_id'] ?>/<?= $lot['id'] ?>/addcomment">
-    <div>Введите текст комментария: <textarea name="description"></textarea></div>
+    <div>Введите текст комментария: <textarea name="description" required></textarea></div>
     <div><input type="submit" name="submit"></div>
 </form><br>
 <?php foreach ($comments as $comment): ?>

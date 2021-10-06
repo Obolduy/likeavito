@@ -9,7 +9,7 @@ if ($_SESSION['addlot_err_msg']) {
 <form method="POST" enctype="multipart/form-data">
     <div>Введите название: <input type="text" name="title" required></div>
     <div>Введите цену: <input type="text" name="price" required></div>
-    <div>Введите описание: <textarea name="description"></textarea></div>
+    <div>Введите описание: <textarea name="description" required></textarea></div>
     <div><select name="category_id">
         <?php foreach ($categories as $category): ?>
         <option value="<?= $category['id'] ?>"><?= $category['category']; ?></option>
