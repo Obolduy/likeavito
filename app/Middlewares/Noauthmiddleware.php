@@ -1,5 +1,6 @@
 <?php
 namespace App\Middlewares;
+
 use App\Middlewares\IMiddleware;
 
 class Noauthmiddleware implements IMiddleware
