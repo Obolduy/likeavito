@@ -3,8 +3,6 @@ namespace App\Models;
 
 use App\Models\SendChangePasswordEmail;
 use App\Models\SendChangeEmail;
-use App\Models\Picture;
-use App\Models\LotManipulate;
 
 class UserManipulate extends Model
 {
@@ -56,22 +54,13 @@ class UserManipulate extends Model
         }
     }
 
-    public function deleteUser(int $userId): bool
+    public function deleteUser(int $userId): void
     {   
         $this->db->transaction([
             ["DELETE FROM users WHERE id = ?", [$userId]], 
             ["DELETE FROM names WHERE user_id = ?", [$userId]],
             ["DELETE FROM surnames WHERE user_id = ?", [$userId]]
         ]);
-
-        $userLots = $this->db->dbQuery("SELECT id FROM lots WHERE owner_id = ?", [$userId])
-            ->fetchAll();
-
-        foreach ($userLots as $elem) {
-            (new LotManipulate)->deleteLot($elem['id']);
-        }
-
-        return true;
     }
 
     public function changeUser(int $userId, string $currentEmail, string $login, ?string $password, string $email, string $name, string $surname, int $cityId, ?string $avatar)

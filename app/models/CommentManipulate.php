@@ -19,4 +19,14 @@ class CommentManipulate extends Model
     {
         $this->db->dbQuery("DELETE FROM comments WHERE id = ?", [$commentId]);
     }
+
+    public function deleteLotComments(int $lotId): void
+    {
+        $this->db->dbQuery("DELETE FROM comments WHERE lot_id = ?", [$lotId]);
+    }
+
+    public function deleteUserComments(int $userId): void
+    {
+        $this->db->dbQuery("DELETE FROM comments WHERE user_id = ?", [$userId]);
+    }
 }

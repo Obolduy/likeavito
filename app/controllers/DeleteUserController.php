@@ -1,9 +1,12 @@
 <?php
 namespace App\Controllers;
 
+use App\Models\CommentManipulate;
 use App\Models\EmailSender;
+use App\Models\LotManipulate;
 use App\Models\UserGet;
 use App\Models\UserManipulate;
+
 use App\View\View;
 
 class DeleteUserController
@@ -27,6 +30,16 @@ class DeleteUserController
     {
         if ($token == $_SESSION['deletelink']) {
             (new UserManipulate)->deleteUser($_SESSION['user']['id']);
+
+            $userLots = (new LotManipulate)->deleteUserLots($_SESSION['user']['id']);
+
+            $comment = new CommentManipulate();
+
+            foreach ($userLots as $elem) {
+                $comment->deleteLotComments($elem['id']);
+            }
+
+            $comment->deleteUserComments($_SESSION['user']['id']);
 
             $_SESSION['user']['id'] = null;
             $_SESSION['deletelink'] = null;

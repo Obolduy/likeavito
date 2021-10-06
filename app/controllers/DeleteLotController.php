@@ -2,6 +2,7 @@
 namespace App\Controllers;
 
 use App\Models\LotManipulate;
+use App\Models\CommentManipulate;
 use App\Models\LotGet;
 use Predis\Autoloader;
 use Predis\Client;
@@ -16,6 +17,7 @@ class DeleteLotController
 
         if ($checkUser['LotInfo']['owner_id'] == $_SESSION['user']['id']) {
             (new LotManipulate)->deleteLot($lot_id);
+            (new CommentManipulate)->deleteLotComments($lot_id);
 
             $lots = $lotGet->getLotsForCache();
             

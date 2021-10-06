@@ -44,4 +44,15 @@ class LotManipulate extends Model
 
         $this->picture->deletePicturesByPath("lots/$lotId");
     }
+
+    public function deleteUserLots(int $userId): array
+    {
+        $userLots = $this->db->dbQuery("SELECT id FROM lots WHERE owner_id = ?", [$userId])->fetchAll();
+
+        foreach ($userLots as $elem) {
+            $this->deleteLot($elem['id']);
+        }
+
+        return $userLots;
+    }
 }
