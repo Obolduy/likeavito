@@ -2,6 +2,7 @@
 namespace App\Controllers;
 
 use App\Models\LotGet;
+use App\Models\UserGet;
 use App\Models\Pagination;
 use App\View\View;
 use Predis\Autoloader;
@@ -41,13 +42,19 @@ class MainPageController
             $sortBy = null;
         }
 
-        $category = (new LotGet)->getLotsByCategoryId($category_id, $sortBy);
+        $lotGet = new LotGet();
+
+        $user = (new UserGet)->getUser($_SESSION['user']['id']);
+
+        $category = $lotGet->getLotsByCategoryId($category_id, $sortBy);
         
         $pagination = new Pagination((($_GET['page'] * 5) - 5));
         $pagination->pagination($category->queryString);
+        
+        $lots = $lotGet->sortLotsByUserCity($user['city'], $pagination->table);
 
         $category = $category->fetch();
 
-        new View('showcategory', ['lots' => $pagination->table, 'page_count' => $pagination->pageCount, 'title' => $category['category']]);
+        new View('showcategory', ['lots' => $lots, 'page_count' => $pagination->pageCount, 'title' => $category['category']]);
     }
 }

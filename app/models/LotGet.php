@@ -45,4 +45,20 @@ class LotGet extends Model
                     LEFT JOIN cities AS ct ON ct.id=u.city_id WHERE l.category_id = $categoryId ORDER BY $orderBy");
         }
     }
+
+    public function sortLotsByUserCity(string $userCity, array $lots): array
+    {
+        $closeLots = [];
+        $nonCloseLots = [];
+
+        foreach ($lots as $lot) {
+            if ($lot['city'] == $userCity) {
+                $closeLots[] = $lot;
+            } else {
+                $nonCloseLots[] = $lot;
+            }
+        }
+
+        return array_merge($closeLots, $nonCloseLots);
+    }
 }
