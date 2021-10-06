@@ -10,6 +10,12 @@ class AdminChangeCommentController
 {   
     public static function adminShowCommentsTable(): void
     {
+        $_GET['page'] = (int)$_GET['page'];
+
+        if ($_GET['page'] == 0) {
+            $_GET['page'] = 1;
+        }
+        
         if (!isset($_GET['page']) || $_GET['page'] == 1) {
             $_GET['page'] = 1;
         }
