@@ -1,6 +1,6 @@
 <?php
 namespace App\Router;
-use App\Middlewares;
+
 use App\Controllers\Controller404;
 
 class Router
@@ -15,6 +15,12 @@ class Router
             $noGetUri = preg_replace("#\?(.+)=(.+)#", '', $noGetUri);
 
             $_GET[$getMatches[1]] = $getMatches[2];
+        } else if (preg_match('#&(.+)=(.+)#', $noGetUri, $getMatches)) {
+            $noGetUri = preg_replace("#\&(.+)=(.+)#", '', $noGetUri);
+
+            for ($i = 1; $i < count($getMatches); $i++) {
+                $_GET[$getMatches[$i]] = $getMatches[$i + 1];
+            }
         }
 
         foreach ($routes as $elem) {
