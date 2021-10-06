@@ -4,11 +4,14 @@ namespace App\Controllers;
 use App\Models\LotGet;
 use App\Models\Pagination;
 use App\View\View;
+use Exception;
 use Predis\Autoloader;
 use Predis\Client;
 
 class MainPageController
 {   
+    public static $sortByWhiteList = ['title', 'price', 'city', 'add_time'];
+
     public static function showLots(): void
     {
         Autoloader::register();
@@ -23,11 +26,23 @@ class MainPageController
 
     public static function showCategory(int $category_id): void
     {
+        $_GET['page'] = (int)$_GET['page'];
+
+        if ($_GET['page'] == 0) {
+            $_GET['page'] = 1;
+        }
+
         if (!isset($_GET['page']) || $_GET['page'] == 1) {
             $_GET['page'] = 1;
         }
 
-        $category = (new LotGet)->getLotsByCategoryId($category_id);
+        $sortBy = $_GET['sort'];
+
+        if (!in_array($sortBy, self::$sortByWhiteList)) {
+            $sortBy = null;
+        }
+
+        $category = (new LotGet)->getLotsByCategoryId($category_id, $sortBy);
         
         $pagination = new Pagination((($_GET['page'] * 5) - 5));
         $pagination->pagination($category->queryString);

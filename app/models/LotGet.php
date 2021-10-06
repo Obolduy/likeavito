@@ -33,9 +33,16 @@ class LotGet extends Model
                 LEFT JOIN lots_category AS c ON l.category_id = c.id");
     }
 
-    public function getLotsByCategoryId(int $categoryId)
+    public function getLotsByCategoryId(int $categoryId, string $orderBy = null)
     {
-        return $this->db->dbQuery("SELECT lots.*, lots_category.category FROM lots 
-            LEFT JOIN lots_category ON lots.category_id = lots_category.id WHERE category_id = $categoryId");
+        if (!$orderBy) {
+            return $this->db->dbQuery("SELECT l.*, c.category, ct.city FROM lots AS l
+                LEFT JOIN lots_category AS c ON l.category_id = c.id LEFT JOIN users AS u ON u.id=l.owner_id
+                    LEFT JOIN cities AS ct ON ct.id=u.city_id WHERE l.category_id = $categoryId");
+        } else {
+            return $this->db->dbQuery("SELECT l.*, c.category, ct.city FROM lots AS l
+                LEFT JOIN lots_category AS c ON l.category_id = c.id LEFT JOIN users AS u ON u.id=l.owner_id
+                    LEFT JOIN cities AS ct ON ct.id=u.city_id WHERE l.category_id = $categoryId ORDER BY $orderBy");
+        }
     }
 }
