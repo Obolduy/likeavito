@@ -4,7 +4,6 @@ namespace App\Controllers;
 use App\Models\LotGet;
 use App\Models\Pagination;
 use App\View\View;
-use Exception;
 use Predis\Autoloader;
 use Predis\Client;
 
