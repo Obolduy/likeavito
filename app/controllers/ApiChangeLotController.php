@@ -1,6 +1,7 @@
 <?php
 namespace App\Controllers;
-use App\Models\LotsApi;
+
+use App\Models\ApiLotManipulate;
 
 class ApiChangeLotController
 {  
@@ -12,7 +13,7 @@ class ApiChangeLotController
 
     public static function apiChangeLot(int $lot_id)
     {
-        $lot = new LotsApi();
+        $lot = new ApiLotManipulate();
 
         header('HTTP/1.0 201');
         header('Content-Type: application/json; charset=UTF-8');

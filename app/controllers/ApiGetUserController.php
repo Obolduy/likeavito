@@ -1,6 +1,7 @@
 <?php
 namespace App\Controllers;
-use App\Models\UserApi;
+
+use App\Models\ApiUserGet;
 
 class ApiGetUserController
 {  
@@ -12,7 +13,7 @@ class ApiGetUserController
     
     public static function apiGetUser(int $user_id)
     {
-        $user = new UserApi();
+        $user = new ApiUserGet();
 
         header('HTTP/1.0 201');
         header('Content-Type: application/json; charset=UTF-8');

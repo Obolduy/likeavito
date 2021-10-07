@@ -1,6 +1,7 @@
 <?php
 namespace App\Controllers;
-use App\Models\UserApi;
+
+use App\Models\ApiUserLogin;
 
 class ApiAuthUserController
 {  
@@ -9,7 +10,7 @@ class ApiAuthUserController
     */
     public static function apiLoginUser()
     {
-        $user = new UserApi();
+        $user = new ApiUserLogin();
 
         header('HTTP/1.0 200');
         header('Content-Type: application/json; charset=UTF-8');
