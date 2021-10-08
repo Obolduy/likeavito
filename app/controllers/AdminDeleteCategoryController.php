@@ -17,6 +17,6 @@ class AdminDeleteCategoryController
             (new CommentManipulate)->deleteLotComments($lot['id']);
         }
         
-        header('Location: /admin/category');
+        header('Location: /admin/categories');
     }
 }

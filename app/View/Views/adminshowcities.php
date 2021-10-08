@@ -1,3 +1,4 @@
+<div class="admin_cities"><a href="/admin/add/сity">Добавить город</a></div>
 <div>
     <table>
         <tr>

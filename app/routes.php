@@ -7,7 +7,8 @@ use App\Controllers\{
     AdminChangeCommentController, AdminDeleteUserController, AdminDeleteLotController, AdminDeleteCommentController,
     ResetPasswordController, ApiGetUserController, ApiGetLotController, ApiChangeLotController, ApiAuthUserController,
     ApiDeleteLotController, ChangeCommentController, DeleteCommentController, ChatController, RedirectController,
-    ChangeEmailController, ChangePasswordController, AdminDeleteCategoryController, AdminDeleteCityController, AdminChangeCityController};
+    ChangeEmailController, ChangePasswordController, AdminDeleteCategoryController, AdminDeleteCityController, AdminChangeCityController,
+    AdminAddCategoryController, AdminAddCityController};
 
 return [
     new Route('/api/login', [ApiAuthUserController::class, 'apiLoginUser']),
@@ -51,6 +52,8 @@ return [
     new Route('/admin/comments', [AdminChangeCommentController::class, 'adminShowCommentsTable'], ['adminmiddleware', 'adminauthmiddleware']),
     new Route('/admin/cities', [AdminChangeCityController::class, 'adminShowCitiesTable'], ['adminmiddleware', 'adminauthmiddleware']),
     new Route('/admin/categories', [AdminChangeCategoryController::class, 'adminShowCategoriesTable'], ['adminmiddleware', 'adminauthmiddleware']),
+    new Route('/admin/add/category', [AdminAddCategoryController::class, 'addCategory'], ['adminmiddleware', 'adminauthmiddleware']),
+    new Route('/admin/add/city', [AdminAddCityController::class, 'addCity'], ['adminmiddleware', 'adminauthmiddleware']),
     new Route('/admin/change/user/{user_id}', [AdminChangeUserController::class, 'adminChangeUser'], ['adminmiddleware', 'adminauthmiddleware']),
     new Route('/admin/change/lot/{lot_id}', [AdminChangeLotController::class, 'adminChangeLot'], ['adminmiddleware', 'adminauthmiddleware']),
     new Route('/admin/change/comment/{comment_id}', [AdminChangeCommentController::class, 'adminChangeComment'], ['adminmiddleware', 'adminauthmiddleware']),

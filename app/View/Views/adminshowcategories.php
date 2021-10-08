@@ -1,3 +1,4 @@
+<div class="admin_categories"><a href="/admin/add/category">Добавить категорию</a></div>
 <div>
     <table>
         <tr>
