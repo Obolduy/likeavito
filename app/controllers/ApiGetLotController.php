@@ -18,7 +18,7 @@ class ApiGetLotController
         header('HTTP/1.0 201');
         header('Content-Type: application/json; charset=UTF-8');
     
-        echo $lot->getUserLots($user_id);
+        echo json_encode($lot->getUserLots($user_id), JSON_UNESCAPED_UNICODE);
     }
 
     /**
@@ -34,6 +34,6 @@ class ApiGetLotController
         header('HTTP/1.0 201');
         header('Content-Type: application/json; charset=UTF-8');
     
-        echo $lot->getLot($lot_id);
+        echo json_encode($lot->getLot($lot_id), JSON_UNESCAPED_UNICODE);
     }
 }

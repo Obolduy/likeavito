@@ -1,7 +1,7 @@
 <?php
 namespace App\Models;
 
-use App\Controllers\DeleteLotController;
+use App\Models\LotManipulate;
 
 class ApiLotManipulate extends Model
 {
@@ -38,8 +38,7 @@ class ApiLotManipulate extends Model
 
     public function deleteLot(int $lot_id): string
     {
-        DeleteLotController::deleteLot($lot_id);
-
+        (new LotManipulate)->deleteLot($lot_id);
         return json_encode(['Success!' => 'Lot has deleted'], JSON_UNESCAPED_UNICODE);
     }
 }
