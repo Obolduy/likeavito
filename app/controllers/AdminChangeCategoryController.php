@@ -10,7 +10,7 @@ class AdminChangeCategoryController
     {
         $categories = (new Categories)->getAllCategories();
 
-        new View('adminshowcategoriess', ['categories' => $categories, 'title' => 'Просмотр категорий']);
+        new View('adminshowcategories', ['categories' => $categories, 'title' => 'Просмотр категорий']);
     }
 
     public static function adminChangeCategory(int $category_id): void
@@ -20,7 +20,7 @@ class AdminChangeCategoryController
         if ($_SERVER['REQUEST_METHOD'] == 'GET') {
             $category = $categories->getCategory($category_id);
 
-            new View('adminchangecategory', ['category' => $category, 'title' => 'Изменение категорию']);
+            new View('adminchangecategory', ['category' => $category, 'title' => 'Изменение категории']);
         } else {
             $categories->changeCategory($category_id, trim(strip_tags($_POST['category'])));
 
