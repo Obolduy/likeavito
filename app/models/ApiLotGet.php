@@ -22,7 +22,7 @@ class ApiLotGet extends Model
     /**
      * Get lots by user`s id
      * @param int user`s id
-     * @return string JSON \w lots information 
+     * @return array
      */
 
     public function getUserLots(int $user_id): array

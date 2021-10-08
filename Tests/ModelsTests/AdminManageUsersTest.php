@@ -5,8 +5,7 @@ use App\Models\UserGet;
 
 class AdminManageUsersTest extends TestCase
 {
-    private $adminManageUsers;
-    private $userGet;
+    private $adminManageUsers, $userGet;
 
     protected function setUp(): void 
     {
@@ -14,31 +13,54 @@ class AdminManageUsersTest extends TestCase
         $this->userGet = new UserGet();
     }
 
-    public function manageUsersProvider()
+    public function userChangeByAdminProvider()
     {
         return [
-            [66, 1],
-            [67, 1],
-            [66, 0],
-            [67, 0]
+            [66, 'login23', 'email23@what.com', 'Name23', 'surname23', 2],
+            [67, 'login33', 'email33@what.com', 'Name33', 'surname33', 3],
+            [68, 'login43', 'email43@what.com', 'Name43', 'surname43', 4],
+            [69, 'login53', 'email53@what.com', 'Name53', 'surname53', 5],
         ];
     }
 
-    public function adminUndoProvider()
+    public function userBanManageProvider()
     {
         return [
-            [66, 55],
-            [67, 55],
-            [66, 66],
-            [67, 66]
+            [1, 68],
+            [0, 69],
+            [0, 66],
+            [1, 70]
         ];
+    }
+
+    public function userAdminManageProvider()
+    {
+        return [
+            [1, 68],
+            [2, 69],
+            [2, 66],
+            [1, 70]
+        ];
+    }
+
+    public function testUserChangeByAdmin(int $userId, string $login, string $email, string $name, string $surname, int $cityId)
+    {
+        $this->adminManageUsers->userChangeByAdmin($userId, $login, $email, $name, $surname, $cityId);
+
+        $test = $this->userGet->getUserInfo($userId);
+
+        $this->assertEquals($login, $test['login']);
+        $this->assertEquals($login, $test['email']);
+        $this->assertEquals($login, $test['name']);
+        $this->assertEquals($login, $test['surname']);
+        $this->assertEquals($login, $test['city_id']);
     }
 
     /**
-     * @dataProvider manageUsersProvider
+     * @dataProvider userBanManageProvider
      */
 
-    public function testUserBanManage(int $userId, int $banStatus)
+    public function testUserBanManage(int $banStatus, int $userId)
     {
         $this->adminManageUsers->userBanManage($userId, $banStatus);
 
@@ -47,34 +69,17 @@ class AdminManageUsersTest extends TestCase
     }
 
     /**
-     * @dataProvider manageUsersProvider
+     * @dataProvider userAdminManageProvider
      */
 
-    public function testMakeUserAnAdmin(int $userId, int $banStatus)
+    public function testUserAdminManage(int $adminStatus, int $userId)
     {
-        $this->adminManageUsers->makeUserAnAdmin($userId);
+        $this->adminManageUsers->userAdminManage($userId, $adminStatus);
 
         $test = $this->userGet->getUserInfo($userId);
-        $this->assertEquals(2, $test['status_id']);
+        $this->assertEquals($adminStatus, $test['status_id']);
     }
-
-    /**
-     * @dataProvider adminUndoProvider
-     */
-
-    public function testUndoUserAsAnAdmin(int $userId, int $sessionId)
-    {
-        $_SESSION['user']['id'] = $sessionId;
-        
-        $test = $this->adminManageUsers->undoUserAsAnAdmin($userId);
-
-        if ($sessionId == $userId) {
-            $this->assertFalse($test);
-        } else {
-            $this->assertTrue($test);
-        }
-    }
-
+    
     protected function tearDown(): void
     {
         $this->adminManageUsers = NULL;
