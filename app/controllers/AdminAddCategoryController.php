@@ -2,7 +2,7 @@
 namespace App\Controllers;
 
 use App\View\View;
-use App\Models\Categories;
+use App\Models\CategoriesManipulate;
 
 class AdminAddCategoryController
 {   
@@ -11,7 +11,7 @@ class AdminAddCategoryController
         if ($_SERVER['REQUEST_METHOD'] == 'GET') {
             new View('addcategory', ['title' => 'Добавление категории']);
         } else {
-            (new Categories)->addCategory(strip_tags(trim($_POST['category'])));
+            (new CategoriesManipulate)->addCategory(strip_tags(trim($_POST['category'])));
             
             header("Location: /");
         }

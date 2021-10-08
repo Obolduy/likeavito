@@ -4,7 +4,7 @@ namespace App\Controllers;
 use App\Models\EmailVerify;
 use App\Models\UserRegistration;
 use App\Models\UserValidation;
-use App\Models\Cities;
+use App\Models\CitiesGet;
 use App\Models\UserGet;
 use App\View\View;
 
@@ -13,7 +13,7 @@ class RegistrationController
     public static function registration()
     {
         if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-            $cities = (new Cities())->getAllCities();
+            $cities = (new CitiesGet)->getAllCities();
 
             new View('registration', ['cities' => $cities, 'title' => 'Зарегистрироваться']);
         } else {

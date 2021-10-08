@@ -2,7 +2,7 @@
 namespace App\Controllers;
 
 use App\View\View;
-use App\Models\Cities;
+use App\Models\CitiesManipulate;
 
 class AdminAddCityController
 {   
@@ -11,7 +11,7 @@ class AdminAddCityController
         if ($_SERVER['REQUEST_METHOD'] == 'GET') {
             new View('addcity', ['title' => 'Добавление города']);
         } else {
-            (new Cities)->addCity(strip_tags(trim($_POST['city'])));
+            (new CitiesManipulate)->addCity(strip_tags(trim($_POST['city'])));
             
             header("Location: /");
         }

@@ -1,7 +1,7 @@
 <?php
 namespace App\Controllers;
 
-use App\Models\Categories;
+use App\Models\CategoriesGet;
 use App\Models\LotGet;
 use App\Models\LotManipulate;
 use App\Models\LotValidate;
@@ -16,7 +16,7 @@ class AddLotController
     public static function newLot(): void
     {
         if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-            $categories = (new Categories)->getAllCategories();
+            $categories = (new CategoriesGet)->getAllCategories();
 
             new View('addlot', ['categories' => $categories, 'title' => 'Добавление товара']);
         } else {

@@ -1,28 +1,27 @@
 <?php
 namespace App\Controllers;
 
-use App\Models\Categories;
+use App\Models\CategoriesGet;
+use App\Models\CategoriesManipulate;
 use App\View\View;
 
 class AdminChangeCategoryController
 {  
     public static function adminShowCategoriesTable(): void
     {
-        $categories = (new Categories)->getAllCategories();
+        $categories = (new CategoriesGet)->getAllCategories();
 
         new View('adminshowcategories', ['categories' => $categories, 'title' => 'Просмотр категорий']);
     }
 
     public static function adminChangeCategory(int $category_id): void
     {
-        $categories = new Categories();
-
         if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-            $category = $categories->getCategory($category_id);
+            $category = (new CategoriesGet)->getCategory($category_id);
 
             new View('adminchangecategory', ['category' => $category, 'title' => 'Изменение категории']);
         } else {
-            $categories->changeCategory($category_id, trim(strip_tags($_POST['category'])));
+            (new CategoriesManipulate)->changeCategory($category_id, trim(strip_tags($_POST['category'])));
 
             header("Location: /admin/change/category/$category_id");
         }

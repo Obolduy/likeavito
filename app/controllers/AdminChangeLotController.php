@@ -3,7 +3,7 @@ namespace App\Controllers;
 
 use App\Models\Pagination;
 use App\Models\LotValidate;
-use App\Models\Categories;
+use App\Models\CategoriesGet;
 use App\Models\LotGet;
 use App\Models\LotManipulate;
 use App\View\View;
@@ -31,7 +31,7 @@ class AdminChangeLotController
     public static function adminChangeLot(int $lot_id): void
     {
         if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-            $categories = (new Categories)->getAllCategories();
+            $categories = (new CategoriesGet)->getAllCategories();
             $lot = (new LotGet)->getFullLotInfo($lot_id);
 
             new View('adminchangelot', ['lot' => $lot['LotInfo'], 'pictures' => $lot['LotPictures'], 'categories' => $categories, 'title' => 'Изменение товар']);

@@ -4,7 +4,7 @@ namespace App\Controllers;
 use App\Models\UserGet;
 use App\Models\UserValidation;
 use App\Models\Picture;
-use App\Models\Cities;
+use App\Models\CitiesGet;
 use App\Models\UserManipulate;
 use App\View\View;
 
@@ -21,7 +21,7 @@ class ChangeUserController
         $user = (new UserGet)->getUser($_SESSION['user']['id']);
 
         if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-            $cities = (new Cities)->getAllCities();
+            $cities = (new CitiesGet)->getAllCities();
 
             new View('changeuser', ['user' => $user, 'cities' => $cities, 'title' => 'Изменить данные']);
         } else {

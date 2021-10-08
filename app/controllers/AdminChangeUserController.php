@@ -3,7 +3,7 @@ namespace App\Controllers;
 
 use App\Models\UserGet;
 use App\Models\UserValidation;
-use App\Models\Cities;
+use App\Models\CitiesGet;
 use App\Models\AdminManageUsers;
 use App\View\View;
 
@@ -19,7 +19,7 @@ class AdminChangeUserController
     public static function adminChangeUser(int $user_id): void
     {
         if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-            $cities = (new Cities)->getAllCities();
+            $cities = (new CitiesGet)->getAllCities();
             $user = (new UserGet)->getUser($user_id);
 
             new View('adminchangeuser', ['user' => $user, 'cities' => $cities, 'title' => 'Изменение пользователя']);

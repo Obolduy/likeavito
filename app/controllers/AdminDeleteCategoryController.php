@@ -1,7 +1,7 @@
 <?php
 namespace App\Controllers;
 
-use App\Models\Categories;
+use App\Models\CategoriesManipulate;
 use App\Models\LotManipulate;
 use App\Models\CommentManipulate;
 
@@ -9,7 +9,7 @@ class AdminDeleteCategoryController
 {   
     public static function adminDeleteCategory(int $category_id): void
     {
-        (new Categories)->deleteCategory($category_id);
+        (new CategoriesManipulate)->deleteCategory($category_id);
 
         $lotsIds = (new LotManipulate)->deleteCategoryLots($category_id);
 

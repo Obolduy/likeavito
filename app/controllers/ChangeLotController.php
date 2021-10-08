@@ -2,7 +2,7 @@
 namespace App\Controllers;
 
 use App\Models\LotGet;
-use App\Models\Categories;
+use App\Models\CategoriesGet;
 use App\Models\LotManipulate;
 use App\Models\LotValidate;
 use App\View\View;
@@ -22,7 +22,7 @@ class ChangeLotController
         }
 
         if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-            $categories = (new Categories)->getAllCategories();
+            $categories = (new CategoriesGet)->getAllCategories();
 
             new View('changelot', ['lot' => $lot['LotInfo'], 'pictures' => $lot['LotPictures'], 'categories' => $categories, 'title' => 'Изменить товар']);
         } else {
