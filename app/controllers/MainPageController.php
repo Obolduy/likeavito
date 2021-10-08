@@ -44,14 +44,18 @@ class MainPageController
 
         $lotGet = new LotGet();
 
-        $user = (new UserGet)->getUser($_SESSION['user']['id']);
-
         $category = $lotGet->getLotsByCategoryId($category_id, $sortBy);
         
         $pagination = new Pagination((($_GET['page'] * 5) - 5));
         $pagination->pagination($category->queryString);
         
-        $lots = $lotGet->sortLotsByUserCity($user['city'], $pagination->table);
+        if ($_SESSION['user']) {
+            $user = (new UserGet)->getUser($_SESSION['user']['id']);
+            $lots = $lotGet->sortLotsByUserCity($user['city'], $pagination->table);
+        } else {
+            $lots = $pagination->table;
+        }
+        
 
         $category = $category->fetch();
 
