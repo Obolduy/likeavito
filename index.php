@@ -1,5 +1,5 @@
 <?php
-// ini_set('display_errors', 'off');
+ini_set('display_errors', 'off');
 
 use App\Controllers\LoginController;
 use App\Router\Router;
