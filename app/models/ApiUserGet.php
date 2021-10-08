@@ -20,4 +20,10 @@ class ApiUserGet extends Model
 
         return json_encode($userData, JSON_UNESCAPED_UNICODE);
     }
+
+    public function getIdViaToken(string $token): int
+    {
+        return $this->db->dbQuery("SELECT user_id FROM api_user_tokens WHERE token = ?", [$token])
+            ->fetchColumn();
+    }
 }

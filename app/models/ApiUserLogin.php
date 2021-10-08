@@ -13,7 +13,7 @@ class ApiUserLogin extends Model
 
     public function userLogin(string $login, string $password): string
     {
-        $user = $this->db->dbQuery("SELECT id, login, password FROM users WHERE login = ?", [$login])->fetch();
+        $user = $this->db->dbQuery("SELECT id, password FROM users WHERE login = ?", [$login])->fetch();
 
         if (password_verify($password, $user['password'])) {
             if ($this->checkApiToken($user['id'])) {
