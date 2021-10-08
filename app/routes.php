@@ -3,11 +3,11 @@ use App\Router\Route;
 use App\Controllers\{
     MainPageController, ShowLotController, ShowUserController, RegistrationController, LoginController,
     DeleteLotController, ChangeLotController, ChangeUserController, AddLotController, AddCommentController,
-    ShowOtherUserController, AdminLoginController, AdminPanelController, AdminChangeUserController, AdminChangeLotController,
+    AdminChangeCategoryController, AdminLoginController, AdminPanelController, AdminChangeUserController, AdminChangeLotController,
     AdminChangeCommentController, AdminDeleteUserController, AdminDeleteLotController, AdminDeleteCommentController,
     ResetPasswordController, ApiGetUserController, ApiGetLotController, ApiChangeLotController, ApiAuthUserController,
     ApiDeleteLotController, ChangeCommentController, DeleteCommentController, ChatController, RedirectController,
-    ChangeEmailController, ChangePasswordController};
+    ChangeEmailController, ChangePasswordController, AdminDeleteCategoryController};
 
 return [
     new Route('/api/login', [ApiAuthUserController::class, 'apiLoginUser']),
@@ -52,7 +52,9 @@ return [
     new Route('/admin/change/user/{user_id}', [AdminChangeUserController::class, 'adminChangeUser'], ['adminmiddleware', 'adminauthmiddleware']),
     new Route('/admin/change/lot/{lot_id}', [AdminChangeLotController::class, 'adminChangeLot'], ['adminmiddleware', 'adminauthmiddleware']),
     new Route('/admin/change/comment/{comment_id}', [AdminChangeCommentController::class, 'adminChangeComment'], ['adminmiddleware', 'adminauthmiddleware']),
+    new Route('/admin/change/category/{category_id}', [AdminChangeCategoryController::class, 'adminChangeCategory'], ['adminmiddleware', 'adminauthmiddleware']),
     new Route('/admin/delete/user/{user_id}', [AdminDeleteUserController::class, 'adminDeleteUser'], ['adminmiddleware', 'adminauthmiddleware']),
     new Route('/admin/delete/lot/{lot_id}', [AdminDeleteLotController::class, 'adminDeleteLot'], ['adminmiddleware', 'adminauthmiddleware']),
     new Route('/admin/delete/comment/{comment_id}', [AdminDeleteCommentController::class, 'adminDeleteComment'], ['adminmiddleware', 'adminauthmiddleware']),
+    new Route('/admin/delete/category/{category_id}', [AdminDeleteCategoryController::class, 'adminDeleteCategory'], ['adminmiddleware', 'adminauthmiddleware']),
 ];

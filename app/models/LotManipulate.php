@@ -55,4 +55,15 @@ class LotManipulate extends Model
 
         return $userLots;
     }
+
+    public function deleteCategoryLots(int $categoryId): array
+    {
+        $categoryLots = $this->db->dbQuery("SELECT id FROM lots WHERE category_id = ?", [$categoryId])->fetchAll();
+
+        foreach ($categoryLots as $elem) {
+            $this->deleteLot($elem['id']);
+        }
+
+        return $categoryLots;
+    }
 }
