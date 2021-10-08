@@ -15,7 +15,8 @@
 <p>Queues deamons are in /queues. Now you can't receive any emails because there isn't any mail services (but you still need to use SendRegistrationMail deamon). So that if you want to activate youre email after registration, you should use token from DB.</p>
 <p>"Status" field in DB using "1" for simple user and "2" for administrator</p>
 <p>Chat doesn't use WebSockets, it uses AJAX.</p>
-<p>It's pure JS with no libraries. I wrote a linkchecker that checks any links and for example if one user send a link like "urljustlikemyhost.com/givemeyouremoney" to another user, it wil redirect recipient to a special page with attention about link. It works with any link whose hosting doesn't equals to "window.location.host".</p>
+<p>It's pure JS with no libraries. I wrote a linkchecker that checks any links and for example if one user send a link like "urljustlikemyhost.com/givemeyouremoneyorsmth" to another user, it wil redirect recipient to a special page with attention about link. It works with any link whose hosting doesn't equals to "window.location.host".</p>
+<p>Of course no decoration, but i will fix it in a future (now i want to improve my backend skills).</p>
 
 Технический todo в порядке убывания важности:
 Решить вопрос с кешем (Написать класс и поменять хеш-таблицу на список в списке категорий + их добавление туда в случае добавления в бд).
