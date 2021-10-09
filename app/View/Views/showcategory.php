@@ -10,7 +10,12 @@
         </tr>
         <?php foreach ($lots as $lot): ?>
         <tr>
-            <td><a href="/category/<?= $lot['category_id'] ?>/<?= $lot['id'] ?>"><?= $lot['title'] ?></a></td>
+            <td>
+                <?php if ($lots_pictures['lot_id'] == $lot['id']): ?>
+                    <a href="http://<?= $_SERVER['SERVER_NAME'] ?>/img/lots/<?= $lot['id'] ?>/<?= $lots_pictures['picture'] ?>" target="_blank"><img height=30% width=20% src="http://<?= $_SERVER['SERVER_NAME'] ?>/img/lots/<?= $lots_pictures['lot_id'] ?>/<?= $lots_pictures['picture'] ?>" alt="Картинки"></a><br>
+                <?php endif; ?>
+                <a href="/category/<?= $lot['category_id'] ?>/<?= $lot['id'] ?>"><?= $lot['title'] ?></a>
+            </td>
             <td><?= $lot['price'] ?>₽</td>
             <td><?= $lot['city'] ?></td>
             <td><?= $lot['add_time'] ?></td>

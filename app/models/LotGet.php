@@ -61,4 +61,9 @@ class LotGet extends Model
 
         return array_merge($closeLots, $nonCloseLots);
     }
+
+    public function getLotMainPicture(int $lotId)
+    {
+        return $this->db->dbQuery("SELECT * from lots_pictures WHERE lot_id = ?", [$lotId])->fetch();
+    }
 }

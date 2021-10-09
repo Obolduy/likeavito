@@ -18,8 +18,7 @@ class MainPageController
         $cache = new Client();
 
         $lots = $cache->hmget("new_lots", "link_1", "link_2", "link_3", "link_4", "link_5");
-        $categories = $cache->hmget("lots_categories", "category_1", "category_2", "category_3", "category_4",
-            "category_5", "category_6", "category_7", "category_8");
+        $categories = $cache->hgetall("lots_categories");
 
         new View('main', ['lots' => $lots, 'categories' => $categories, 'title' => 'Главная страница']);
     }
@@ -56,9 +55,16 @@ class MainPageController
             $lots = $pagination->table;
         }
         
-
+        foreach ($lots as $lot) {
+            if ($getPic = $lotGet->getLotMainPicture($lot['id'])) {
+                $lotsPictures['lot_id'] = $getPic['lot_id'];
+                $lotsPictures['picture'] = $getPic['picture'];
+                $lotsPictures['id'] = $getPic['id'];
+            }
+        }
+        
         $category = $category->fetch();
 
-        new View('showcategory', ['lots' => $lots, 'page_count' => $pagination->pageCount, 'title' => $category['category']]);
+        new View('showcategory', ['lots' => $lots, 'lots_pictures' => $lotsPictures, 'page_count' => $pagination->pageCount, 'title' => $category['category']]);
     }
 }
