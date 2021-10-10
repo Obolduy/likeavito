@@ -1,26 +1,26 @@
 <?php
+
 use PHPUnit\Framework\TestCase;
-use App\Models\Comments;
+use App\Models\CommentGet;
 use App\Controllers\AdminChangeCommentController;
 
 class AdminChangeCommentControllerTest extends TestCase
 {
-    private $adminChangeCommentController;
-    private $comment;
+    private $adminChangeCommentController, $comment;
 
     protected function setUp(): void 
     {
         $this->adminChangeCommentController = new AdminChangeCommentController();
-        $this->comment = new Comments();
+        $this->comment = new CommentGet();
     }
 
     public function changeCommentProvider()
     {
         return [
-            [2, 'NewComment01'],
-            [3, 'NewComment02'],
-            [4, 'NewComment03'],
-            [5, 'NewComment04']
+            [13, 'NewComment01'],
+            [14, 'NewComment02'],
+            [15, 'NewComment03'],
+            [16, 'NewComment04']
         ];
     }
 
@@ -30,15 +30,15 @@ class AdminChangeCommentControllerTest extends TestCase
 
     public function testAdminChangeComment($comment_id, $description) 
     {
+        $_SERVER['REQUEST_METHOD'] = 'POST';
+
         $_POST['description'] = $description;
 
         $this->adminChangeCommentController->adminChangeComment($comment_id);
 
-        $data = $this->comment->getOne('comments', $description, 'description');
+        $data = $this->comment->getCommentById($comment_id);
 
-        foreach ($data as $elem) {
-            $this->assertEquals($description, $elem['description']);
-        }
+        $this->assertEquals($description, $data['description']);
     }
 
     protected function tearDown(): void
