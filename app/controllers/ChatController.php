@@ -14,16 +14,12 @@ class ChatController
 
     public static function openChat(int $user_id)
     {
-        if (!preg_match("#{$_SESSION['user']['id']}$#", $user_id)) {
-            $chat = new Chat();
+        $chat = new Chat();
 
-            $messages = $chat->showChat($_SESSION['user']['id'], $user_id);
-            $chat_name = $_SESSION["chat_with_$user_id"];
-    
-            new View('chat', ['chat_name' => $chat_name, 'messages' => $messages, 'title' => "Чат"]);
-        } else {
-            header('Location: /'); die();
-        }
+        $messages = $chat->showChat($_SESSION['user']['id'], $user_id);
+        $chat_name = $messages['chat_name'];
+
+        new View('chat', ['chat_name' => $chat_name, 'messages' => $messages['Chat'], 'title' => "Чат с пользователем {$messages['ChatTitle']}"]);
     }
 
     /**

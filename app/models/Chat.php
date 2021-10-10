@@ -44,10 +44,16 @@ class Chat extends Model
             $this->showChat($user1_id, $user2_id);
         }
 
-        $_SESSION["chat_with_$user2_id"] = $chat['chat'];
+        if ($chat['user1_id'] != $user1_id) {
+            $chatWith = $this->db->dbQuery("SELECT login FROM users WHERE id = ?", [$chat['user1_id']])->fetchColumn();
+        } else {
+            $chatWith = $this->db->dbQuery("SELECT login FROM users WHERE id = ?", [$chat['user2_id']])->fetchColumn();
+        }
         
-        return $this->db->dbQuery("SELECT c.*, u.login FROM {$chat['chat']} AS c 
+        $fullChat = $this->db->dbQuery("SELECT c.*, u.login FROM {$chat['chat']} AS c 
             LEFT JOIN users AS u ON c.user_id=u.id")->fetchAll();
+
+        return ['Chat' => $fullChat, 'ChatTitle' => $chatWith, 'chat_name' => $chat['chat']];
     }
 
     /**
