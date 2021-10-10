@@ -22,21 +22,17 @@ class EmailSender extends Model
                 implode("\r\n", EMAIL_HEADERS));
     }
 
-    public function sendDeleteMail(): void
+    public function sendDeleteMail(string $link): void
     {
-        $_SESSION['deletelink'] = md5($this->email . time());
-
         mail("<{$this->email}>", 'Подтвердите удаление Вашего аккаунта',
-            EMAIL_ACCOUNT_DELETE_MESSAGE_START . $_SESSION['deletelink'] . EMAIL_MESSAGE_END,
+            EMAIL_ACCOUNT_DELETE_MESSAGE_START . $link . EMAIL_MESSAGE_END,
                 implode("\r\n", EMAIL_HEADERS));
     }
 
-    public function sendChangePasswordEmail(string $password): void
+    public function sendChangePasswordEmail(string $link): void
     {
-        $_SESSION['changepassword_link'] = md5($password . time());
-
         mail("<{$this->email}>", 'Подтвердите смену пароля',
-            EMAIL_CHANGE_PASSWORD_MESSAGE_START . $_SESSION['changepassword_link'] . EMAIL_MESSAGE_END,
+            EMAIL_CHANGE_PASSWORD_MESSAGE_START . $link . EMAIL_MESSAGE_END,
                 implode("\r\n", EMAIL_HEADERS));
     }
 

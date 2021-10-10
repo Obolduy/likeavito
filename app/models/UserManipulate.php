@@ -66,7 +66,7 @@ class UserManipulate extends Model
     public function changeUser(int $userId, string $currentEmail, string $login, ?string $password, string $email, string $name, string $surname, int $cityId, ?string $avatar)
     {
         if ($password) {
-            $email_data = json_encode(['email' => $currentEmail, 'password' => $password]);
+            $email_data = json_encode(['email' => $currentEmail, 'password' => $password, 'link' => md5($password . time())]);
 
             $queue = new SendChangePasswordEmail();
             $queue->createQueue('send_change_password_email');

@@ -19,7 +19,7 @@ class DeleteUserController
             $user = (new UserGet)->getUser($_SESSION['user']['id']);
 
             if (password_verify($_POST['password'], $user['password'])) {
-                (new EmailSender($user['email']))->sendDeleteMail();
+                (new EmailSender($user['email']))->sendDeleteMail(md5($user['email'] . time()));
             } else {
                 echo 'Неправильный пароль!';
             }

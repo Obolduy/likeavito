@@ -25,9 +25,9 @@ class PasswordChange extends Model
         }
     }
 
-    public function addPasswordToChangeTable(): void
+    public function addPasswordToChangeTable(string $link): void
     {
         $this->db->dbQuery('INSERT INTO passwords_changes SET email = ?, password = ?, link = ?, request_time = now()',
-            [$this->email, $this->password, $_SESSION['changepassword_link']]);
+            [$this->email, $this->password, $link]);
     }
 }

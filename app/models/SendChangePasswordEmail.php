@@ -33,8 +33,8 @@ class SendChangePasswordEmail extends RabbitmqQueues
             $emailChanger = new PasswordChange($userData['email'], $userData['password']);
             $emailSender = new EmailSender($userData['email']);
 
-            $emailSender->sendChangePasswordEmail($userData['password']);
-            $emailChanger->addPasswordToChangeTable();
+            $emailSender->sendChangePasswordEmail($userData['link']);
+            $emailChanger->addPasswordToChangeTable($userData['link']);
         };
 
         return $callback;
