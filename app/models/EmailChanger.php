@@ -3,10 +3,10 @@ namespace App\Models;
 
 class EmailChanger extends Model
 {
-    public function addEmailToChangeTable(string $newEmail, string $currentEmail): void
+    public function addEmailToChangeTable(string $newEmail, string $currentEmail, string $link): void
     {
         $this->db->dbQuery('INSERT INTO emails_changes SET new_email = ?, current_email = ?, link = ?, request_time = now()',
-            [$newEmail, $currentEmail, $_SESSION['changeemail_link']]);
+            [$newEmail, $currentEmail, $link]);
     }
 
     public function changeEmail(string $link, int $userId): bool

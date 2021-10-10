@@ -33,8 +33,8 @@ class SendChangeEmail extends RabbitmqQueues
             $emailChanger = new EmailChanger();
             $emailSender = new EmailSender($emailArray['current_email']);
 
-            $emailSender->sendChangeEmail($emailArray['current_email']);
-            $emailChanger->addEmailToChangeTable($emailArray['new_email'], $emailArray['current_email']);
+            $emailSender->sendChangeEmail($emailArray['current_email'], $emailArray['ChangeEmailLink']);
+            $emailChanger->addEmailToChangeTable($emailArray['new_email'], $emailArray['current_email'], $emailArray['ChangeEmailLink']);
         };
     }
 }

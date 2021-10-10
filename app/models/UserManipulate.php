@@ -75,7 +75,7 @@ class UserManipulate extends Model
         }
 
         if ($currentEmail != $email) {
-            $email_data = ['new_email' => $email, 'current_email' => $currentEmail];
+            $email_data = ['new_email' => $email, 'current_email' => $currentEmail, 'ChangeEmailLink'=> md5($email . time())];
             $email_json = json_encode($email_data);
 
             $queue = new SendChangeEmail();

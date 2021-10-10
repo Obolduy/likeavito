@@ -47,12 +47,10 @@ class EmailSender extends Model
                 implode("\r\n", EMAIL_HEADERS));
     }
 
-    public function sendChangeEmail(): void
+    public function sendChangeEmail(string $link): void
     {
-        $_SESSION['changeemail_link'] = md5($this->email . time());
-
         mail("<{$this->email}>", 'Подтвердите смену Email',
-            EMAIL_CHANGE_EMAIL_MESSAGE_START . $_SESSION['changeemail_link'] . EMAIL_MESSAGE_END,
+            EMAIL_CHANGE_EMAIL_MESSAGE_START . $link . EMAIL_MESSAGE_END,
                 implode("\r\n", EMAIL_HEADERS));
     }
 }
