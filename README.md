@@ -19,7 +19,7 @@
 <p>Of course no decoration, but i will fix it in a future (now i want to improve my backend skills).</p>
 
 Технический todo в порядке убывания важности:
-Убрать сессии из моделей.
 Дописать тесты.
 Оформить.
 Прикрутить отправителя почты, чтобы письмо можно было посмотреть не в блокноте.
+Поиск.
