@@ -1,17 +1,17 @@
 <?php
+
 use PHPUnit\Framework\TestCase;
-use App\Models\Lots;
 use App\Controllers\AdminChangeLotController;
+use App\Models\Database;
 
 class AdminChangeLotControllerTest extends TestCase
 {
-    private $adminChangeLotController;
-    private $lot;
+    private $adminChangeLotController, $database;
 
     protected function setUp(): void 
     {
         $this->adminChangeLotController = new AdminChangeLotController();
-        $this->lot = new Lots();
+        $this->database = new Database();
     }
 
     public function changeLotProvider()
@@ -37,11 +37,9 @@ class AdminChangeLotControllerTest extends TestCase
 
         $this->adminChangeLotController->adminChangeLot($lot_id);
 
-        $data = $this->lot->getOne('lots', $description, 'description');
+        $data = $this->database->dbQuery("SELECT * FROM lots WHERE title = ? ORDER BY id DESC", [$title])->fetch();
 
-        foreach ($data as $elem) {
-            $this->assertEquals($description, $elem['description']);
-        }
+        $this->assertIsArray($data);
     }
 
     protected function tearDown(): void
