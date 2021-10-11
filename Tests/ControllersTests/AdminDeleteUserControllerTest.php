@@ -1,17 +1,17 @@
 <?php
+
 use PHPUnit\Framework\TestCase;
-use App\Models\User;
+use App\Models\UserGet;
 use App\Controllers\AdminDeleteUserController;
 
 class AdminDeleteUserControllerTest extends TestCase
 {
-    private $adminDeleteUserController;
-    private $user;
+    private $adminDeleteUserController, $user;
 
     protected function setUp(): void 
     {
         $this->adminDeleteUserController = new AdminDeleteUserController();
-        $this->user = new User();
+        $this->user = new UserGet();
     }
 
     public function adminDeleteUserProvider()
@@ -33,7 +33,7 @@ class AdminDeleteUserControllerTest extends TestCase
     {
         $this->adminDeleteUserController->adminDeleteUser($user_id);
 
-        $this->assertNull($this->user->getOne('users', $user_id)[0]);
+        $this->assertNull($this->user->getUser($user_id));
     }
 
     protected function tearDown(): void

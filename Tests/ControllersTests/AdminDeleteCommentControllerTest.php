@@ -1,17 +1,17 @@
 <?php
+
 use PHPUnit\Framework\TestCase;
-use App\Models\Comments;
+use App\Models\CommentGet;
 use App\Controllers\AdminDeleteCommentController;
 
 class AdminDeleteCommentControllerTest extends TestCase
 {
-    private $adminDeleteCommentController;
-    private $comment;
+    private $adminDeleteCommentController, $comment;
 
     protected function setUp(): void 
     {
         $this->adminDeleteCommentController = new AdminDeleteCommentController();
-        $this->comment = new Comments();
+        $this->comment = new CommentGet();
     }
 
     public function adminDeleteCommentProvider()
@@ -33,7 +33,7 @@ class AdminDeleteCommentControllerTest extends TestCase
     {
         $this->adminDeleteCommentController->adminDeleteComment($comment_id);
 
-        $this->assertNull($this->comment->getOne('comments', $comment_id)[0]);
+        $this->assertNull($this->comment->getCommentById($comment_id));
     }
 
     protected function tearDown(): void

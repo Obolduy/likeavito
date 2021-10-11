@@ -1,17 +1,17 @@
 <?php
+
 use PHPUnit\Framework\TestCase;
-use App\Models\Lots;
+use App\Models\Database;
 use App\Controllers\AdminDeleteLotController;
 
 class AdminDeleteLotControllerTest extends TestCase
 {
-    private $adminDeleteLotController;
-    private $lot;
+    private $adminDeleteLotController, $database;
 
     protected function setUp(): void 
     {
         $this->adminDeleteLotController = new AdminDeleteLotController();
-        $this->lot = new Lots();
+        $this->database = new Database();
     }
 
     public function adminDeleteLotProvider()
@@ -33,13 +33,13 @@ class AdminDeleteLotControllerTest extends TestCase
     {
         $this->adminDeleteLotController->adminDeleteLot($lot_id);
 
-        $this->assertNull($this->lot->getOne('lots', $lot_id)[0]);
-        $this->assertNull($this->lot->getOne('lots_pictures', $lot_id, 'lot_id')[0]);
+        $this->assertFalse($this->database->dbQuery("SELECT * FROM lots WHERE id = ?", [$lot_id]));
+        $this->assertFalse($this->database->dbQuery("SELECT * FROM lots_pictures WHERE lot_id = ?", [$lot_id]));
     }
 
     protected function tearDown(): void
     {
         $this->adminDeleteLotController = NULL;
-        $this->lot = NULL;
+        $this->database = NULL;
     }
 }
