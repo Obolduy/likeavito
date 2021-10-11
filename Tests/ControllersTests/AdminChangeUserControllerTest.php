@@ -1,17 +1,17 @@
 <?php
+
 use PHPUnit\Framework\TestCase;
-use App\Models\User;
+use App\Models\UserGet;
 use App\Controllers\AdminChangeUserController;
 
 class AdminChangeUserControllerTest extends TestCase
 {
-    private $adminChangeUserController;
-    private $user;
+    private $adminChangeUserController, $user;
 
     protected function setUp(): void 
     {
         $this->adminChangeUserController = new AdminChangeUserController();
-        $this->user = new User();
+        $this->user = new UserGet();
     }
 
     public function changeUserProvider()
@@ -39,24 +39,14 @@ class AdminChangeUserControllerTest extends TestCase
 
         $this->adminChangeUserController->adminChangeUser($user_id);
 
-        $user_test = $this->user->getOne('users', $user_id, 'id');
-        $name_test = $this->user->getOne('names', $user_id, 'user_id');
-        $surname_test = $this->user->getOne('surnames', $user_id, 'user_id');
+        $getUser = $this->user->getUser($user_id);
 
-        foreach ($user_test as $elem) {
-            $this->assertEquals($login, $elem['login']);
-            $this->assertEquals($email, $elem['email']);
-            $this->assertEquals($city_id, $elem['city_id']);
-            $this->assertEquals($ban_status, $elem['ban_status']);
-        }
-
-        foreach ($name_test as $elem) {
-            $this->assertEquals($name, $elem['name']);
-        }
-
-        foreach ($surname_test as $elem) {
-            $this->assertEquals($surname, $elem['surname']);
-        }
+        $this->assertEquals($login, $getUser['login']);
+        $this->assertEquals($email, $getUser['email']);
+        $this->assertEquals($city_id, $getUser['city_id']);
+        $this->assertEquals($ban_status, $getUser['ban_status']);
+        $this->assertEquals($name, $getUser['name']);
+        $this->assertEquals($surname, $getUser['surname']);
     }
 
     protected function tearDown(): void
