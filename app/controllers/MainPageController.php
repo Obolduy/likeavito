@@ -1,9 +1,7 @@
 <?php
 namespace App\Controllers;
 
-use App\Models\LotGet;
-use App\Models\UserGet;
-use App\Models\Pagination;
+use App\Models\{CategoriesGet, LotGet, UserGet, Pagination};
 use App\View\View;
 use Predis\Autoloader;
 use Predis\Client;
@@ -17,10 +15,11 @@ class MainPageController
         Autoloader::register();
         $cache = new Client();
 
-        $lots = $cache->hmget("new_lots", "link_1", "link_2", "link_3", "link_4", "link_5");
-        $categories = $cache->hgetall("lots_categories");
+        if (!$cache->hgetall("new_lots") || !$cache->hgetall("lots_categories")) {
+            self::cacheFiller($cache);
+        }
 
-        new View('main', ['lots' => $lots, 'categories' => $categories, 'title' => 'Главная страница']);
+        new View('main', ['lots' => $cache->hgetall("new_lots"), 'categories' => $cache->hgetall("lots_categories"), 'title' => 'Главная страница']);
     }
 
     public static function showCategory(int $category_id): void
@@ -65,6 +64,37 @@ class MainPageController
         
         $category = $category->fetch();
 
-        new View('showcategory', ['lots' => $lots, 'lots_pictures' => $lotsPictures, 'page_count' => $pagination->pageCount, 'title' => $category['category']]);
+        new View('showcategory', ['lots' => $lots, 'lots_pictures' => $lotsPictures, 'page_lot_count' => $pagination->pageCount, 'title' => $category['category']]);
+    }
+
+    /**
+     * Fills Redis with data for main page from DB
+     * @param Client Predis client object 
+     * @return void
+     */
+
+    private static function cacheFiller(Client $cache): void
+    {
+        $lots = (new LotGet)->getLotsForCache();
+        $categories = (new CategoriesGet)->getAllCategories();
+
+        $lot_count = 1;
+        $lots_array = [];
+        
+        foreach ($lots as $lot) {
+            $lots_array["link_$lot_count"] = "<a href=\"/category/{$lot['category_id']}/{$lot['id']}\">{$lot['title']}</a>";
+            $lot_count++;
+        }
+
+        $category_count = 1;
+        $categories_array = [];
+
+        foreach ($categories as $category) {
+            $categories_array["category_$category_count"] = "<a href=\"/category/{$category['id']}/\">{$category['category']}</a>";
+            $category_count++;
+        }
+
+        $cache->hmset("lots_categories", $categories_array);
+        $cache->hmset("new_lots", $lots_array);
     }
 }

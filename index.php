@@ -3,11 +3,15 @@ ini_set('display_errors', 'off');
 
 use App\Controllers\LoginController;
 use App\Router\Router;
+use Dotenv\Dotenv;
 
 session_start();
 require_once 'vendor/autoload.php';
 
 $routes = require 'App/routes.php';
+
+$dotenv = Dotenv::createImmutable(__DIR__);
+$dotenv->load();
 
 if ($_COOKIE['remember_token']) {
     LoginController::loginByRememberToken($_COOKIE['remember_token']);

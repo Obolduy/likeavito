@@ -9,8 +9,14 @@ class Database implements iDatabase
     public $dbConnection;
     private $query;
     
-    public function __construct($dbms = DEFAULT_DB_CONNECTION, $host = 'localhost', $dbName = 'marketplace', $login = 'root', $password = 1111)
+    public function __construct(?string $dbms = null, ?string $host = null, ?string $dbName = null, ?string $login = null, ?string $password = null)
     {
+        $dbms = $dbms ?? $_ENV['DEFAULT_DB_CONNECTION'];
+        $host = $host ?? $_ENV['DEFAULT_DB_HOST'];
+        $dbName = $dbName ?? $_ENV['DATABASE_NAME'];
+        $login = $login ?? $_ENV['DB_LOGIN'];
+        $password = $password ?? $_ENV['DB_PASSWORD'];
+        
         $this->dbConnection = (new DatabaseConnection)->connection($dbms, $host, $dbName, $login, $password);
     }
 

@@ -52,7 +52,7 @@ abstract class KernelTestCase extends TestCase
     }
 
     /**
-     * @return string The Kernel class name
+     * @return string
      *
      * @throws \RuntimeException
      * @throws \LogicException
@@ -73,7 +73,7 @@ abstract class KernelTestCase extends TestCase
     /**
      * Boots the Kernel for this test.
      *
-     * @return KernelInterface A KernelInterface instance
+     * @return KernelInterface
      */
     protected static function bootKernel(array $options = [])
     {
@@ -91,7 +91,7 @@ abstract class KernelTestCase extends TestCase
 
     /**
      * Provides a dedicated test container with access to both public and private
-     * services. The container will not include private services that has been
+     * services. The container will not include private services that have been
      * inlined or removed. Private services will be removed when they are not
      * used by other services.
      *
@@ -118,7 +118,7 @@ abstract class KernelTestCase extends TestCase
      *  * environment
      *  * debug
      *
-     * @return KernelInterface A KernelInterface instance
+     * @return KernelInterface
      */
     protected static function createKernel(array $options = [])
     {

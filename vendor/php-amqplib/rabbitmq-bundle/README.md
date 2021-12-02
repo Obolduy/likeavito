@@ -131,9 +131,12 @@ old_sound_rabbit_mq:
             url: 'amqp://guest:password@localhost:5672/vhost?lazy=1&connection_timeout=6'
     producers:
         upload_picture:
-            connection:       default
-            exchange_options: {name: 'upload-picture', type: direct}
-            service_alias:    my_app_service # no alias by default
+            connection:            default
+            exchange_options:      {name: 'upload-picture', type: direct}
+            service_alias:         my_app_service # no alias by default
+            default_routing_key:   'optional.routing.key' # defaults to '' if not set
+            default_content_type:  'content/type' # defaults to 'text/plain'
+            default_delivery_mode: 2 # optional. 1 means non-persistent, 2 means persistent. Defaults to "2".
     consumers:
         upload_picture:
             connection:       default
@@ -188,7 +191,7 @@ configuration to avoid unnecessary connections to your message broker in every r
 It's extremely recommended to use lazy connections because performance reasons, nevertheless lazy option is disabled
 by default to avoid possible breaks in applications already using this bundle.
 
-### Import notice - Heartbeats ###
+### Important notice - Heartbeats ###
 
 It's a good idea to set the ```read_write_timeout``` to 2x the heartbeat so your socket will be open. If you don't do this, or use a different multiplier, there's a risk the __consumer__ socket will timeout.
 
@@ -284,8 +287,7 @@ As you can see, if in your configuration you have a producer called __upload\_pi
 
 Besides the message itself, the `OldSound\RabbitMqBundle\RabbitMq\Producer#publish()` method also accepts an optional routing key parameter and an optional array of additional properties. The array of additional properties allows you to alter the properties with which an `PhpAmqpLib\Message\AMQPMessage` object gets constructed by default. This way, for example, you can change the application headers.
 
-You can use __setContentType__ and __setDeliveryMode__ methods in order to set the message content type and the message
-delivery mode respectively. Default values are __text/plain__ for content type and __2__ for delivery mode.
+You can use __setContentType__ and __setDeliveryMode__ methods in order to set the message content type and the message delivery mode respectively, overriding any default set in the "producers" config section. If not overriden by either the "producers" configuration or an explicit call to these methods (as per the below example), the default values are __text/plain__ for content type and __2__ for delivery mode.
 
 ```php
 $this->get('old_sound_rabbit_mq.upload_picture_producer')->setContentType('application/json');
@@ -533,6 +535,35 @@ consumers:
         callback:         upload_picture_service
         qos_options:      {prefetch_size: 0, prefetch_count: 1, global: false}
 ```
+
+### Autowiring producers and consumers ###
+
+If used with **Symfony 4.2+** bundle declares in container set of aliases for producers and regular consumers. Those are 
+used for arguments autowiring based on declared type and argument name. This allows you to change previous producer 
+example to:
+
+```php
+public function indexAction($name, ProducerInteface $uploadPictureProducer)
+{
+    $msg = array('user_id' => 1235, 'image_path' => '/path/to/new/pic.png');
+    $uploadPictureProducer->publish(serialize($msg));
+}
+```
+
+Name of argument is constructed from producer or consumer name from configuration and suffixed with producer or consumer
+word according to type. In contrast to container items naming convention word suffix (producer or consumer) will not be
+duplicated if name is already suffixed. `upload_picture` producer key will be changed to `$uploadPictureProducer`
+argument name. `upload_picture_producer` producer key would also be aliased to `$uploadPictureProducer` argument name.
+It is best to avoid names similar in such manner.
+
+All producers are aliased to `OldSound\RabbitMqBundle\RabbitMq\ProducerInterface` and producer class option from 
+configuration. In sandbox mode only ProducerInterface aliases are made. It is highly recommended to use ProducerInterface
+class when type hinting arguments for producer injection.
+
+All consumers are aliased to 'OldSound\RabbitMqBundle\RabbitMq\ConsumerInterface' and '%old_sound_rabbit_mq.consumer.class%'
+configuration option value. There is no difference between regular and sandbox mode. It is highly recommended to use
+ConsumerInterface when type hinting arguments for client injection.
+
 
 ### Callbacks ###
 
@@ -807,7 +838,7 @@ binding scenarios might include exchange to exchange bindings via `destination_i
 ```yaml
 bindings:
     - {exchange: foo, destination: bar, routing_key: 'baz.*' }
-    - {exchange: foo1, destination: foo, routing_key: 'baz.*' destination_is_exchange: true}
+    - {exchange: foo1, destination: foo, routing_key: 'baz.*', destination_is_exchange: true}
 ```
 
 The rabbitmq:setup-fabric command will declare exchanges and queues as defined in your producer, consumer

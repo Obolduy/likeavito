@@ -12,7 +12,10 @@ abstract class RabbitmqQueues
 
     public function __construct()
     {
-        $this->connection = new AMQPStreamConnection('localhost', 5672, 'guest', 'guest');
+        $this->connection = new AMQPStreamConnection(
+            $_ENV['RABBIT_MQ_HOST'], $_ENV['RABBIT_MQ_PORT'],
+            $_ENV['RABBIT_MQ_LOGIN'], $_ENV['RABBIT_MQ_PASSWORD']
+        );
         $this->channel = $this->connection->channel();
     }
 

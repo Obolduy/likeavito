@@ -233,7 +233,7 @@ EOT
     /**
      * Creates symbolic link.
      *
-     * @throws IOException if link can not be created
+     * @throws IOException if link cannot be created
      */
     private function symlink(string $originDir, string $targetDir, bool $relative = false)
     {
@@ -275,10 +275,6 @@ EOT
 
         $composerConfig = json_decode(file_get_contents($composerFilePath), true);
 
-        if (isset($composerConfig['extra']['public-dir'])) {
-            return $composerConfig['extra']['public-dir'];
-        }
-
-        return $defaultPublicDir;
+        return $composerConfig['extra']['public-dir'] ?? $defaultPublicDir;
     }
 }

@@ -36,7 +36,7 @@ class PhpFileLoader extends FileLoader
     protected $autoRegisterAliasesForSinglyImplementedInterfaces = false;
     private $generator;
 
-    public function __construct(ContainerBuilder $container, FileLocatorInterface $locator, string $env = null, ?ConfigBuilderGeneratorInterface $generator = null)
+    public function __construct(ContainerBuilder $container, FileLocatorInterface $locator, string $env = null, ConfigBuilderGeneratorInterface $generator = null)
     {
         parent::__construct($container, $locator, $env);
         $this->generator = $generator;
@@ -70,6 +70,8 @@ class PhpFileLoader extends FileLoader
             $this->instanceof = [];
             $this->registerAliasesForSinglyImplementedInterfaces();
         }
+
+        return null;
     }
 
     /**
