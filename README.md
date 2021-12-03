@@ -2,9 +2,9 @@
     <li>PHP: PHP 7.3</li>
     <li>DB: MySQL 8</li>
     <li>Server: Apache 2.4</li>
-    <li>Cache: Redis</li>
-    <li>Queues: RabbitMQ</li>
-    <li>Using: php-amqplib, predis, phpunit</li>
+    <li>Cache: Redis 5.0</li>
+    <li>Queues: RabbitMQ 3.9</li>
+    <li>Using: php-amqplib, predis, phpunit, phpdotenv</li>
 </ul>
 
 <p>It was my first pet-project on PHP, and it was maded without OOP. While i was studying it, i was perfecting this project.</p>

@@ -30,7 +30,11 @@ class AdminChangeCategoryController
             $categories = $categories->getAllCategories();
 
             Autoloader::register();
-            $cache = new Client();
+            $cache = new Client([
+                'scheme' => 'tcp',
+                'host'   => $_ENV['REDIS_HOST'],
+                'port'   => $_ENV['REDIS_PORT'],
+            ]);
 
             $cache->del("lots_categories");
             

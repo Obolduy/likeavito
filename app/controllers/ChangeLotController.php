@@ -46,7 +46,11 @@ class ChangeLotController
                 $lots = $lotGet->getLotsForCache();
             
                 Autoloader::register();
-                $cache = new Client();
+                $cache = new Client([
+                    'scheme' => 'tcp',
+                    'host'   => $_ENV['REDIS_HOST'],
+                    'port'   => $_ENV['REDIS_PORT'],
+                ]);
 
                 for ($i = 1; $i <= 5; $i++) {
                     $cache->hmset("new_lots", [

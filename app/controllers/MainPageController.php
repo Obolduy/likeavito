@@ -13,7 +13,11 @@ class MainPageController
     public static function showLots(): void
     {
         Autoloader::register();
-        $cache = new Client();
+        $cache = new Client([
+            'scheme' => 'tcp',
+            'host'   => $_ENV['REDIS_HOST'],
+            'port'   => $_ENV['REDIS_PORT'],
+        ]);
 
         if (!$cache->hgetall("new_lots") || !$cache->hgetall("lots_categories")) {
             self::cacheFiller($cache);

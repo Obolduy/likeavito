@@ -1,35 +1,15 @@
--- MySQL dump 10.13  Distrib 8.0.11, for macos10.13 (x86_64)
---
--- Host: localhost    Database: marketplace
--- ------------------------------------------------------
--- Server version	8.0.11
-
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
- SET NAMES utf8mb4 ;
-/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
-/*!40103 SET TIME_ZONE='+00:00' */;
-/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
-/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
-/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
-/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
-
 --
 -- Table structure for table `api_user_tokens`
 --
 
 DROP TABLE IF EXISTS `api_user_tokens`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
 CREATE TABLE `api_user_tokens` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `token` varchar(64) NOT NULL,
   `user_id` int(11) NOT NULL,
   `actual_from` date NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+);
 
 --
 -- Dumping data for table `api_user_tokens`
@@ -46,16 +26,13 @@ UNLOCK TABLES;
 --
 
 DROP TABLE IF EXISTS `chat_03c11c6ef820ce52050506d9f9c0cac9`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
 CREATE TABLE `chat_03c11c6ef820ce52050506d9f9c0cac9` (
   `id` int(64) NOT NULL AUTO_INCREMENT,
   `message` text NOT NULL,
   `user_id` int(64) NOT NULL,
   `date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+);
 
 --
 -- Dumping data for table `chat_03c11c6ef820ce52050506d9f9c0cac9`
@@ -71,16 +48,13 @@ UNLOCK TABLES;
 --
 
 DROP TABLE IF EXISTS `chat_18fadeb3abce5f4e7e0900dae55b7a05`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
 CREATE TABLE `chat_18fadeb3abce5f4e7e0900dae55b7a05` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `message` text NOT NULL,
   `user_id` int(11) NOT NULL,
   `date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+);
 
 --
 -- Dumping data for table `chat_18fadeb3abce5f4e7e0900dae55b7a05`
@@ -96,16 +70,13 @@ UNLOCK TABLES;
 --
 
 DROP TABLE IF EXISTS `chat_228345f6ae2939a931d88d74fd48889c`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
 CREATE TABLE `chat_228345f6ae2939a931d88d74fd48889c` (
   `id` int(64) NOT NULL AUTO_INCREMENT,
   `message` text NOT NULL,
   `user_id` int(64) NOT NULL,
   `date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+);
 
 --
 -- Dumping data for table `chat_228345f6ae2939a931d88d74fd48889c`
@@ -121,16 +92,13 @@ UNLOCK TABLES;
 --
 
 DROP TABLE IF EXISTS `chat_266bd346b627ef35a01ae7e79056b892`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
 CREATE TABLE `chat_266bd346b627ef35a01ae7e79056b892` (
   `id` int(64) NOT NULL AUTO_INCREMENT,
   `message` text NOT NULL,
   `user_id` int(64) NOT NULL,
   `date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+);
 
 --
 -- Dumping data for table `chat_266bd346b627ef35a01ae7e79056b892`
@@ -147,16 +115,13 @@ UNLOCK TABLES;
 --
 
 DROP TABLE IF EXISTS `chat_53200e57c4ccd64378017b367b5d3b4e`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
 CREATE TABLE `chat_53200e57c4ccd64378017b367b5d3b4e` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `message` text NOT NULL,
   `user_id` int(11) NOT NULL,
   `date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+);
 
 --
 -- Dumping data for table `chat_53200e57c4ccd64378017b367b5d3b4e`
@@ -172,16 +137,13 @@ UNLOCK TABLES;
 --
 
 DROP TABLE IF EXISTS `chat_613d3d5df83eba8845a8211a48fdd3dd`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
 CREATE TABLE `chat_613d3d5df83eba8845a8211a48fdd3dd` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `message` text NOT NULL,
   `user_id` int(11) NOT NULL,
   `date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+);
 
 --
 -- Dumping data for table `chat_613d3d5df83eba8845a8211a48fdd3dd`
@@ -198,16 +160,13 @@ UNLOCK TABLES;
 --
 
 DROP TABLE IF EXISTS `chat_7b097ef194d72cb9b3264c4ff252d78a`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
 CREATE TABLE `chat_7b097ef194d72cb9b3264c4ff252d78a` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `message` text NOT NULL,
   `user_id` int(11) NOT NULL,
   `date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=58 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+);
 
 --
 -- Dumping data for table `chat_7b097ef194d72cb9b3264c4ff252d78a`
@@ -224,16 +183,13 @@ UNLOCK TABLES;
 --
 
 DROP TABLE IF EXISTS `chat_8d9ed36bfaa70b8e8fb691b326e1a0dd`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
 CREATE TABLE `chat_8d9ed36bfaa70b8e8fb691b326e1a0dd` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `message` text NOT NULL,
   `user_id` int(11) NOT NULL,
   `date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+);
 
 --
 -- Dumping data for table `chat_8d9ed36bfaa70b8e8fb691b326e1a0dd`
@@ -250,16 +206,13 @@ UNLOCK TABLES;
 --
 
 DROP TABLE IF EXISTS `chat_b548521f5c2763bb46c98923ce8cb7c8`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
 CREATE TABLE `chat_b548521f5c2763bb46c98923ce8cb7c8` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `message` text NOT NULL,
   `user_id` int(11) NOT NULL,
   `date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+);
 
 --
 -- Dumping data for table `chat_b548521f5c2763bb46c98923ce8cb7c8`
@@ -276,16 +229,13 @@ UNLOCK TABLES;
 --
 
 DROP TABLE IF EXISTS `chat_d3aaa443a89bd4841aa021a44583a56b`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
 CREATE TABLE `chat_d3aaa443a89bd4841aa021a44583a56b` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `message` text NOT NULL,
   `user_id` int(11) NOT NULL,
   `date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+);
 
 --
 -- Dumping data for table `chat_d3aaa443a89bd4841aa021a44583a56b`
@@ -301,16 +251,13 @@ UNLOCK TABLES;
 --
 
 DROP TABLE IF EXISTS `chat_ec18e4b5b552fe56d3b88fcc746ceea1`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
 CREATE TABLE `chat_ec18e4b5b552fe56d3b88fcc746ceea1` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `message` text NOT NULL,
   `user_id` int(11) NOT NULL,
   `date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+);
 
 --
 -- Dumping data for table `chat_ec18e4b5b552fe56d3b88fcc746ceea1`
@@ -327,16 +274,13 @@ UNLOCK TABLES;
 --
 
 DROP TABLE IF EXISTS `chats_list`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
 CREATE TABLE `chats_list` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `chat` varchar(256) NOT NULL,
   `user1_id` int(11) NOT NULL,
   `user2_id` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+);
 
 --
 -- Dumping data for table `chats_list`
@@ -353,14 +297,11 @@ UNLOCK TABLES;
 --
 
 DROP TABLE IF EXISTS `cities`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
 CREATE TABLE `cities` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `city` varchar(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `city` varchar(32) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+);
 
 --
 -- Dumping data for table `cities`
@@ -377,8 +318,6 @@ UNLOCK TABLES;
 --
 
 DROP TABLE IF EXISTS `comments`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
 CREATE TABLE `comments` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` int(11) NOT NULL,
@@ -388,8 +327,7 @@ CREATE TABLE `comments` (
   `update_time` datetime DEFAULT CURRENT_TIMESTAMP,
   `display` int(1) DEFAULT '1',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=59 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+);
 
 --
 -- Dumping data for table `comments`
@@ -406,8 +344,6 @@ UNLOCK TABLES;
 --
 
 DROP TABLE IF EXISTS `emails_changes`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
 CREATE TABLE `emails_changes` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `new_email` varchar(64) NOT NULL,
@@ -415,8 +351,7 @@ CREATE TABLE `emails_changes` (
   `link` varchar(64) NOT NULL,
   `request_time` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+);
 
 --
 -- Dumping data for table `emails_changes`
@@ -433,8 +368,6 @@ UNLOCK TABLES;
 --
 
 DROP TABLE IF EXISTS `lots`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
 CREATE TABLE `lots` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `owner_id` int(11) DEFAULT NULL,
@@ -446,8 +379,7 @@ CREATE TABLE `lots` (
   `update_time` datetime DEFAULT NULL,
   `display` int(1) DEFAULT '1',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=100 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+);
 
 --
 -- Dumping data for table `lots`
@@ -464,14 +396,11 @@ UNLOCK TABLES;
 --
 
 DROP TABLE IF EXISTS `lots_category`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
 CREATE TABLE `lots_category` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `category` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `category` varchar(64) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+);
 
 --
 -- Dumping data for table `lots_category`
@@ -488,15 +417,12 @@ UNLOCK TABLES;
 --
 
 DROP TABLE IF EXISTS `lots_pictures`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
 CREATE TABLE `lots_pictures` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `lot_id` int(11) NOT NULL,
   `picture` text NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=57 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+);
 
 --
 -- Dumping data for table `lots_pictures`
@@ -513,15 +439,12 @@ UNLOCK TABLES;
 --
 
 DROP TABLE IF EXISTS `names`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
 CREATE TABLE `names` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` int(11) NOT NULL,
   `name` varchar(64) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=83 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+);
 
 --
 -- Dumping data for table `names`
@@ -538,15 +461,12 @@ UNLOCK TABLES;
 --
 
 DROP TABLE IF EXISTS `password_reset`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
 CREATE TABLE `password_reset` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `email` char(64) NOT NULL,
   `token` char(64) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=91 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+);
 
 --
 -- Dumping data for table `password_reset`
@@ -563,8 +483,6 @@ UNLOCK TABLES;
 --
 
 DROP TABLE IF EXISTS `passwords_changes`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
 CREATE TABLE `passwords_changes` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `email` varchar(64) NOT NULL,
@@ -572,8 +490,7 @@ CREATE TABLE `passwords_changes` (
   `link` varchar(64) NOT NULL,
   `request_time` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+);
 
 --
 -- Dumping data for table `passwords_changes`
@@ -590,16 +507,13 @@ UNLOCK TABLES;
 --
 
 DROP TABLE IF EXISTS `registration_tokens`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
 CREATE TABLE `registration_tokens` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` int(11) NOT NULL,
   `token` varchar(64) NOT NULL,
   `activated` tinyint(4) DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+);
 
 --
 -- Dumping data for table `registration_tokens`
@@ -616,15 +530,12 @@ UNLOCK TABLES;
 --
 
 DROP TABLE IF EXISTS `surnames`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
 CREATE TABLE `surnames` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` int(11) NOT NULL,
   `surname` varchar(64) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=83 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+);
 
 --
 -- Dumping data for table `surnames`
@@ -641,8 +552,6 @@ UNLOCK TABLES;
 --
 
 DROP TABLE IF EXISTS `users`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8mb4 ;
 CREATE TABLE `users` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `email` text,
@@ -659,8 +568,7 @@ CREATE TABLE `users` (
   `surname_id` int(11) DEFAULT NULL,
   `name_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=85 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+);
 
 --
 -- Dumping data for table `users`
@@ -671,14 +579,3 @@ LOCK TABLES `users` WRITE;
 INSERT INTO `users` VALUES (1,'test@mail.ru',NULL,'$2y$10$6jUi/DT3RJknkQommkt4sO7/NwHhNPoQQI4sCIvTs3XGz8KWgl7GC',16,2,0,1,'2021-03-26 20:30:30','2021-10-06 18:53:36','testlogin','3adf7e6e7724be6618685bca50f1be88',1,1),(7,'fefergergewg',NULL,'$2y$10$xfhJTtkANGFfL3EQvGgWS.DWYz7WXVCXeNv9IE80kOWQTz9R4sYZ2',2,1,0,0,'2021-03-28 18:50:59',NULL,'wrwrewrsfd',NULL,NULL,NULL),(9,'dgfger3r',NULL,'$2y$10$Bt0vy9Vc72tPHGmEdX125OR3P4Zfx832fMrA8P6LOlWOl6.RAyvAC',2,1,0,0,'2021-03-28 20:36:11',NULL,'guerngwrjg8',NULL,NULL,NULL),(12,'newemail@iss.ru',NULL,'$2y$10$IH/3pKZw8/msh9gn3S5X4OJjEMWnx22JiCAnQAXUDYK0Vy.AZ.sYW',2,1,0,0,'2021-04-06 19:06:47','2021-05-15 17:53:17','newlogin111',NULL,NULL,NULL),(13,'efefr@efe.ru',NULL,'$2y$10$0aEpNPWNGb6eYvYg4MdeuuG6IZQQxXORVwAdW5YakYfwn6kKh3bBm',2,1,0,0,'2021-04-06 19:08:48',NULL,'tuyiuionbv',NULL,13,13),(15,'fegreg@grgr.ts',NULL,'$2y$10$7DwGbU55.PUsGLKc2tcmzuHU9l5E.qPEV0ces6bwlxi7BVA4ZeZs.',2,1,0,0,'2021-04-06 19:12:20',NULL,'mjhgggtt',NULL,15,15),(16,'vbvngfndf@eff.ru',NULL,'$2y$10$GQhrKLGx9dhJkDuetGjbY.RvnawEaXqkKUMHbrS0B.yMHmIWxP0QK',2,1,0,0,'2021-04-06 19:15:19',NULL,'eregrrhfds',NULL,16,16),(17,'Email@wadw.ru',NULL,'$2y$10$QShyBQerGdD9FpuiRpCj0uTmuYB8VCfsu5FEPshvQFRY2McQjbTwm',2,1,0,0,'2021-04-12 19:34:42',NULL,'newlogin',NULL,17,17),(18,'Emewail@wadw.ru',NULL,'$2y$10$IVzvch5iSC80DtanEme.eeaTHn1wi4sE86kpl6.D.JApJtObn64JK',2,1,0,0,'2021-04-12 19:35:38','2021-05-15 17:53:18','nxewlogin',NULL,18,18),(19,'El@wadw.ru',NULL,'$2y$10$o3nfl755esDVtdAzbuXDzOkgYJjO0FqT0aNKlVXDpLOauPlDrNWaO',2,1,0,0,'2021-04-12 19:38:12',NULL,'nxewwwlogin',NULL,19,19),(20,'Elewaaaa@wadw.ru',NULL,'$2y$10$MlsOuoLnGakY.dU1f1DUneJ6f83iXZhxrNmIHW8Ya22wwVW.7ANlO',2,1,0,0,'2021-04-12 19:39:07',NULL,'nxtewwwlogin',NULL,20,20),(21,'email1@com.ru',NULL,'$2y$10$rlmvfTJkuIbld8vWnP1Un.xXJBhn3UorbsEVN9KHvUOI0idAO2RqO',1,1,0,0,'2021-04-15 18:56:47','2021-04-19 19:13:57','newlogin1',NULL,37,37),(22,'email2@com.ru',NULL,'$2y$10$7mhN3gg/xgetZ1./M2ApjOpwXJNJRIjYZcwKz2EtqL5EuTA9sHdbu',4,1,0,0,'2021-04-15 18:56:47','2021-04-19 19:13:57','newlogin2',NULL,38,38),(23,'email3@com.ru',NULL,'$2y$10$xJP3/iaIB0zjl113xxILQOxbtlDdLwX5zT3SE1ytJOCf9MJTDee8.',6,1,0,0,'2021-04-15 18:56:48','2021-04-19 19:13:58','newlogin3',NULL,39,39),(24,'email4@com.ru',NULL,'$2y$10$1LkNqeX2F9qLP/lTddNlceQyyN6FOGSH2EFVKcS6ctn/wPG/0hWDa',5,1,0,0,'2021-04-15 18:56:48','2021-04-19 19:13:58','newlogin4',NULL,40,40),(37,'email@nagfdn.ru',NULL,'$2y$10$QDySLNgsl4328Q79hP8hjOgDOqHVWvZNfEDf73HkMXE3lOdLNo87S',1,1,0,0,'2021-04-23 18:22:45',NULL,'newlogin111e',NULL,41,41),(38,'rgtrgw@eff.ru',NULL,'$2y$10$VhLY9t5Fk1egMJNKZwlcs.yNkV8OAkyIAEgsmOaf4Rp4K00N6Xohm',11,1,1,0,'2021-04-23 18:25:02',NULL,'bgnrynrh',NULL,42,42),(39,'emfddsdail@nan.ru',NULL,'$2y$10$BmI0KwOhDz.xUQ1HgeYrd.PzrT2Dmbris/kcZkykTCfybzfhZu.Ba',7,1,1,0,'2021-04-26 17:06:05','2021-04-28 16:58:51','testlogin58','b5a37fb7e8133ed722ca846a9c4bf3f6',43,43),(40,'fgergg@feje.cum',NULL,'$2y$10$8wxTWWb6S9rJHyM1WHPa2.ujvPg71yZsk1zFC5X3PMadiShWEG8t6',7,2,0,0,'2021-04-28 20:50:07',NULL,'gutrnueto','3058dceb0daeb6d7873f27d60ba17f4e',44,44),(41,'newadminmail4@mail.ru',NULL,'$2y$10$kASmQH0eHzz8flpN088Sxe5MYxMAoLwjQf1.QXVzjeQFRnTYYPHzC',5,1,0,0,'2021-05-07 15:50:45','2021-05-21 21:00:47','login00004',NULL,45,45),(42,'newadminmail3@mail.ru','5c244a97a4e972606e4e039be26a31a7.png','$2y$10$WZja.bhHF0kh3oeBuqeK9eBPfD2.CKTK/OAS0iPRYDVId5Ls1gX8S',4,1,1,1,'2021-05-07 16:08:38','2021-05-21 21:00:47','login00003',NULL,46,46),(43,'newadminmail2@mail.ru',NULL,'$2y$10$BYWZd.dqsbV/xtdN5T5tvOQekOUzobkPEO09WmyueOl0B4Qiulsfi',3,1,1,0,'2021-05-07 19:43:39','2021-05-21 21:00:47','login00002',NULL,47,47),(48,'newadminmail1@mail.ru','5c244a97a4e972606e4e039be26a31a7.png','$2y$10$6cM6H9C8cxmbmidyVN450eNt6Rtuo4bwGITGwVQ/hg8Fz1Wtuh4s6',2,1,1,0,'2021-05-07 20:44:07','2021-10-06 13:54:38','login00001',NULL,52,52),(49,'durakdurak85@mail.ru','156005c5baf40ff51a327f1c34f2975b.jpg','$2y$10$6jUi/DT3RJknkQommkt4sO7/NwHhNPoQQI4sCIvTs3XGz8KWgl7GC',4,1,0,1,'2021-05-29 15:28:52','2021-05-29 15:30:01','Durachok','237b2a9b63009a326c64c390d2abd1e4',53,53),(50,'wewfdsfsd@eer.ru',NULL,'$2y$10$q/m0ja.xWDIL9l/Iw6B58uFBXXcGK2NQNFwuTBnt5LzxB86OJIpoW',1,1,0,0,'2021-09-15 18:09:05',NULL,'testlogin232ew','dec5a2a081122c12c79671390d3179d3',NULL,NULL),(51,'fwesdfsd@wew.com',NULL,'$2y$10$jeOzE2JaujXdh7Qh54o7lOZPjZkyb2uWZ35mZ0tliHmWn.DsOiP3G',1,1,0,0,'2021-09-15 20:52:38',NULL,'dfefeerge',NULL,NULL,NULL),(52,'edfggf@dfdfd.ru',NULL,'$2y$10$d6ULzHQcaJwz3vzvkn8Wde7XElYrR1jn0PcPYiTl1XsOqCo9mEbQS',1,1,0,0,'2021-09-15 21:34:50',NULL,'gntygnfbd',NULL,NULL,NULL),(53,'gfdgdf@fdsfdf.ru',NULL,'$2y$10$J.2k9tiPGVJ1AsxkEjlS..z7cajZMtFw6i8pLDmRyE5LKG.dNg.m6',1,1,0,0,'2021-09-15 21:35:44',NULL,'frfgfdgbfgfgf',NULL,NULL,NULL),(54,'wefrgtyjui@mail.ru',NULL,'$2y$10$sUxeueygm7FsoAHmWeRVE.DuS4ZrninSfEBs0vr0tNBF7.KmOUZqi',1,1,0,0,'2021-09-15 21:37:57',NULL,'dfgrhj',NULL,NULL,NULL),(55,'fsdnfun@mail.ri',NULL,'$2y$10$SXpyx/vQ/pEON3G99USOx.B.mnGmB4L0W9fz0ZVmOVw7HngnID96y',1,1,0,0,'2021-09-16 11:45:22',NULL,'testlogin34',NULL,NULL,NULL),(56,'dsdvsdv@mail.ru',NULL,'$2y$10$8GdNuw0f3UJAOX4AVnEPye6LhYPIRfEm/qGF3j6SHxb0wOFOrsWLq',1,1,0,0,'2021-09-16 12:09:39',NULL,'testloginbvc',NULL,NULL,NULL),(57,'fbddfb@fefe.ru',NULL,'$2y$10$FEWK0smjZMITcNaKituo9OKsoLSv/EpK6aFgjETQj5Bdp6n40bxFS',1,1,0,0,'2021-09-16 12:11:48',NULL,'cndvfivd',NULL,NULL,NULL),(58,'fsdfsfd@efe.ru',NULL,'$2y$10$Udyhkr3.I0zoCa7KcYFWROFv3aB8mcKONlKi3oeD.eedNZKvp.OXK',1,1,0,0,'2021-09-16 12:15:56',NULL,'nanararsf',NULL,56,56),(59,'sdsvsd@ffe.ru',NULL,'$2y$10$5eMb.5lkzjVjVNMD.bQ7vO5BmgYPJ76Jo6eLBo.1QEok50nKuflC6',1,1,0,0,'2021-09-16 12:24:54',NULL,'hnyhnrngndg',NULL,57,57),(60,'csvdfvfdb@wfe.ru',NULL,'$2y$10$eDJo6su20s/0zwd8YyBx2ufOk6JEC7AMmb.Xcnqe9itARJck95.lu',1,1,0,0,'2021-09-16 12:30:30',NULL,'cndvfivdrggffg',NULL,58,58),(61,'vfbfdb@mail.ru',NULL,'$2y$10$bEhN6kqeCsyh2wSylwCgb.sc6Y65SNjw0kfFu8.TNCOldJ4qxaNc6',1,1,0,0,'2021-09-17 11:27:53',NULL,'cvfbdbfb',NULL,59,59),(62,'bhrthehe@gd.ru',NULL,'$2y$10$vaSPv.Kfp.H7VpcqXO0ep.vxdGxXpbyY62tdXE8j.jRGdPyB4/geS',1,1,0,0,'2021-09-17 15:52:46',NULL,'heyjshejyj',NULL,60,60),(63,'grhthr@fefe.ru',NULL,'$2y$10$Aim8ZVGsPNNym7y0pgBqc.kRo7fSJzssozXTJt4dNoMhszBkHiYAa',1,1,0,0,'2021-09-17 15:54:33',NULL,'hmjyjtjy',NULL,61,61),(65,'dfssfsfd@eer.ru',NULL,'$2y$10$ev6oCDMV7/qrIjPuD1XX1uiOHk4/rxu/EGnqlB2v5MPdEjmb5IAcu',1,1,0,0,'2021-09-17 17:35:29',NULL,'rejvrevner',NULL,NULL,NULL),(67,'newchange2@email.verify','f69fff8c944b962580b66f371e08babe.jpg','$2y$10$n0O5bPTJW3Xr7C4E4HADhOe.29XyvMYG/6HiUQzIguuuI6rBr/wk.',1,1,0,1,'2021-09-17 19:19:31','2021-09-27 13:10:17','dcmsdjcndscj','aa84ec2baf1176a5d3d08c395fc893a0',64,64),(68,'newchange3@email.verify','09cae2864f8df8dd54bdb751ab843139.png','$2y$10$pKZxrHu6Qz3RBie5l.cs3eHe5ZVe0sNoftwMYiHWIDwtoJkTBR.6K',1,1,0,1,'2021-09-18 21:36:01','2021-09-27 13:10:17','hihihahapopa',NULL,65,65),(69,'newchange4@email.verify','09cae2864f8df8dd54bdb751ab843139.png','$2y$10$b5jb3msKN9SW5slLzRxqrOAjHXVCqm956DVANAYzyjenORhuz4d5m',1,1,0,1,'2021-09-18 21:41:22','2021-09-27 13:10:17','rektjkngjnjkn',NULL,66,66),(74,'TestRegEmail@one.com',NULL,'TestRegPassword1',1,1,0,0,'2021-09-29 12:32:36',NULL,'TestRegUser1',NULL,72,72),(75,'TestRegEmail@two.com',NULL,'TestRegPassword2',2,1,0,0,'2021-09-29 12:32:36',NULL,'TestRegUser2',NULL,73,73),(76,'TestRegEmail@three.com',NULL,'TestRegPassword3',3,1,0,0,'2021-09-29 12:32:36',NULL,'TestRegUser3',NULL,74,74),(77,'TestRegEmail@four.com',NULL,'TestRegPassword4',4,1,0,0,'2021-09-29 12:32:37',NULL,'TestRegUser4',NULL,75,75),(78,'efw@fee.eu','fc74b79bb68233fedb86ff177ee340ea.png','$2y$10$q8QpaWHM12IGOCL3K0q.M.SFzzuEMAW7SrF.f031flxazvEGmOrUG',1,1,0,0,'2021-10-01 19:29:36',NULL,'bibaboba2324',NULL,76,76),(79,'bfvdc@eree.ru','d41d8cd98f00b204e9800998ecf8427e','$2y$10$cZi3kmGIO2LbgbeklUSRtO8HmQOkWYkatxfD/SJ23AYYO8kKL8c/i',1,1,0,1,'2021-10-01 19:37:35','2021-10-01 19:38:33','loikujhygt',NULL,77,77),(80,'fgrger@efe.ru','fe08a0295ebadd736935ccea600660f8.png','$2y$10$rnbDnCXGCbqjTyAu6R3v0OxDOuwrMLTbh5X/quwb6nvjt5Fq2fQMC',17,1,1,1,'2021-10-01 19:41:46','2021-10-06 16:42:47','ythgrfed','39573224574bedd33458a1b05f7d3592',78,78),(81,'fvgbhj@fbghj.ry','989ecd4cbdf09103d93b94c23353a9b3.png','$2y$10$V/V75miuSN3xPR.D//HP5.Q2l1VyjnwnKo/OizxukkVWnvN6QD9nK',1,1,0,0,'2021-10-03 15:10:52',NULL,'ij7uhytgr',NULL,79,79),(82,'fdgd@efr.ru','989ecd4cbdf09103d93b94c23353a9b3.png','$2y$10$JYPrZheD5oYGZ7AZFl/TqecDHfCetihdcHoHdObbnJq5WXs2GftmW',7,2,1,0,'2021-10-03 15:13:49','2021-10-05 11:59:07','tetalogina',NULL,80,80),(83,'reggreg@efr.ru','989ecd4cbdf09103d93b94c23353a9b3.png','$2y$10$dl.SL3ehwVc87nociaZM3eO0cLHpQu442MKta8rOjo55n95z6j8JW',1,1,0,0,'2021-10-03 15:15:11',NULL,'mjhfvd',NULL,81,81),(84,'bnhghg@fv.ru','989ecd4cbdf09103d93b94c23353a9b3.png','$2y$10$1sCFpyyMz1Afm.PLOuY6Du2snY.MVbDKm1s5nQnpgAquzqu9zXTGe',1,1,0,0,'2021-10-03 15:16:25',NULL,'hmfmmn',NULL,82,82);
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
-/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
-
-/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
-/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
-/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
-/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
-
--- Dump completed on 2021-10-06 20:40:50
