@@ -16,7 +16,11 @@
 <p>"Status" field in DB using "1" for simple user and "2" for administrator</p>
 <p>Chat doesn't use WebSockets, it uses AJAX.</p>
 <p>It's pure JS with no libraries. I wrote a linkchecker that checks any links and for example if one user send a link like "urljustlikemyhost.com/givemeyouremoneyorsmth" to another user, it wil redirect recipient to a special page with attention about link. It works with any link whose hosting doesn't equals to "window.location.host".</p>
-<p>Of course no decoration, but i will fix it in a future (now i want to improve my backend skills).</p>
+<p>Of course no decoration, but I will fix it in a future (now i want to improve my backend skills).</p>
+<p>As you can see, I used MySQL 8, but in docker-compose.yml I'm using 5.7. So because of this DB dump using only CREATE TABLE and INSERT commands.</p>
+
+<h2>Run</h2>
+<p>You can run this app via docker-compose up and try it on <a href="http://127.0.0.1:8000">http://127.0.0.1:8000</a>.</p>
 
 Технический todo в порядке убывания важности:
 Дописать тесты.
