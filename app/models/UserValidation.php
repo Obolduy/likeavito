@@ -120,15 +120,15 @@ class UserValidation extends Model
 
     public function ajaxRegistrationChecker(array $field): string
     {
-        switch ($field['fieldName']) {
+        switch (strip_tags($field['fieldName'])) {
             case 'login':
-                $this->registrationLoginFieldValidation($field['fieldValue']);
+                $this->registrationLoginFieldValidation(strip_tags($field['fieldValue']));
             case 'email':
-                $this->registrationEmailFieldValidation($field['fieldValue']);
+                $this->registrationEmailFieldValidation(strip_tags($field['fieldValue']));
             case 'password':
             case 'confirmPassword':
                 $this->registrationPasswordFieldsValidation(
-                    $field['fieldValue']['password'], $field['fieldValue']['confirmPassword']
+                    strip_tags($field['fieldValue']['password']), strip_tags($field['fieldValue']['confirmPassword'])
                 );
         }
 
