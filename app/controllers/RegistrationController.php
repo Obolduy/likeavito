@@ -1,11 +1,7 @@
 <?php
 namespace App\Controllers;
 
-use App\Models\EmailVerify;
-use App\Models\UserRegistration;
-use App\Models\UserValidation;
-use App\Models\CitiesGet;
-use App\Models\UserGet;
+use App\Models\{EmailVerify, UserRegistration, UserValidation, CitiesGet, UserGet};
 use App\View\View;
 
 class RegistrationController
@@ -60,5 +56,17 @@ class RegistrationController
 
             include_once $_SERVER['DOCUMENT_ROOT'] . '/App/View/Views/emailconfirm.php';
         }
+    }
+
+    /**
+	 * Takes AJAX's post-request and validate input data
+	 * @return string json with errors
+	 */
+
+    public static function ajaxValidation(): string
+    {
+        $data = json_decode(file_get_contents('php://input'), true);
+
+        return (new UserValidation)->ajaxRegistrationChecker($data);
     }
 }

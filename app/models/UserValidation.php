@@ -43,44 +43,19 @@ class UserValidation extends Model
 
     public function registrationCheck(string $login, string $email, string $password, string $confirmPassword)
     {
-        $loginCheck = $this->db->dbQuery("SELECT login FROM users WHERE login = ?", [$login])
-            ->fetchColumn();
-        $emailCheck = $this->db->dbQuery("SELECT email FROM users WHERE email = ?", [$email])
-            ->fetchColumn();
-
-        if (!empty($loginCheck)) {
-            $this->errorArray[] = 'Данный логин занят';
-        }
-
-        if (!empty($emailCheck)) {
-            $this->errorArray[] = 'Данный Email занят';
-        }
-        
-        if (!preg_match('#^[A-Za-z0-9]+$#', $login) or !preg_match('#^[A-Za-z0-9]+$#', $password)) {
-            $this->errorArray[] = 'Пароль и логин могут содержать только латинские буквы и цифры';
-        }
-
-        if (!preg_match('#^[A-Za-z0-9_-]+@.+\..{2,4}$#', $email)) {
-            $this->errorArray[] = 'Проверьте правильность ввода Вашего Email';
-        }
+        $this->registrationEmailFieldValidation($email);
+        $this->registrationLoginFieldValidation($login);
+        $this->registrationPasswordFieldsValidation($password, $confirmPassword);
 
         if ($email == $login) {
             $this->errorArray[] = 'Логин не может совпадать с паролем';
         }
 
-        if (strlen($login) < 6 or strlen($login) > 32) {
-            $this->errorArray[] = 'Логин должен состоять из 6-32 символов';
-        }
-
-        if ($password != $confirmPassword) {
-            $this->errorArray[] = 'Пароли не совпадают';
-        }
-
         if (!empty($this->errorArray)) {
             return $this->errorArray;
-        } else {
-            return true;
         }
+
+        return true;
     }
 
     /**
@@ -134,6 +109,95 @@ class UserValidation extends Model
             return $this->errorArray;
         } else {
             return true;
+        }
+    }
+
+    /**
+	 * Calling validation methods in case of ajax field name
+     * @param array fields
+	 * @return string json with errors
+	 */
+
+    public function ajaxRegistrationChecker(array $field): string
+    {
+        switch ($field['fieldName']) {
+            case 'login':
+                $this->registrationLoginFieldValidation($field['fieldValue']);
+            case 'email':
+                $this->registrationEmailFieldValidation($field['fieldValue']);
+            case 'password':
+            case 'confirmPassword':
+                $this->registrationPasswordFieldsValidation(
+                    $field['fieldValue']['password'], $field['fieldValue']['confirmPassword']
+                );
+        }
+
+        if (!$this->errorArray) {
+            $this->errorArray = 0;
+        }
+
+        return json_encode($this->errorArray, JSON_UNESCAPED_UNICODE);
+    }
+
+    /**
+	 * Validate regstration email
+     * @param string email
+	 * @return void
+	 */
+
+    private function registrationEmailFieldValidation(string $email): void
+    {
+        $emailCheck = $this->db->dbQuery("SELECT email FROM users WHERE email = ?", [$email])
+            ->fetchColumn();
+
+        if (!empty($emailCheck)) {
+            $this->errorArray[] = 'Данный Email занят';
+        }
+
+        if (!preg_match('#^[A-Za-z0-9_-]+@.+\..{2,4}$#', $email)) {
+            $this->errorArray[] = 'Проверьте правильность ввода Вашего Email';
+        }
+    }
+
+    /**
+	 * Validate regstration login
+     * @param string login
+	 * @return void
+	 */
+
+    private function registrationLoginFieldValidation(string $login): void
+    {
+        $loginCheck = $this->db->dbQuery("SELECT login FROM users WHERE login = ?", [$login])
+            ->fetchColumn();
+
+        if (!empty($loginCheck)) {
+            $this->errorArray[] = 'Данный логин занят';
+        }
+
+        if (strlen($login) < 6 or strlen($login) > 32) {
+            $this->errorArray[] = 'Логин должен состоять из 6-32 символов';
+        }
+
+        if (!preg_match('#^[A-Za-z0-9]+$#', $login)) {
+            $this->errorArray[] = 'Логин может содержать только латинские буквы и цифры';
+        }
+    }
+
+    /**
+	 * Validate regstration password and password confirmation
+     * @param string password
+     * @param string confirmPassword
+	 * @return void
+	 */
+
+    private function registrationPasswordFieldsValidation(string $password, string $passwordVerify): void
+    {
+        if (!preg_match('#^[A-Za-z0-9]+$#', $password)) {
+            $this->errorArray[] = 'Пароль может содержать только латинские буквы и цифры';
+        }
+        
+        if ($password != $passwordVerify) {
+            $this->errorArray[] = 'Пароли не совпадают';
         }
     }
 }
