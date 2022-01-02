@@ -6,7 +6,6 @@ if ($_SESSION['reg_err_msg']) {
     unset($_SESSION['reg_err_msg']);
 }
 ?>
-<br>
 <form enctype="multipart/form-data" method="POST" id="registration__form">
     <div>Введите логин: <input type="text" id="registration__login" name="login" required></div>
     <div>Введите email: <input type="text" id="registration__email" name="email" required></div>
@@ -15,11 +14,11 @@ if ($_SESSION['reg_err_msg']) {
     <div>Введите пароль: <input type="password" id="registration__password" name="password" required></div>
     <div>Подтвердите пароль: <input type="password" id="registration__confirmPassword" name="confirmPassword" required></div>
     <div>Загрузите Ваш аватар (Необязательно): <input type="file" accept="image/*" name="photo"></div>
-    <div><select name="city_id">
+    <div>Выберите Ваш город: <select name="city_id">
         <?php foreach($cities as $city): ?>
         <option value="<?= $city['id'] ?>"><?= $city['city']; ?></option>
         <?php endforeach; ?>
     </select></div>
-    <div><input type="submit" name="submit" id="registration__submit"></div>
+    <div><input type="submit" name="submit" id="registration__submit" value="Зарегистрироваться"></div>
 </form>
 <script src="/js/registrationchecker.js"></script>

@@ -37,6 +37,7 @@ async function fieldChecker(fieldValue, fieldName) {
         let registration__errors = document.createElement('div');
         registration__errors.className = 'registration__errors';
         registration__errors.innerHTML = `<em><strong>${json[0]}</em></strong>`;
+        registration__errors.style.color = 'red';
     
         document.getElementsByName(fieldName)[0].after(registration__errors);
     }
