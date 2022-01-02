@@ -26,8 +26,10 @@ class MainPageController
         new View('main', ['lots' => $cache->hgetall("new_lots"), 'categories' => $cache->hgetall("lots_categories"), 'title' => 'Главная страница']);
     }
 
-    public static function showCategory(int $category_id): void
+    public static function showCategory(int $category_id)
     {
+        $headers = getallheaders();
+
         $_GET['page'] = (int)$_GET['page'];
 
         if ($_GET['page'] == 0) {
@@ -67,6 +69,12 @@ class MainPageController
         }
         
         $category = $category->fetch();
+
+        if ($headers['Pagination-JSON']) {
+            return json_encode(
+                ['lots' => $lots, 'lots_pictures' => $lotsPictures, 'page_lot_count' => $pagination->pageCount], JSON_UNESCAPED_UNICODE
+            );
+        }
 
         new View('showcategory', ['lots' => $lots, 'lots_pictures' => $lotsPictures, 'page_lot_count' => $pagination->pageCount, 'title' => $category['category']]);
     }
