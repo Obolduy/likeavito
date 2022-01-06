@@ -24,8 +24,8 @@
 <div class="comments">
 <br>Отзывы на товар:
 <form method="POST" action="/category/<?= $lot['category_id'] ?>/<?= $lot['id'] ?>/addcomment">
-    <div>Введите текст комментария: <textarea name="description" required></textarea></div>
-    <div><input type="submit" name="submit"></div>
+    <div>Введите текст комментария: <textarea name="description" <?php if (!$_SESSION['userauth']): ?> disabled placeholder="Пожалуйста, войдите, чтобы оставлять комментарии" <?php endif; ?> required></textarea></div>
+    <div><input type="submit" name="submit" value="Отправить комментарий" <?php if (!$_SESSION['userauth']): ?> disabled <?php endif; ?>></div>
 </form><br>
 <?php foreach ($comments as $comment): ?>
 <div class="comment_autor">
