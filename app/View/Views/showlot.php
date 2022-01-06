@@ -1,7 +1,20 @@
 <div class="lot">
-    <?php foreach ($pictures as $elem): ?>
-    <div><a href="<?= "http://{$_SERVER['SERVER_NAME']}/img/lots/{$elem['lot_id']}/{$elem['picture']}" ?>" target="_blank"><img height=50% width=40% src="<?= "http://{$_SERVER['SERVER_NAME']}/img/lots/{$elem['lot_id']}/{$elem['picture']}" ?>" alt="Картинки"></a></div>
-    <?php endforeach; ?>
+    <div id="imagelist">
+        <div id="images">
+            <?php foreach ($pictures as $elem): ?>
+            <div class="image" style="display: none;">
+                <img height=50% width=40% src="<?= "http://{$_SERVER['SERVER_NAME']}/img/lots/{$elem['lot_id']}/{$elem['picture']}" ?>" alt="Картинки">
+            </div>
+            <?php endforeach; ?>
+        </div>
+        <div id="images__minor" style="display:flex; height:60%; width:60%;">
+            <?php foreach ($pictures as $elem): ?>
+            <div class="image__minor" style="margin:1% 5% 3% 0;">
+                <img height=100% width=100% src="<?= "http://{$_SERVER['SERVER_NAME']}/img/lots/{$elem['lot_id']}/{$elem['picture']}" ?>" alt="Картинки">
+            </div>
+            <?php endforeach; ?>
+        </div>
+    </div>
     <div class="title"><?= $lot['title'] ?></div>
     <div class="price">Цена: <?= $lot['price'] ?>₽</div>
     <div class="description"><?= nl2br($lot['description']) ?></div>
@@ -26,3 +39,5 @@
 <br>
 <?php endforeach; ?>
 </div>
+
+<script src="/js/lotimagesview.js"></script>
